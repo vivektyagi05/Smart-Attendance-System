@@ -20,7 +20,7 @@ src/main/resources/static/uploads/
 # ENV / SECRETS
 # ======================
 .env
-application-prod.properties
+application.properties
 
 # ======================
 # IDE FILES
