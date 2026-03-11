@@ -1,33 +1,48 @@
-HELP.md
+# ======================
+# BUILD
+# ======================
 target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+*.class
+*.jar
+*.war
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# ======================
+# LOGS
+# ======================
+*.log
 
-### IntelliJ IDEA ###
-.idea
-*.iws
+# ======================
+# UPLOADS / GENERATED
+# ======================
+src/main/resources/static/uploads/
+
+# ======================
+# ENV / SECRETS
+# ======================
+.env
+application-prod.properties
+
+# ======================
+# IDE FILES
+# ======================
+.idea/
+.vscode/
 *.iml
 *.ipr
+*.iws
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+# ======================
+# OS FILES
+# ======================
+.DS_Store
+Thumbs.db
 
-### VS Code ###
-.vscode/
+# ======================
+# MAVEN WRAPPER CACHE
+# ======================
+.mvn/wrapper/maven-wrapper.jar
+
+# ======================
+# TEST OUTPUT
+# ======================
+surefire-reports/
