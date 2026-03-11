@@ -1,0 +1,2643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClearIQ - HR Management System</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #e8eef9 0%, #f5f0ff 100%);
+            min-height: 100vh;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: white;
+            padding: 24px 0;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+            overflow-y: auto;
+        }
+
+        .dark-mode .sidebar {
+            background: #1f2937;
+        }
+
+        .logo {
+            padding: 0 24px 32px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a73e8;
+        }
+
+        .logo-icon {
+            width: 28px;
+            height: 28px;
+            background: #1a73e8;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .menu-section {
+            margin-bottom: 32px;
+        }
+
+        .menu-label {
+            padding: 0 24px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .menu-item {
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #6b7280;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .dark-mode .menu-item {
+            color: #9ca3af;
+        }
+
+        .menu-item:hover {
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .dark-mode .menu-item:hover {
+            background: #374151;
+            color: #f3f4f6;
+        }
+
+        .menu-item.active {
+            background: #1a73e8;
+            color: white;
+            border-radius: 8px;
+            margin: 0 12px;
+            padding-left: 12px;
+        }
+
+        .menu-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 24px 32px;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px 16px 10px 40px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .dark-mode .search-bar input {
+            background: #374151;
+            border-color: #4b5563;
+            color: #f3f4f6;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .dark-mode .icon-btn {
+            background: #374151;
+            border-color: #4b5563;
+        }
+
+        .icon-btn:hover {
+            background: #f3f4f6;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #fbbf24;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1f2937;
+            cursor: pointer;
+        }
+
+        .dark-mode .user-name {
+            color: #f3f4f6;
+        }
+
+        /* Page Content */
+        .page-content {
+            display: none;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 24px;
+        }
+
+        .dark-mode .page-title {
+            color: #f3f4f6;
+        }
+
+        /* Dashboard Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .dark-mode .stat-card {
+            background: #1f2937;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .dark-mode .stat-value {
+            color: #f3f4f6;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .stat-change {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .stat-change.positive {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .stat-change.negative {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Charts Container */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .dark-mode .chart-card {
+            background: #1f2937;
+        }
+
+        .chart-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 16px;
+        }
+
+        .dark-mode .chart-title {
+            color: #f3f4f6;
+        }
+
+        .chart-placeholder {
+            height: 300px;
+            background: #f3f4f6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+        }
+
+        .dark-mode .chart-placeholder {
+            background: #374151;
+        }
+
+        /* Table Styles */
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .dark-mode .table-container {
+            background: #1f2937;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .table-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .dark-mode .table-title {
+            color: #f3f4f6;
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            color: #374151;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .dark-mode .btn {
+            background: #374151;
+            border-color: #4b5563;
+            color: #f3f4f6;
+        }
+
+        .btn:hover {
+            background: #f3f4f6;
+        }
+
+        .btn-primary {
+            background: #1a73e8;
+            color: white;
+            border-color: #1a73e8;
+        }
+
+        .btn-primary:hover {
+            background: #1557b0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            border-bottom: 2px solid #f3f4f6;
+        }
+
+        .dark-mode thead th {
+            border-bottom-color: #374151;
+        }
+
+        tbody td {
+            padding: 16px;
+            font-size: 14px;
+            color: #1f2937;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .dark-mode tbody td {
+            color: #f3f4f6;
+            border-bottom-color: #374151;
+        }
+
+        tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        .dark-mode tbody tr:hover {
+            background: #374151;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-badge.present { background: #d1fae5; color: #065f46; }
+        .status-badge.absent { background: #fee2e2; color: #991b1b; }
+        .status-badge.leave { background: #fef3c7; color: #92400e; }
+        .status-badge.active { background: #d1fae5; color: #065f46; }
+        .status-badge.inactive { background: #e5e7eb; color: #374151; }
+        .status-badge.completed { background: #d1fae5; color: #065f46; }
+        .status-badge.in-progress { background: #dbeafe; color: #1e40af; }
+        .status-badge.pending { background: #fef3c7; color: #92400e; }
+        .status-badge.high { background: #fee2e2; color: #991b1b; }
+        .status-badge.medium { background: #fef3c7; color: #92400e; }
+        .status-badge.low { background: #dbeafe; color: #1e40af; }
+
+        /* Form Styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .dark-mode .form-label {
+            color: #f3f4f6;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            padding: 10px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            color: #1f2937;
+        }
+
+        .dark-mode .form-input,
+        .dark-mode .form-select,
+        .dark-mode .form-textarea {
+            background: #374151;
+            border-color: #4b5563;
+            color: #f3f4f6;
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .dark-mode .modal-content {
+            background: #1f2937;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .dark-mode .modal-title {
+            color: #f3f4f6;
+        }
+
+        .close-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f3f4f6;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dark-mode .close-btn {
+            background: #374151;
+            color: #f3f4f6;
+        }
+
+        /* Employee Card */
+        .employee-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .dark-mode .employee-card {
+            background: #1f2937;
+        }
+
+        .employee-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .employee-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .employee-details h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .dark-mode .employee-details h3 {
+            color: #f3f4f6;
+        }
+
+        .employee-details p {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .info-badges {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .info-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            background: #f9fafb;
+        }
+
+        .info-badge.green { background: #d1fae5; }
+        .info-badge.blue { background: #dbeafe; }
+        .info-badge.purple { background: #ede9fe; }
+
+        .badge-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .info-badge.green .badge-icon { background: #10b981; color: white; }
+        .info-badge.blue .badge-icon { background: #3b82f6; color: white; }
+        .info-badge.purple .badge-icon { background: #8b5cf6; color: white; }
+
+        .badge-content h4 {
+            font-size: 11px;
+            font-weight: 500;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .badge-content p {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        /* Task Board */
+        .kanban-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .kanban-column {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .dark-mode .kanban-column {
+            background: #374151;
+        }
+
+        .column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .column-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .dark-mode .column-title {
+            color: #f3f4f6;
+        }
+
+        .task-count {
+            background: #e5e7eb;
+            color: #374151;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .task-card {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: move;
+            transition: all 0.2s;
+        }
+
+        .dark-mode .task-card {
+            background: #1f2937;
+        }
+
+        .task-card:hover {
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .task-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .dark-mode .task-title {
+            color: #f3f4f6;
+        }
+
+        .task-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        /* Calendar */
+        .calendar {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .dark-mode .calendar {
+            background: #1f2937;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #1f2937;
+            transition: all 0.2s;
+        }
+
+        .dark-mode .calendar-day {
+            color: #f3f4f6;
+        }
+
+        .calendar-day:hover {
+            background: #f3f4f6;
+        }
+
+        .dark-mode .calendar-day:hover {
+            background: #374151;
+        }
+
+        .calendar-day.today {
+            background: #1a73e8;
+            color: white;
+        }
+
+        .calendar-day.event {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        /* Notification Badge */
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 18px;
+            height: 18px;
+            background: #ef4444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -240px;
+                top: 0;
+                bottom: 0;
+                z-index: 100;
+                transition: left 0.3s;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .stats-grid,
+            .charts-grid,
+            .kanban-board {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <div class="logo-icon">C</div>
+                CLEARIQ
+            </div>
+            
+            <div class="menu-section">
+                <div class="menu-label">MENU</div>
+                <a href="#" class="menu-item active" data-page="dashboard">
+                    <span class="menu-icon">📊</span>
+                    Dashboard
+                </a>
+                <a href="#" class="menu-item" data-page="employees">
+                    <span class="menu-icon">👥</span>
+                    Employees
+                </a>
+                <a href="#" class="menu-item" data-page="task-board">
+                    <span class="menu-icon">📋</span>
+                    Task Board
+                </a>
+                <a href="#" class="menu-item" data-page="events">
+                    <span class="menu-icon">📅</span>
+                    Events
+                </a>
+                <a href="#" class="menu-item" data-page="project">
+                    <span class="menu-icon">📁</span>
+                    Project
+                </a>
+                <a href="#" class="menu-item" data-page="hr-management">
+                    <span class="menu-icon">🤝</span>
+                    HR Management
+                </a>
+                <a href="#" class="menu-item" data-page="payment">
+                    <span class="menu-icon">💳</span>
+                    Payment
+                </a>
+                <a href="#" class="menu-item" data-page="attendance">
+                    <span class="menu-icon">✓</span>
+                    Attendance
+                </a>
+                <a href="#" class="menu-item" data-page="performance">
+                    <span class="menu-icon">📈</span>
+                    Performance
+                </a>
+                <a href="#" class="menu-item" data-page="lead">
+                    <span class="menu-icon">👤</span>
+                    Lead
+                </a>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-label">ACCOUNT</div>
+                <a href="#" class="menu-item" data-page="profile">
+                    <span class="menu-icon">👤</span>
+                    Profile
+                </a>
+                <a href="#" class="menu-item" data-page="chat">
+                    <span class="menu-icon">💬</span>
+                    Chat
+                </a>
+                <a href="#" class="menu-item" data-page="notification">
+                    <span class="menu-icon">🔔</span>
+                    Notification
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="search-bar">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" placeholder="Search..." id="globalSearch">
+                </div>
+                <div class="user-section">
+                    <button class="icon-btn" onclick="toggleDarkMode()" title="Toggle Dark Mode">
+                        <span id="themeIcon">🌙</span>
+                    </button>
+                    <button class="icon-btn" onclick="showNotifications()" style="position: relative;">
+                        🔔
+                        <span class="notification-badge">5</span>
+                    </button>
+                    <button class="icon-btn" onclick="showQuickAdd()">➕</button>
+                    <div class="user-avatar">J</div>
+                    <span class="user-name">Jhon Lever ▼</span>
+                </div>
+            </div>
+
+            <!-- Dashboard Page -->
+            <div id="dashboard-page" class="page-content active">
+                <h1 class="page-title">Dashboard</h1>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value" id="totalEmployees">0</div>
+                                <div class="stat-label">Total Employees</div>
+                            </div>
+                            <div class="stat-icon" style="background: #dbeafe; color: #1e40af;">👥</div>
+                        </div>
+                        <div class="stat-change positive">+12% from last month</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value" id="presentToday">0</div>
+                                <div class="stat-label">Present Today</div>
+                            </div>
+                            <div class="stat-icon" style="background: #d1fae5; color: #065f46;">✓</div>
+                        </div>
+                        <div class="stat-change positive" id="attendanceText">0%</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">12</div>
+                                <div class="stat-label">On Leave</div>
+                            </div>
+                            <div class="stat-icon" style="background: #fef3c7; color: #92400e;">📅</div>
+                        </div>
+                        <div class="stat-change negative">4.8% of workforce</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">18</div>
+                                <div class="stat-label">Late Check-ins</div>
+                            </div>
+                            <div class="stat-icon" style="background: #fee2e2; color: #991b1b;">⏰</div>
+                        </div>
+                        <div class="stat-change negative">-3% from yesterday</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">45</div>
+                                <div class="stat-label">Active Projects</div>
+                            </div>
+                            <div class="stat-icon" style="background: #ede9fe; color: #6d28d9;">📁</div>
+                        </div>
+                        <div class="stat-change positive">+5 new this week</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">156</div>
+                                <div class="stat-label">Pending Tasks</div>
+                            </div>
+                            <div class="stat-icon" style="background: #fef3c7; color: #92400e;">📋</div>
+                        </div>
+                        <div class="stat-change positive">23 due today</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">$45K</div>
+                                <div class="stat-label">Pending Payments</div>
+                            </div>
+                            <div class="stat-icon" style="background: #fee2e2; color: #991b1b;">💳</div>
+                        </div>
+                        <div class="stat-change negative">12 employees</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value" id="avgPerformance">0</div>
+                            </div>
+                            <div class="stat-icon" style="background: #d1fae5; color: #065f46;">📈</div>
+                        </div>
+                        <div id="performanceChange"></div>
+                    </div>
+                </div>
+
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <div class="stat-change positive">
+                            <span id="attendancePercent">0%</span> attendance
+                            <canvas id="attendanceTrendChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3 class="chart-title">Monthly Performance</h3>
+                        <canvas id="productivityTrendChart"></canvas>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3 class="chart-title">Project Progress</h3>
+                        <div class="chart-placeholder">📊 Chart will be rendered here</div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3 class="chart-title">Department Distribution</h3>
+                        <div class="chart-placeholder">🥧 Chart will be rendered here</div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3 class="table-title">Top Performers This Month</h3>
+                        <button class="btn btn-primary" onclick="goToEmployees()">View All</button>
+                    </div>
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Employee ID</th>
+                                <th>Name</th>
+                                <th>Department</th>
+                                <th>Designation</th>
+                                <th>Performance Score</th>
+                                <th>Projects Completed</th>
+                            </tr>
+
+                        <tbody id="topPerformersBody"></tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <!-- Employees Page -->
+            <div id="employees-page" class="page-content">
+                <h1 class="page-title">Employees</h1>
+                
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3 class="table-title">Employee Directory</h3>
+                        <div class="table-actions">
+                            <button class="btn" onclick="filterEmployees()">🔽 Filter</button>
+                            <button class="btn" onclick="exportEmployees()">📥 Export</button>
+                            <button class="btn btn-primary" onclick="addEmployee()">➕ Add Employee</button>
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Employee ID</th>
+                                <th>Name</th>
+                                <th>Department</th>
+                                <th>Designation</th>
+                                <th>Email</th>
+                                <th>Joining Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employeeTable">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Task Board Page -->
+            <div id="task-board-page" class="page-content">
+                <h1 class="page-title">Task Board</h1>
+                
+                <div style="margin-bottom: 24px;">
+                    <button class="btn btn-primary" onclick="createTask()">➕ Create Task</button>
+                    <button class="btn" onclick="filterTasks()">🔽 Filter</button>
+                </div>
+
+                <div class="kanban-board">
+                    <div class="kanban-column">
+                        <div class="column-header">
+                            <h3 class="column-title">To Do</h3>
+                            <span class="task-count">12</span>
+                        </div>
+                        <div class="task-card">
+                            <div class="task-title">Update landing page design</div>
+                            <div class="task-meta">
+                                <span class="status-badge high">High Priority</span>
+                                <span>Due: Jan 25</span>
+                            </div>
+                        </div>
+                        <div class="task-card">
+                            <div class="task-title">Fix login authentication bug</div>
+                            <div class="task-meta">
+                                <span class="status-badge medium">Medium</span>
+                                <span>Due: Jan 26</span>
+                            </div>
+                        </div>
+                        <div class="task-card">
+                            <div class="task-title">Prepare Q1 presentation</div>
+                            <div class="task-meta">
+                                <span class="status-badge low">Low Priority</span>
+                                <span>Due: Jan 30</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kanban-column">
+                        <div class="column-header">
+                            <h3 class="column-title">In Progress</h3>
+                            <span class="task-count">8</span>
+                        </div>
+                        <div class="task-card">
+                            <div class="task-title">Develop API integration</div>
+                            <div class="task-meta">
+                                <span class="status-badge high">High Priority</span>
+                                <span>Due: Jan 24</span>
+                            </div>
+                        </div>
+                        <div class="task-card">
+                            <div class="task-title">Create marketing campaign</div>
+                            <div class="task-meta">
+                                <span class="status-badge medium">Medium</span>
+                                <span>Due: Jan 27</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kanban-column">
+                        <div class="column-header">
+                            <h3 class="column-title">Completed</h3>
+                            <span class="task-count">45</span>
+                        </div>
+                        <div class="task-card">
+                            <div class="task-title">Database optimization</div>
+                            <div class="task-meta">
+                                <span class="status-badge completed">Completed</span>
+                                <span>Jan 22</span>
+                            </div>
+                        </div>
+                        <div class="task-card">
+                            <div class="task-title">User testing session</div>
+                            <div class="task-meta">
+                                <span class="status-badge completed">Completed</span>
+                                <span>Jan 21</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Events Page -->
+            <div id="events-page" class="page-content">
+                <h1 class="page-title">Events & Calendar</h1>
+                
+                <div class="charts-grid">
+                    <div class="calendar">
+                        <div class="calendar-header">
+                            <h3 class="chart-title">January 2026</h3>
+                            <div>
+                                <button class="btn">◀</button>
+                                <button class="btn">▶</button>
+                            </div>
+                        </div>
+                        <div class="calendar-grid">
+                            <div class="calendar-day" style="font-weight: 600; pointer-events: none;">Sun</div>
+                            <div class="calendar-day" style="font-weight: 600; pointer-events: none;">Mon</div>
+                            <div class="calendar-day" style="font-weight: 600; pointer-events: none;">Tue</div>
+                            <div class="calendar-day" style="font-weight: 600; pointer-events: none;">Wed</div>
+                            <div class="calendar-day" style="font-weight: 600; pointer-events: none;">Thu</div>
+                            <div class="calendar-day" style="font-weight: 600; pointer-events: none;">Fri</div>
+                            <div class="calendar-day" style="font-weight: 600; pointer-events: none;">Sat</div>
+                            <div class="calendar-day">1</div>
+                            <div class="calendar-day">2</div>
+                            <div class="calendar-day">3</div>
+                            <div class="calendar-day">4</div>
+                            <div class="calendar-day event">5</div>
+                            <div class="calendar-day">6</div>
+                            <div class="calendar-day">7</div>
+                            <div class="calendar-day">8</div>
+                            <div class="calendar-day">9</div>
+                            <div class="calendar-day">10</div>
+                            <div class="calendar-day">11</div>
+                            <div class="calendar-day">12</div>
+                            <div class="calendar-day">13</div>
+                            <div class="calendar-day">14</div>
+                            <div class="calendar-day event">15</div>
+                            <div class="calendar-day">16</div>
+                            <div class="calendar-day">17</div>
+                            <div class="calendar-day">18</div>
+                            <div class="calendar-day">19</div>
+                            <div class="calendar-day">20</div>
+                            <div class="calendar-day">21</div>
+                            <div class="calendar-day">22</div>
+                            <div class="calendar-day today">23</div>
+                            <div class="calendar-day">24</div>
+                            <div class="calendar-day">25</div>
+                            <div class="calendar-day event">26</div>
+                            <div class="calendar-day">27</div>
+                            <div class="calendar-day">28</div>
+                            <div class="calendar-day">29</div>
+                            <div class="calendar-day">30</div>
+                            <div class="calendar-day">31</div>
+                        </div>
+                    </div>
+
+                    <div class="table-container" style="margin: 0;">
+                        <div class="table-header">
+                            <h3 class="table-title">Upcoming Events</h3>
+                            <button class="btn btn-primary" onclick="addEvent()">➕ Add Event</button>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Event</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Jan 26, 2026</td>
+                                    <td>Republic Day</td>
+                                    <td><span class="status-badge leave">Holiday</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Jan 28, 2026</td>
+                                    <td>Team Meeting</td>
+                                    <td><span class="status-badge in-progress">Meeting</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Feb 05, 2026</td>
+                                    <td>Sarah's Birthday</td>
+                                    <td><span class="status-badge completed">Birthday</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Page -->
+            <div id="project-page" class="page-content">
+                <h1 class="page-title">Projects</h1>
+                
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3 class="table-title">Active Projects</h3>
+                        <button class="btn btn-primary" onclick="createProject()">➕ Create Project</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Project Name</th>
+                                <th>Client</th>
+                                <th>Team</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Progress</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>E-Commerce Platform</td>
+                                <td>ABC Corp</td>
+                                <td>12 members</td>
+                                <td>Jan 01, 2026</td>
+                                <td>Mar 31, 2026</td>
+                                <td>65%</td>
+                                <td><span class="status-badge in-progress">In Progress</span></td>
+                                <td><button class="btn">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>Mobile App Development</td>
+                                <td>XYZ Ltd</td>
+                                <td>8 members</td>
+                                <td>Dec 15, 2025</td>
+                                <td>Feb 28, 2026</td>
+                                <td>80%</td>
+                                <td><span class="status-badge in-progress">In Progress</span></td>
+                                <td><button class="btn">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>Website Redesign</td>
+                                <td>PQR Inc</td>
+                                <td>5 members</td>
+                                <td>Jan 10, 2026</td>
+                                <td>Jan 31, 2026</td>
+                                <td>45%</td>
+                                <td><span class="status-badge in-progress">In Progress</span></td>
+                                <td><button class="btn">View</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- HR Management Page -->
+            <div id="hr-management-page" class="page-content">
+                <h1 class="page-title">HR Management</h1>
+                
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value" id="pendingLeaveCount">0</div>
+                                <div class="stat-label">Pending Leave Requests</div>
+                            </div>
+                            <div class="stat-icon" style="background:#fef3c7;color:#92400e;">📅</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value" id="approvedLeaveCount">0</div>
+                                <div class="stat-label">Approved Leaves</div>
+                            </div>
+                            <div class="stat-icon" style="background:#d1fae5;color:#065f46;">✔</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value" id="rejectedLeaveCount">0</div>
+                                <div class="stat-label">Rejected Leaves</div>
+                            </div>
+                            <div class="stat-icon" style="background:#fee2e2;color:#991b1b;">✖</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value" id="totalLeaveCount">0</div>
+                                <div class="stat-label">Total Leaves</div>
+                            </div>
+                            <div class="stat-icon" style="background:#dbeafe;color:#1e40af;">📊</div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3 class="table-title">Recent Leave Requests</h3>
+                        <button class="btn btn-primary">View All Requests</button>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Leave Type</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Days</th>
+                                <th>Reason</th>
+                                <th>PDF</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <!-- ✅ JS yaha data inject karega -->
+                        <tbody id="leaveTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Payment Page -->
+            <div id="payment-page" class="page-content">
+                <h1 class="page-title">Payment & Payroll</h1>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">$850K</div>
+                                <div class="stat-label">Total Payroll</div>
+                            </div>
+                            <div class="stat-icon" style="background: #dbeafe; color: #1e40af;">💰</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">$805K</div>
+                                <div class="stat-label">Paid</div>
+                            </div>
+                            <div class="stat-icon" style="background: #d1fae5; color: #065f46;">✓</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">$45K</div>
+                                <div class="stat-label">Pending</div>
+                            </div>
+                            <div class="stat-icon" style="background: #fee2e2; color: #991b1b;">⏳</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">12</div>
+                                <div class="stat-label">Pending Payments</div>
+                            </div>
+                            <div class="stat-icon" style="background: #fef3c7; color: #92400e;">📋</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3 class="table-title">January 2026 Payroll</h3>
+                        <div class="table-actions">
+                            <button class="btn">📥 Export</button>
+                            <button class="btn btn-primary">Generate Payroll</button>
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Employee ID</th>
+                                <th>Name</th>
+                                <th>Department</th>
+                                <th>Basic Salary</th>
+                                <th>Allowances</th>
+                                <th>Deductions</th>
+                                <th>Net Pay</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceTable"></tbody>
+
+                    </table>
+                </div>
+            </div>
+
+            <!-- Attendance Page -->
+            <div id="attendance-page" class="page-content">
+                <h1 class="page-title">Attendance</h1>
+
+                <!-- Employee Profile -->
+                <div class="employee-card">
+                    <div class="employee-info">
+                        <img id="attAvatar"
+                            src="https://i.pravatar.cc/150?img=5"
+                            class="employee-avatar">
+
+                        <div class="employee-details">
+                            <h3 id="attName">-</h3>
+                            <p id="attDesignation">-</p>
+                        </div>
+                    </div>
+
+                    <div class="info-badges">
+                        <div class="info-badge green">
+                            <div class="badge-icon">🆔</div>
+                            <div class="badge-content">
+                                <h4>Employee ID</h4>
+                                <p id="attEmpCode">-</p>
+                            </div>
+                        </div>
+
+                        <div class="info-badge blue">
+                            <div class="badge-icon">📅</div>
+                            <div class="badge-content">
+                                <h4>Joining Date</h4>
+                                <p id="attJoinDate">-</p>
+                            </div>
+                        </div>
+
+                        <div class="info-badge purple">
+                            <div class="badge-icon">🏢</div>
+                            <div class="badge-content">
+                                <h4>Department</h4>
+                                <p id="attDepartment">-</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr);">
+                    <div class="stat-card" style="text-align:center;">
+                        <div class="stat-icon">⏰</div>
+                        <div class="stat-value" id="avgWork">00:00</div>
+                        <div class="stat-label">Average Working Hour</div>
+                    </div>
+
+                    <div class="stat-card" style="text-align:center;">
+                        <div class="stat-icon">🕐</div>
+                        <div class="stat-value" id="todayIn">-</div>
+                        <div class="stat-label">Check-in Time</div>
+                    </div>
+
+                    <div class="stat-card" style="text-align:center;">
+                        <div class="stat-icon">✓</div>
+                        <div class="stat-value" id="todayOut">-</div>
+                        <div class="stat-label">Check-out Time</div>
+                    </div>
+
+                    <div class="stat-card" style="text-align:center;">
+                        <div class="stat-icon">☕</div>
+                        <div class="stat-value" id="avgBreak">00:00</div>
+                        <div class="stat-label">Average Break Time</div>
+                    </div>
+                </div>
+
+                <!-- Attendance Table -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <div></div>
+                        <div class="table-actions">
+                            <button class="btn" onclick="loadAttendanceTable('week')">🔽 Week</button>
+                            <button class="btn" onclick="loadAttendanceTable('month')">📥 Month</button>
+                        </div>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>DATE</th>
+                                <th>CHECK IN</th>
+                                <th>CHECK OUT</th>
+                                <th>STATUS</th>
+                                <th>ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceTable">
+                            <!-- backend data here -->
+                        </tbody>
+                    </table>
+                    <div id="editAttendanceModal" class="modal">
+                    <div class="modal-content">
+                        <h3>Edit Attendance</h3>
+
+                        <label>Status</label>
+                        <select id="editStatus">
+                        <option value="PRESENT">PRESENT</option>
+                        <option value="ABSENT">ABSENT</option>
+                        <option value="LEAVE">LEAVE</option>
+                        </select>
+
+                        <label>Check In</label>
+                        <input type="time" id="editCheckIn">
+
+                        <label>Check Out</label>
+                        <input type="time" id="editCheckOut">
+
+                        <button class="btn" onclick="saveAttendanceEdit()">💾 Save</button>
+                        <button class="btn" onclick="closeModal('editAttendanceModal')">❌ Cancel</button>
+                    </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- Performance Page -->
+            <div id="performance-page" class="page-content">
+                <h1 class="page-title">Performance Management</h1>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">8.5/10</div>
+                                <div class="stat-label">Average Performance Score</div>
+                            </div>
+                            <div class="stat-icon" style="background: #d1fae5; color: #065f46;">⭐</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">45</div>
+                                <div class="stat-label">Reviews Completed</div>
+                            </div>
+                            <div class="stat-icon" style="background: #dbeafe; color: #1e40af;">📝</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">12</div>
+                                <div class="stat-label">Pending Reviews</div>
+                            </div>
+                            <div class="stat-icon" style="background: #fef3c7; color: #92400e;">⏳</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">8</div>
+                                <div class="stat-label">Promotion Recommendations</div>
+                            </div>
+                            <div class="stat-icon" style="background: #ede9fe; color: #6d28d9;">🎯</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3 class="table-title">Employee Performance Overview</h3>
+                        <button class="btn btn-primary">Add Review</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Department</th>
+                                <th>Performance Score</th>
+                                <th>KPI Rating</th>
+                                <th>Last Review</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>John Doe</td>
+                                <td>Engineering</td>
+                                <td>9.5/10</td>
+                                <td>⭐⭐⭐⭐⭐</td>
+                                <td>Dec 2025</td>
+                                <td><span class="status-badge completed">Excellent</span></td>
+                                <td><button class="btn">View Details</button></td>
+                            </tr>
+                            <tr>
+                                <td>Sarah Smith</td>
+                                <td>Marketing</td>
+                                <td>9.2/10</td>
+                                <td>⭐⭐⭐⭐⭐</td>
+                                <td>Dec 2025</td>
+                                <td><span class="status-badge completed">Excellent</span></td>
+                                <td><button class="btn">View Details</button></td>
+                            </tr>
+                            <tr>
+                                <td>Mike Johnson</td>
+                                <td>Sales</td>
+                                <td>7.8/10</td>
+                                <td>⭐⭐⭐⭐</td>
+                                <td>Nov 2025</td>
+                                <td><span class="status-badge in-progress">Good</span></td>
+                                <td><button class="btn">View Details</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Lead Page -->
+            <div id="lead-page" class="page-content">
+                <h1 class="page-title">Lead Management</h1>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">156</div>
+                                <div class="stat-label">Total Leads</div>
+                            </div>
+                            <div class="stat-icon" style="background: #dbeafe; color: #1e40af;">👥</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">45</div>
+                                <div class="stat-label">New Leads</div>
+                            </div>
+                            <div class="stat-icon" style="background: #fef3c7; color: #92400e;">🆕</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">67</div>
+                                <div class="stat-label">Contacted</div>
+                            </div>
+                            <div class="stat-icon" style="background: #ede9fe; color: #6d28d9;">📞</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">44</div>
+                                <div class="stat-label">Converted</div>
+                            </div>
+                            <div class="stat-icon" style="background: #d1fae5; color: #065f46;">✓</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3 class="table-title">Lead Pipeline</h3>
+                        <button class="btn btn-primary" onclick="addLead()">➕ Add Lead</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Lead ID</th>
+                                <th>Name</th>
+                                <th>Company</th>
+                                <th>Source</th>
+                                <th>Assigned To</th>
+                                <th>Status</th>
+                                <th>Last Contact</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>LD001</td>
+                                <td>Robert Wilson</td>
+                                <td>Tech Solutions</td>
+                                <td>Website</td>
+                                <td>John Doe</td>
+                                <td><span class="status-badge pending">New</span></td>
+                                <td>Jan 23, 2026</td>
+                                <td><button class="btn">Follow Up</button></td>
+                            </tr>
+                            <tr>
+                                <td>LD002</td>
+                                <td>Emily Brown</td>
+                                <td>Digital Agency</td>
+                                <td>Referral</td>
+                                <td>Sarah Smith</td>
+                                <td><span class="status-badge in-progress">Contacted</span></td>
+                                <td>Jan 22, 2026</td>
+                                <td><button class="btn">View Notes</button></td>
+                            </tr>
+                            <tr>
+                                <td>LD003</td>
+                                <td>David Lee</td>
+                                <td>Marketing Pro</td>
+                                <td>LinkedIn</td>
+                                <td>Mike Johnson</td>
+                                <td><span class="status-badge completed">Converted</span></td>
+                                <td>Jan 20, 2026</td>
+                                <td><button class="btn">View Client</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Profile Page -->
+            <div id="profile-page" class="page-content">
+                <h1 class="page-title">My Profile</h1>
+                
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3 class="table-title">Personal Information</h3>
+                        <button class="btn btn-primary">Edit Profile</button>
+                    </div>
+                    
+                    <div style="padding: 24px;">
+                        <div style="display: flex; gap: 32px; margin-bottom: 32px;">
+                            <img src="https://i.pravatar.cc/150?img=12" alt="Profile" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+                            <div>
+                                <h2 style="margin-bottom: 8px; color: #1f2937;">Jhon Lever</h2>
+                                <p style="color: #6b7280; margin-bottom: 16px;">Senior HR Manager</p>
+                                <button class="btn">Change Photo</button>
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" class="form-input" value="Jhon Lever" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Employee ID</label>
+                                <input type="text" class="form-input" value="EMP100" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-input" value="jhon.lever@cleariq.com" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Phone</label>
+                                <input type="tel" class="form-input" value="+1 234 567 8900" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Department</label>
+                                <input type="text" class="form-input" value="Human Resources" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Joining Date</label>
+                                <input type="text" class="form-input" value="March 15, 2018" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3 class="table-title">Security Settings</h3>
+                    </div>
+                    <div style="padding: 24px;">
+                        <button class="btn btn-primary">Change Password</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Page -->
+            <div id="chat-page" class="page-content">
+                <h1 class="page-title">Messages</h1>
+                
+                <div style="display: grid; grid-template-columns: 300px 1fr; gap: 24px; height: 600px;">
+                    <div class="table-container" style="margin: 0; overflow-y: auto;">
+                        <div class="table-header">
+                            <h3 class="table-title">Conversations</h3>
+                        </div>
+                        <div style="padding: 12px;">
+                            <div style="padding: 12px; border-radius: 8px; background: #f3f4f6; margin-bottom: 8px; cursor: pointer;">
+                                <div style="font-weight: 600; margin-bottom: 4px;">John Doe</div>
+                                <div style="font-size: 12px; color: #6b7280;">Hey, are you available for a meeting?</div>
+                            </div>
+                            <div style="padding: 12px; border-radius: 8px; margin-bottom: 8px; cursor: pointer;">
+                                <div style="font-weight: 600; margin-bottom: 4px;">Sarah Smith</div>
+                                <div style="font-size: 12px; color: #6b7280;">Thanks for the update!</div>
+                            </div>
+                            <div style="padding: 12px; border-radius: 8px; margin-bottom: 8px; cursor: pointer;">
+                                <div style="font-weight: 600; margin-bottom: 4px;">Engineering Team</div>
+                                <div style="font-size: 12px; color: #6b7280;">Meeting at 3 PM today</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-container" style="margin: 0; display: flex; flex-direction: column;">
+                        <div class="table-header">
+                            <h3 class="table-title">John Doe</h3>
+                        </div>
+                        <div style="flex: 1; padding: 24px; overflow-y: auto; background: #f9fafb;">
+                            <div style="background: white; padding: 12px 16px; border-radius: 12px; margin-bottom: 12px; max-width: 70%;">
+                                Hey, are you available for a meeting?
+                            </div>
+                            <div style="background: #1a73e8; color: white; padding: 12px 16px; border-radius: 12px; margin-bottom: 12px; max-width: 70%; margin-left: auto;">
+                                Yes, what time works for you?
+                            </div>
+                        </div>
+                        <div style="padding: 16px; border-top: 1px solid #e5e7eb;">
+                            <input type="text" placeholder="Type a message..." class="form-input" style="margin-bottom: 0;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification Page -->
+            <div id="notification-page" class="page-content">
+                <h1 class="page-title">Notifications</h1>
+                
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3 class="table-title">All Notifications</h3>
+                        <button class="btn">Mark All as Read</button>
+                    </div>
+                    
+                    <div style="padding: 12px;">
+                        <div style="padding: 16px; border-left: 4px solid #1a73e8; background: #f9fafb; margin-bottom: 12px; border-radius: 4px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <strong>Leave Request Approved</strong>
+                                <span style="font-size: 12px; color: #6b7280;">2 hours ago</span>
+                            </div>
+                            <p style="color: #6b7280; font-size: 14px;">Your leave request for Jan 25-26 has been approved.</p>
+                        </div>
+
+                        <div style="padding: 16px; border-left: 4px solid #10b981; background: #f9fafb; margin-bottom: 12px; border-radius: 4px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <strong>Task Assigned</strong>
+                                <span style="font-size: 12px; color: #6b7280;">5 hours ago</span>
+                            </div>
+                            <p style="color: #6b7280; font-size: 14px;">You have been assigned to "Update landing page design"</p>
+                        </div>
+
+                        <div style="padding: 16px; border-left: 4px solid #f59e0b; background: #f9fafb; margin-bottom: 12px; border-radius: 4px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <strong>Salary Processed</strong>
+                                <span style="font-size: 12px; color: #6b7280;">1 day ago</span>
+                            </div>
+                            <p style="color: #6b7280; font-size: 14px;">Your January salary has been processed. Check your payslip.</p>
+                        </div>
+
+                        <div style="padding: 16px; border-left: 4px solid #8b5cf6; background: #f9fafb; margin-bottom: 12px; border-radius: 4px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <strong>System Announcement</strong>
+                                <span style="font-size: 12px; color: #6b7280;">2 days ago</span>
+                            </div>
+                            <p style="color: #6b7280; font-size: 14px;">System maintenance scheduled for this weekend.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Employee Modal -->
+    <div id="addEmployeeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Add New Employee</h2>
+                <button class="close-btn" onclick="closeModal('addEmployeeModal')">×</button>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Full Name *</label>
+                    <input type="text" id="empName" class="form-input" placeholder="Enter full name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email *</label>
+                    <input type="email"  id="empEmail" class="form-input" placeholder="email@example.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone</label>
+                    <input type="tel" id="empPhone" class="form-input" placeholder="+1 234 567 8900">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Department *</label>
+                    <select id="empDepartment" class="form-select">
+                        <option>Select Department</option>
+                        <option>Engineering</option>
+                        <option>Marketing</option>
+                        <option>Sales</option>
+                        <option>HR</option>
+                        <option>Finance</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Designation *</label>
+                    <input type="text" id="empDesignation" class="form-input" placeholder="e.g. Senior Developer">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Joining Date *</label>
+                    <input type="date" id="empJoiningDate" class="form-input">
+                </div>
+            </div>
+            <div style="margin-top: 24px; display: flex; gap: 12px; justify-content: flex-end;">
+                <button class="btn" onclick="closeModal('addEmployeeModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveEmployee()">Save Employee</button>
+            </div>
+        </div>
+    </div>
+    <script>
+
+
+
+        // Navigation
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const page = this.getAttribute('data-page');
+                
+                // Update active menu item
+                document.querySelectorAll('.menu-item').forEach(mi => mi.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show corresponding page
+                document.querySelectorAll('.page-content').forEach(pc => pc.classList.remove('active'));
+                document.getElementById(page + '-page').classList.add('active');
+            });
+        });
+
+        // Dark Mode Toggle
+        let isDarkMode = false;
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode');
+            document.getElementById('themeIcon').textContent = isDarkMode ? '☀️' : '🌙';
+        }
+
+
+
+
+
+        const TOKEN = localStorage.getItem("token");
+
+        // 🔹 helper
+        function authHeaders() {
+        return {
+            "Authorization": "Bearer " + TOKEN,
+            "Content-Type": "application/json"
+        };
+        }
+
+        // 🔹 Load Dashboard
+        async function loadDashboard() {
+        try {
+
+            // 1️⃣ Total Employees
+            const usersRes = await fetch("/api/admin/users", {
+            headers: authHeaders()
+            });
+            const users = await usersRes.json();
+            const employees = users.filter(u => u.role === "USER");
+            document.getElementById("totalEmployees").innerText = employees.length;
+
+            // 2️⃣ Present Today
+            const presentRes = await fetch("/api/admin/employees/today-summary", {
+            headers: authHeaders()
+            });
+            const presentData = await presentRes.json();
+            document.getElementById("presentToday").innerText = presentData.present;
+
+            // 3️⃣ Attendance + Productivity
+            const summaryRes = await fetch("/api/report/admin/summary", {
+            headers: authHeaders()
+            });
+            const summary = await summaryRes.json();
+
+            document.getElementById("attendancePercent").innerText =
+            summary.averageAttendance.toFixed(1) + "%";
+
+            document.getElementById("avgPerformance").innerText =
+            summary.averageProductivity.toFixed(1);
+
+        } catch (err) {
+            console.error("Dashboard load failed", err);
+        }
+        }
+        
+
+        // 🔹 auto load
+        loadDashboard();
+
+        async function loadAttendanceTrend() {
+            const res = await fetch("/api/report/admin/attendance-trend", {
+                headers: authHeaders()
+            });
+            const data = await res.json();
+
+            new Chart(
+                document.getElementById("attendanceTrendChart"),
+                {
+                    type: "line",
+                    data: {
+                        labels: data.map(d => d.date),
+                        datasets: [{
+                            label: "Present",
+                            data: data.map(d => d.count),
+                            borderColor: "#2563eb",
+                            tension: 0.4
+                        }]
+                    }
+                }
+            );
+        }
+
+        loadAttendanceTrend();
+
+
+        async function loadProductivityTrend() {
+            const res = await fetch("/api/report/admin/productivity-trend", {
+                headers: authHeaders()
+            });
+            const data = await res.json();
+
+            new Chart(
+                document.getElementById("productivityTrendChart"),
+                {
+                    type: "bar",
+                    data: {
+                        labels: data.map(d => "Month " + d.month),
+                        datasets: [{
+                            label: "Avg Productivity",
+                            data: data.map(d => d.score),
+                            backgroundColor: "#22c55e"
+                        }]
+                    }
+                }
+            );
+        }
+
+        loadProductivityTrend();
+
+        async function loadEmployees(dept = "") {
+            let url = "/api/admin/employees";
+            if (dept) url += "?department=" + dept;
+        try {
+            const res = await fetch(url, { headers: authHeaders() });
+
+            if (!res.ok) {
+                console.error("API failed:", res.status);
+                alert("Session expired or unauthorized");
+                return;
+            }
+
+            const data = await res.json();
+            
+            const tbody = document.getElementById("employeeTable");
+            tbody.innerHTML = "";
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8">No employees found</td></tr>`;
+                return;
+            }
+
+            data.forEach(emp => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${emp.employeeCode}</td>
+                    <td>${emp.fullName}</td>
+                    <td>${emp.department}</td>
+                    <td>${emp.designation}</td>
+                    <td>${emp.email}</td>
+                    <td>${emp.joiningDate}</td>
+                    <td>
+                        <span class="status-badge ${emp.active ? 'active' : 'inactive'}">
+                            ${emp.active ? 'Active' : 'Inactive'}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn" onclick="viewEmployee('${emp.employeeCode}')">👁️ View</button>
+                        <button class="btn" onclick="editEmployee('${emp.employeeCode}')">✏️ Edit</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+        } catch (e) {
+            console.error(e);
+            alert("Server error while loading employees");
+        }
+    }
+
+    loadEmployees();
+
+        let CURRENT_EMP_CODE = null;
+
+        // called from Employees page 👁 View
+        async function viewEmployee(code) {
+            CURRENT_EMP_CODE = code;
+            document.querySelector('[data-page="attendance"]').click();
+            await loadAttendanceProfile(code);
+            await loadAttendanceStats(code);
+            await loadAttendanceTable("month");
+        }
+
+        // 🔹 Save Employee (Create / Update)
+
+        async function saveEmployee() {
+
+            const payload = {
+                fullName: document.getElementById("empName").value.trim(),
+                email: document.getElementById("empEmail").value.trim(),
+                phone: document.getElementById("empPhone").value.trim(),
+                department: document.getElementById("empDepartment").value,
+                designation: document.getElementById("empDesignation").value.trim(),
+                joiningDate: document.getElementById("empJoiningDate").value
+            };
+
+            // 🔐 REQUIRED VALIDATION
+            if (!payload.fullName || !payload.email || !payload.department ||
+                !payload.designation || !payload.joiningDate) {
+                alert("Please fill all required fields");
+                return;
+            }
+
+            // ⛔ FUTURE DATE BLOCK
+            const today = new Date().toISOString().split("T")[0];
+            if (payload.joiningDate > today) {
+                alert("Joining date cannot be in the future");
+                return;
+            }
+
+            const method = window.currentEditCode ? "PUT" : "POST";
+            const url = window.currentEditCode
+                ? `/api/admin/employees/${window.currentEditCode}`
+                : "/api/admin/employees";
+
+            const res = await fetch(url, {
+                method,
+                headers: authHeaders(),
+                body: JSON.stringify(payload)
+            });
+
+            if (!res.ok) {
+                const msg = await res.text();
+                alert(msg);
+                return;
+            }
+
+            alert(window.currentEditCode ? "Employee updated" : "Employee created");
+
+            window.currentEditCode = null;
+            closeModal("addEmployeeModal");
+            loadEmployees();
+        }
+
+        // 🔹 Edit Employee
+
+        async function editEmployee(code) {
+            try {
+                window.currentEditCode = code;
+
+                const res = await fetch(`/api/admin/employees/${code}`, {
+                    headers: authHeaders()
+                });
+
+                if (!res.ok) {
+                    alert("Failed to load employee details");
+                    return;
+                }
+
+                const emp = await res.json();
+
+                // 🔥 AUTO FILL FORM
+                document.getElementById("empName").value = emp.fullName;
+                document.getElementById("empEmail").value = emp.email;
+                document.getElementById("empPhone").value = emp.phone ?? "";
+                document.getElementById("empDepartment").value = emp.department;
+                document.getElementById("empDesignation").value = emp.designation;
+                document.getElementById("empJoiningDate").value = emp.joiningDate;
+
+                openModal("addEmployeeModal");
+
+            } catch (e) {
+                console.error(e);
+                alert("Edit load failed");
+            }
+        }
+
+        // Load Attendance Profile
+        async function loadAttendanceProfile(code) {
+            const res = await fetch(`/api/admin/employees/${code}`, { headers: authHeaders() });
+            const e = await res.json();
+
+            document.getElementById("attName").innerText = e.fullName;
+            document.getElementById("attDesignation").innerText = e.designation;
+            document.getElementById("attEmpCode").innerText = e.employeeCode;
+            document.getElementById("attJoinDate").innerText = e.joiningDate;
+            document.getElementById("attDepartment").innerText = e.department;
+        }
+
+
+        async function loadAttendanceStats(code) {
+
+            const res = await fetch(
+                `/api/admin/employees/${code}/stats`,
+                { headers: authHeaders() }
+            );
+
+            if (!res.ok) {
+                console.error("Stats load failed", res.status);
+                return;
+            }
+
+            const s = await res.json();
+
+            document.getElementById("avgWork").innerText =
+                toHHMM(s.avgWorkingMinutes);
+
+            document.getElementById("todayIn").innerText =
+                s.todayCheckIn ?? "-";
+
+            document.getElementById("todayOut").innerText =
+                s.todayCheckOut ?? "-";
+
+            document.getElementById("avgBreak").innerText =
+                toHHMM(s.avgBreakMinutes);
+        }
+
+
+
+        // Load Employee Header
+        async function loadEmployeeHeader(code) {
+
+            const empRes = await fetch(`/api/admin/employees/${code}`, {
+                headers: authHeaders()
+            });
+
+            if (!empRes.ok) {
+                alert("Failed to load employee");
+                return;
+            }
+
+            const emp = await empRes.json();
+
+            document.querySelector("#attendance-page h3").innerText = emp.fullName;
+            document.querySelector(".info-badge.green p").innerText = emp.employeeCode;
+            document.querySelector(".info-badge.blue p").innerText = emp.joiningDate;
+            document.querySelector(".info-badge.purple p").innerText = emp.department;
+        }
+
+
+
+        // TABLE
+        async function loadAttendanceTable(range) {
+            if (!CURRENT_EMP_CODE) return;
+
+            const to = new Date();
+            const from = new Date();
+            range === "week" ? from.setDate(to.getDate() - 7) : from.setMonth(to.getMonth() - 1);
+
+            const url =
+                `/api/admin/employees/${CURRENT_EMP_CODE}/attendance` +
+                `?from=${from.toISOString().split("T")[0]}` +
+                `&to=${to.toISOString().split("T")[0]}`;
+
+            const res = await fetch(url, { headers: authHeaders() });
+
+            if (!res.ok) {
+                console.error("Attendance table failed", res.status);
+                return;
+            }
+
+            const data = await res.json();
+
+            const tbody = document.getElementById("attendanceTable");
+            tbody.innerHTML = "";
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5">No attendance found</td></tr>`;
+                return;
+            }
+
+            data.forEach(a => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${a.date}</td>
+                        <td>${a.checkIn ?? "-"}</td>
+                        <td>${a.checkOut ?? "-"}</td>
+                        <td><span class="status-badge ${a.status.toLowerCase()}">${a.status}</span></td>
+                        <td>
+                            <button class="btn"
+                            onclick="openEditModal('${CURRENT_EMP_CODE}','${a.date}','${a.status}','${a.checkIn}','${a.checkOut}')">
+                            ✏️ Edit
+                            </button>
+                        </td>
+
+                    </tr>
+                `;
+            });
+        }
+
+        let EDIT_EMP_CODE = null;
+        let EDIT_DATE = null;
+
+        function openEditModal(code, date, status, checkIn, checkOut) {
+
+            EDIT_EMP_CODE = code;
+            EDIT_DATE = date;
+
+            document.getElementById("editStatus").value = status;
+            document.getElementById("editCheckIn").value = checkIn ?? "";
+            document.getElementById("editCheckOut").value = checkOut ?? "";
+
+            openModal("editAttendanceModal");
+        }
+
+        async function saveAttendanceEdit() {
+
+            const payload = {
+                status: document.getElementById("editStatus").value,
+                checkIn: document.getElementById("editCheckIn").value || null,
+                checkOut: document.getElementById("editCheckOut").value || null
+            };
+
+            const res = await fetch(
+                `/api/admin/employees/${EDIT_EMP_CODE}/${EDIT_DATE}`,
+                {
+                    method: "PUT",
+                    headers: authHeaders(),
+                    body: JSON.stringify(payload)
+                }
+            );
+
+            if (!res.ok) {
+                alert("Update failed");
+                return;
+            }
+
+            alert("Attendance updated");
+
+            closeModal("editAttendanceModal");
+            loadAttendanceTable("month");
+            loadAttendanceStats(EDIT_EMP_CODE);
+        }
+
+        function toHHMM(min) {
+            if (!min) return "00:00";
+            return `${Math.floor(min / 60)}:${String(min % 60).padStart(2, "0")}`;
+        }
+
+        async function loadLeaves(){
+
+            const res = await fetch(
+                "/api/admin/employees/leave/pending",
+                {headers:authHeaders()}
+            );
+
+            const data = await res.json();
+
+            const tbody=document.getElementById("leaveTable");
+            tbody.innerHTML="";
+
+            data.forEach(l=>{
+
+                const days =
+                (new Date(l.toDate)-new Date(l.fromDate))/(1000*60*60*24)+1;
+
+                tbody.innerHTML+=`
+                <tr>
+                    <td>${l.employeeCode}</td>
+                    <td>${l.leaveType}</td>
+                    <td>${l.fromDate}</td>
+                    <td>${l.toDate}</td>
+                    <td>${days}</td>
+                    <td>${l.reason}</td>
+
+                    <td>
+                        <button class="btn"
+                        onclick="previewPdf('${l.pdfPath}')">
+                        📄 View
+                        </button>
+                    </td>
+
+                    <td><span class="status-badge pending">${l.status}</span></td>
+
+                    <td>
+                        <button class="btn"
+                        onclick="approveLeave(${l.id})">✓</button>
+
+                        <button class="btn"
+                        onclick="rejectLeave(${l.id})">✗</button>
+                    </td>
+                </tr>`;
+            });
+        }
+
+        function previewPdf(path){
+
+            document.getElementById("pdfFrame").src = path;
+            openModal("pdfModal");
+        }
+
+
+
+        async function approveLeave(id){
+
+            await fetch(`/api/admin/employees/leave/${id}/approve`,{
+                method:"POST",
+                headers:authHeaders()
+            });
+
+            alert("Leave Approved");
+            loadLeaves();
+        }
+
+        async function rejectLeave(id){
+
+            await fetch(`/api/admin/employees/leave/${id}/reject`,{
+                method:"POST",
+                headers:authHeaders()
+            });
+
+            alert("Leave Rejected");
+            loadLeaves();
+        }
+
+        // 🔹 LOAD LEAVE STATS (HR Cards)
+        async function loadLeaveStats() {
+
+            try {
+
+                const res = await fetch("/api/leave/stats", {
+                    headers: authHeaders()
+                });
+
+                if (!res.ok) {
+                    console.error("Leave stats API failed", res.status);
+                    return;
+                }
+
+                const data = await res.json();
+
+                document.getElementById("pendingLeaveCount").innerText = data.pending;
+                document.getElementById("approvedLeaveCount").innerText = data.approved;
+                document.getElementById("rejectedLeaveCount").innerText = data.rejected;
+                document.getElementById("totalLeaveCount").innerText = data.total;
+
+            } catch (err) {
+                console.error("Leave stats error", err);
+            }
+        }
+        loadLeaveStats();
+
+
+        // Modal Functions
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Employee Functions
+        function addEmployee() {
+            openModal('addEmployeeModal');
+        }
+
+        function filterEmployees() {
+        const dept = prompt("Enter department");
+        loadEmployees(dept);
+        }
+
+
+        function exportEmployees() {
+        window.location.href = "/api/admin/employees/export";
+        }
+
+
+        // Task Functions
+        function createTask() {
+            alert('Create new task');
+        }
+
+        function filterTasks() {
+            alert('Filter tasks');
+        }
+
+        // Event Functions
+        function addEvent() {
+            alert('Add new event');
+        }
+
+        // Project Functions
+        function createProject() {
+            alert('Create new project');
+        }
+
+        // Lead Functions
+        function addLead() {
+            alert('Add new lead');
+        }
+
+        // Other Functions
+        function showNotifications() {
+            document.querySelector('[data-page="notification"]').click();
+        }
+
+        function showQuickAdd() {
+            alert('Quick add menu');
+        }
+
+        // Global Search
+        document.getElementById('globalSearch').addEventListener('input', function(e) {
+            console.log('Searching for:', e.target.value);
+        });
+
+        // Close modal on outside click
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
+
