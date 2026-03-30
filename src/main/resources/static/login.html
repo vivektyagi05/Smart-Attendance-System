@@ -1,194 +1,1082 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Smart Attendance & Productivity Tracker</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CLEARIQ – Smart Workforce Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy: #0b1021;
+    --deep: #111827;
+    --card: #161f35;
+    --border: rgba(255,255,255,0.07);
+    --accent: #3b82f6;
+    --accent2: #6366f1;
+    --gold: #f59e0b;
+    --success: #10b981;
+    --danger: #ef4444;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --admin-color: #818cf8;
+    --emp-color: #34d399;
+  }
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
 
-        .login-container {
-            background: #ffffff;
-            padding: 40px;
-            border-radius: 10px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+  /* Animated background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(59,130,246,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 90%, rgba(99,102,241,0.10) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 50% 50%, rgba(245,158,11,0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
 
-        .page-title {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+  /* Grid pattern */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
 
-        .page-title h1 {
-            font-size: 22px;
-            color: #333;
-        }
+  .container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: min(920px, 96vw);
+    min-height: 580px;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1px var(--border),
+      0 40px 80px rgba(0,0,0,0.5),
+      0 0 120px rgba(59,130,246,0.08);
+    animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) both;
+  }
 
-        .page-title p {
-            font-size: 14px;
-            color: #666;
-        }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
 
-        .form-group {
-            margin-bottom: 18px;
-        }
+  /* ── LEFT PANEL ── */
+  .brand-panel {
+    background: linear-gradient(145deg, #0f1a35 0%, #0b1630 40%, #071228 100%);
+    padding: 52px 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 6px;
-            font-size: 14px;
-            font-weight: 500;
-        }
+  .brand-panel::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .brand-panel::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: -40px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(99,102,241,0.14) 0%, transparent 70%);
+    pointer-events: none;
+  }
 
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-        }
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: fadeIn 0.6s 0.2s both;
+  }
+  .logo-icon {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(59,130,246,0.35);
+    letter-spacing: -1px;
+  }
+  .logo-text {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    color: #fff;
+    letter-spacing: 2px;
+  }
 
-        .form-group input:focus {
-            outline: none;
-            border-color: #4CAF50;
-        }
+  .brand-mid {
+    animation: fadeIn 0.6s 0.35s both;
+  }
 
-        .login-button {
-            width: 100%;
-            padding: 12px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-        }
+  .brand-tagline {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.25;
+    margin-bottom: 14px;
+  }
+  .brand-tagline span {
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 
-        .login-button:hover {
-            background-color: #45a049;
-        }
+  .brand-desc {
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 260px;
+  }
 
-        .message-area {
-            margin-top: 18px;
-            padding: 12px;
-            border-radius: 6px;
-            text-align: center;
-            font-size: 14px;
-            display: none;
-        }
+  /* Decorative illustration */
+  .brand-illustration {
+    position: relative;
+    margin-top: 28px;
+  }
+  .stat-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .stat-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    backdrop-filter: blur(10px);
+    animation: slideIn 0.5s cubic-bezier(0.22,1,0.36,1) both;
+  }
+  .stat-card:nth-child(1) { animation-delay: 0.5s; }
+  .stat-card:nth-child(2) { animation-delay: 0.65s; }
+  .stat-card:nth-child(3) { animation-delay: 0.8s; }
 
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-            display: block;
-        }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-16px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
 
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-            display: block;
-        }
-    </style>
+  .stat-icon {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .stat-icon.blue  { background: rgba(59,130,246,0.18); }
+  .stat-icon.green { background: rgba(52,211,153,0.18); }
+  .stat-icon.gold  { background: rgba(245,158,11,0.18); }
+
+  .stat-info {
+    flex: 1;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .stat-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .brand-bottom {
+    animation: fadeIn 0.6s 0.9s both;
+  }
+  .version-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+  .version-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 6px var(--success);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ── RIGHT PANEL (FORM) ── */
+  .form-panel {
+    background: var(--card);
+    padding: 48px 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
+    animation: fadeIn 0.6s 0.15s both;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .form-header {
+    margin-bottom: 28px;
+  }
+  .form-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .form-subtitle {
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+
+  /* Role Tabs */
+  .role-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 26px;
+    gap: 4px;
+  }
+  .role-tab {
+    padding: 10px;
+    border-radius: 9px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--muted);
+    transition: all 0.25s;
+  }
+  .role-tab.active[data-role="employee"] {
+    background: rgba(52,211,153,0.12);
+    color: var(--emp-color);
+    box-shadow: 0 2px 10px rgba(52,211,153,0.1);
+  }
+  .role-tab.active[data-role="admin"] {
+    background: rgba(129,140,248,0.14);
+    color: var(--admin-color);
+    box-shadow: 0 2px 10px rgba(129,140,248,0.12);
+  }
+  .role-tab:not(.active):hover {
+    color: var(--text);
+    background: rgba(255,255,255,0.04);
+  }
+  .role-icon { font-size: 16px; }
+
+  /* Form Fields */
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .field label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .input-wrap {
+    position: relative;
+  }
+  .input-icon {
+    position: absolute;
+    left: 14px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 16px;
+    pointer-events: none;
+    transition: color 0.2s;
+  }
+  .field input {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px 12px 42px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .field input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
+  }
+  .field input:focus + .input-icon,
+  .input-wrap:focus-within .input-icon {
+    color: var(--accent);
+  }
+  .field input::placeholder { color: #3d4a60; }
+
+  .pass-toggle {
+    position: absolute;
+    right: 12px; top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 4px;
+    font-size: 14px;
+    transition: color 0.2s;
+    display: flex; align-items: center;
+  }
+  .pass-toggle:hover { color: var(--text); }
+
+  /* Error message */
+  .error-msg {
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.25);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #fca5a5;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .error-msg.show { display: flex; }
+
+  /* Remember + Forgot */
+  .form-extras {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .remember-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  .remember-wrap input[type="checkbox"] {
+    width: 15px; height: 15px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .remember-wrap span {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .forgot-link {
+    font-size: 13px;
+    color: var(--accent);
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .forgot-link:hover { opacity: 0.75; }
+
+  /* Login button */
+  .btn-login {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.15s, box-shadow 0.2s;
+    margin-bottom: 16px;
+    letter-spacing: 0.5px;
+  }
+  .btn-login.emp {
+    background: linear-gradient(135deg, #059669, #10b981);
+    box-shadow: 0 4px 20px rgba(16,185,129,0.3);
+  }
+  .btn-login.admin {
+    background: linear-gradient(135deg, #4f46e5, #818cf8);
+    box-shadow: 0 4px 20px rgba(99,102,241,0.35);
+  }
+  .btn-login:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 28px rgba(59,130,246,0.3);
+  }
+  .btn-login:active { transform: translateY(0); }
+  .btn-login::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.12) 50%, transparent 100%);
+    transform: translateX(-100%);
+    transition: transform 0.5s;
+  }
+  .btn-login:hover::after { transform: translateX(100%); }
+
+  /* Loading state */
+  .btn-login.loading {
+    pointer-events: none;
+    opacity: 0.8;
+  }
+  .btn-login .spinner {
+    display: none;
+    width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+  .btn-login.loading .spinner { display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Attempt counter */
+  .attempt-bar {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 16px;
+    align-items: center;
+  }
+  .attempt-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-right: 2px;
+  }
+  .attempt-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: background 0.3s;
+  }
+  .attempt-dot.used { background: var(--danger); }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .divider-text {
+    font-size: 11.5px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  /* Social buttons */
+  .social-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .btn-social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    opacity: 0.6;
+    position: relative;
+  }
+  .btn-social::after {
+    content: 'Soon';
+    position: absolute;
+    top: -7px; right: -4px;
+    background: var(--gold);
+    color: #000;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 4px;
+    letter-spacing: 0.3px;
+  }
+  .btn-social:hover { opacity: 0.75; border-color: rgba(255,255,255,0.12); }
+
+  /* Success overlay */
+  .success-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(11,16,33,0.92);
+    backdrop-filter: blur(12px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .success-overlay.show { opacity: 1; pointer-events: all; }
+  .success-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 48px 52px;
+    text-align: center;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+    transform: scale(0.85);
+    transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+  }
+  .success-overlay.show .success-card { transform: scale(1); }
+  .success-icon {
+    font-size: 52px;
+    margin-bottom: 16px;
+  }
+  .success-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .success-sub {
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .redirect-bar {
+    margin-top: 20px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--border);
+    overflow: hidden;
+  }
+  .redirect-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width 2s linear;
+  }
+
+  /* Blocked state */
+  .blocked-msg {
+    text-align: center;
+    padding: 16px;
+    display: none;
+  }
+  .blocked-msg.show { display: block; }
+  .blocked-msg p {
+    font-size: 13.5px;
+    color: #fca5a5;
+    margin-bottom: 8px;
+  }
+  .countdown {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--danger);
+  }
+
+  /* Responsive */
+  @media (max-width: 680px) {
+    .container { grid-template-columns: 1fr; }
+    .brand-panel { display: none; }
+    .form-panel { padding: 36px 28px; }
+  }
+</style>
 </head>
-
 <body>
 
-<div class="login-container">
-    <div class="page-title">
-        <h1>Smart Attendance & Productivity Tracker</h1>
-        <p>Login to continue</p>
+<!-- Success Overlay -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-card">
+    <div class="success-icon" id="successIcon">✅</div>
+    <div class="success-title" id="successTitle">Login Successful!</div>
+    <div class="success-sub" id="successSub">Redirecting to your dashboard...</div>
+    <div class="redirect-bar">
+      <div class="redirect-fill" id="redirectFill"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- LEFT: Brand Panel -->
+  <div class="brand-panel">
+    <!-- Logo only -->
+    <div class="logo-wrap">
+      <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="42" height="42" rx="12" fill="url(#logoGrad)"/>
+        <defs>
+          <linearGradient id="logoGrad" x1="0" y1="0" x2="42" y2="42" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#3b82f6"/>
+            <stop offset="100%" stop-color="#6366f1"/>
+          </linearGradient>
+        </defs>
+        <!-- C shape -->
+        <path d="M27 14a9 9 0 1 0 0 14" stroke="#fff" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+        <!-- IQ dot -->
+        <circle cx="29" cy="28" r="2" fill="#f59e0b"/>
+      </svg>
+      <span class="logo-text">CLEARIQ</span>
     </div>
 
-    <form id="loginForm">
-        <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="email" placeholder="Enter email" required>
+    <!-- Central SVG Illustration -->
+    <div class="brand-mid" style="flex:1; display:flex; align-items:center; justify-content:center;">
+      <svg viewBox="0 0 320 340" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:300px;animation:fadeIn 0.8s 0.4s both;">
+
+        <!-- Glow circles -->
+        <circle cx="160" cy="170" r="120" fill="url(#glowBg)" opacity="0.18"/>
+        <circle cx="160" cy="170" r="80"  fill="url(#glowBg2)" opacity="0.12"/>
+        <defs>
+          <radialGradient id="glowBg" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#3b82f6"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+          <radialGradient id="glowBg2" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#6366f1"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+        </defs>
+
+        <!-- Shield base -->
+        <path d="M160 60 L220 85 L220 155 C220 195 190 225 160 238 C130 225 100 195 100 155 L100 85 Z"
+              fill="url(#shieldGrad)" opacity="0.9"/>
+        <defs>
+          <linearGradient id="shieldGrad" x1="100" y1="60" x2="220" y2="238" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#1e3a5f"/>
+            <stop offset="100%" stop-color="#0f2040"/>
+          </linearGradient>
+        </defs>
+        <!-- Shield border -->
+        <path d="M160 60 L220 85 L220 155 C220 195 190 225 160 238 C130 225 100 195 100 155 L100 85 Z"
+              stroke="url(#shieldBorder)" stroke-width="2" fill="none"/>
+        <defs>
+          <linearGradient id="shieldBorder" x1="100" y1="60" x2="220" y2="238" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.8"/>
+            <stop offset="100%" stop-color="#6366f1" stop-opacity="0.4"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Lock body -->
+        <rect x="143" y="148" width="34" height="28" rx="5" fill="#3b82f6" opacity="0.9"/>
+        <!-- Lock shackle -->
+        <path d="M150 148 L150 138 Q160 128 170 138 L170 148" stroke="#6366f1" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <!-- Keyhole -->
+        <circle cx="160" cy="160" r="4" fill="white" opacity="0.9"/>
+        <rect x="158.5" y="160" width="3" height="8" rx="1.5" fill="white" opacity="0.9"/>
+
+        <!-- Orbit ring -->
+        <ellipse cx="160" cy="170" rx="110" ry="38" stroke="#3b82f6" stroke-width="1" stroke-dasharray="6 4" opacity="0.3" transform="rotate(-15 160 170)"/>
+
+        <!-- Floating people nodes -->
+        <!-- Node 1 (left) -->
+        <circle cx="68" cy="130" r="18" fill="#0f2040" stroke="#3b82f6" stroke-width="1.5" opacity="0.95"/>
+        <circle cx="68" cy="124" r="5" fill="#3b82f6"/>
+        <path d="M57 138 Q68 132 79 138" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+
+        <!-- Node 2 (right) -->
+        <circle cx="252" cy="130" r="18" fill="#0f2040" stroke="#6366f1" stroke-width="1.5" opacity="0.95"/>
+        <circle cx="252" cy="124" r="5" fill="#6366f1"/>
+        <path d="M241 138 Q252 132 263 138" stroke="#6366f1" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+
+        <!-- Node 3 (bottom-left) -->
+        <circle cx="90" cy="220" r="16" fill="#0f2040" stroke="#34d399" stroke-width="1.5" opacity="0.95"/>
+        <circle cx="90" cy="214" r="4.5" fill="#34d399"/>
+        <path d="M80 227 Q90 222 100 227" stroke="#34d399" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+
+        <!-- Node 4 (bottom-right) -->
+        <circle cx="230" cy="220" r="16" fill="#0f2040" stroke="#f59e0b" stroke-width="1.5" opacity="0.95"/>
+        <circle cx="230" cy="214" r="4.5" fill="#f59e0b"/>
+        <path d="M220 227 Q230 222 240 227" stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+
+        <!-- Connection lines -->
+        <line x1="86" y1="136" x2="105" y2="148" stroke="#3b82f6" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+        <line x1="234" y1="136" x2="215" y2="148" stroke="#6366f1" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+        <line x1="103" y1="214" x2="120" y2="200" stroke="#34d399" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+        <line x1="217" y1="214" x2="200" y2="200" stroke="#f59e0b" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+
+        <!-- Floating dots -->
+        <circle cx="130" cy="80" r="3" fill="#3b82f6" opacity="0.6">
+          <animate attributeName="cy" values="80;74;80" dur="3s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="195" cy="75" r="2" fill="#6366f1" opacity="0.5">
+          <animate attributeName="cy" values="75;69;75" dur="2.5s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="245" cy="185" r="2.5" fill="#34d399" opacity="0.5">
+          <animate attributeName="cx" values="245;251;245" dur="4s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="75" cy="185" r="2" fill="#f59e0b" opacity="0.5">
+          <animate attributeName="cx" values="75;69;75" dur="3.5s" repeatCount="indefinite"/>
+        </circle>
+
+        <!-- Bottom label -->
+        <text x="160" y="290" text-anchor="middle" font-family="'Syne',sans-serif" font-size="13" font-weight="700" fill="white" letter-spacing="2" opacity="0.9">CLEARIQ</text>
+        <text x="160" y="308" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#64748b" letter-spacing="1">WORKFORCE INTELLIGENCE</text>
+      </svg>
+    </div>
+
+    <!-- No bottom badge -->
+  </div>
+
+  <!-- RIGHT: Form Panel -->
+  <div class="form-panel">
+    <div class="form-header">
+      <div class="form-title">Welcome Back 👋</div>
+      <div class="form-subtitle">Sign in to your CLEARIQ account</div>
+    </div>
+
+    <!-- Role Tabs -->
+    <div class="role-tabs" id="roleTabs">
+      <button class="role-tab active" data-role="employee" onclick="setRole('employee')">
+        <span class="role-icon">👤</span> Employee
+      </button>
+      <button class="role-tab" data-role="admin" onclick="setRole('admin')">
+        <span class="role-icon">🛡️</span> Admin
+      </button>
+    </div>
+
+    <!-- Login Form -->
+    <div id="loginFormSection">
+      <div class="field-group">
+        <div class="field">
+          <label>Email / Username</label>
+          <div class="input-wrap">
+            <span class="input-icon">✉️</span>
+            <input type="email" id="emailInput" placeholder="you@company.com" autocomplete="email"/>
+          </div>
         </div>
 
-        <div class="form-group">
-            <label>Password</label>
-            <input type="password" id="password" placeholder="Enter password" required>
+        <div class="field">
+          <label>Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="passInput" placeholder="Enter your password"/>
+            <button class="pass-toggle" id="passToggle" onclick="togglePass()" type="button">👁️</button>
+          </div>
         </div>
+      </div>
 
-        <button class="login-button" type="submit">Login</button>
-    </form>
+      <div class="error-msg" id="errorMsg">
+        <span>⚠️</span>
+        <span id="errorText">Invalid credentials. Please try again.</span>
+      </div>
 
-    <div id="messageArea" class="message-area"></div>
+      <div class="attempt-bar" id="attemptBar" style="display:none">
+        <span class="attempt-label">Attempts:</span>
+        <div class="attempt-dot" id="d1"></div>
+        <div class="attempt-dot" id="d2"></div>
+        <div class="attempt-dot" id="d3"></div>
+        <div class="attempt-dot" id="d4"></div>
+        <div class="attempt-dot" id="d5"></div>
+      </div>
+
+      <div class="form-extras">
+        <label class="remember-wrap">
+          <input type="checkbox" id="rememberMe"/> 
+          <span>Remember me</span>
+        </label>
+        <a href="#" class="forgot-link" onclick="showForgot(event)">Forgot password?</a>
+      </div>
+
+      <div class="blocked-msg" id="blockedMsg">
+        <p>⛔ Account temporarily locked due to multiple failed attempts.</p>
+        <div>Retry in <span class="countdown" id="countdown">30</span>s</div>
+      </div>
+
+      <button class="btn-login emp" id="loginBtn" onclick="handleLogin()">
+        <span class="spinner"></span>
+        <span id="btnText">Sign In as Employee</span>
+      </button>
+
+      <div class="divider">
+        <div class="divider-line"></div>
+        <span class="divider-text">or continue with</span>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="social-row">
+        <button class="btn-social">
+          <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          Google
+        </button>
+        <button class="btn-social">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#0078D4"><path d="M11.5 2C6.27 2 2 6.27 2 11.5S6.27 21 11.5 21c2.76 0 5.27-1.12 7.09-2.94L11.5 12.93V4.5c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.14-7-7c0-1.68.59-3.22 1.57-4.43L4.2 5.7C2.83 7.18 2 9.24 2 11.5 2 17.3 6.7 22 12.5 22S23 17.3 23 11.5 18.3 1 12.5 1"/></svg>
+          Microsoft
+        </button>
+      </div>
+    </div>
+
+    <!-- Forgot Password View -->
+    <div id="forgotSection" style="display:none">
+      <p style="font-size:13.5px; color:var(--muted); margin-bottom:20px;">Enter your registered email and we'll send a reset link.</p>
+      <div class="field" style="margin-bottom:18px;">
+        <label>Email Address</label>
+        <div class="input-wrap">
+          <span class="input-icon">✉️</span>
+          <input type="email" id="resetEmail" placeholder="you@company.com"/>
+        </div>
+      </div>
+      <button class="btn-login emp" id="resetBtn" onclick="sendReset()" style="margin-bottom:12px;">
+        <span class="spinner"></span>
+        <span id="resetBtnText">Send Reset Link</span>
+      </button>
+      <button onclick="backToLogin()" style="width:100%; background:none; border:none; color:var(--muted); font-size:13px; cursor:pointer; font-family:'DM Sans',sans-serif; padding:6px;">← Back to login</button>
+    </div>
+
+  </div>
 </div>
 
 <script>
-    document.getElementById("loginForm").addEventListener("submit", async function (e) {
-        e.preventDefault();
+  // ── Demo Credentials ──
 
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value.trim();
-        const messageArea = document.getElementById("messageArea");
+  let currentRole = "employee";
+  let attempts = 0;
+  const MAX_ATTEMPTS = 5;
+  let isBlocked = false;
+  let passVisible = false;
 
-        messageArea.style.display = "none";
-        messageArea.className = "message-area";
+  function setRole(role) {
+    currentRole = role;
+    document.querySelectorAll('.role-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.role === role);
+    });
+    const btn = document.getElementById('loginBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    if (role === 'admin') {
+      btn.className = 'btn-login admin';
+      if(resetBtn) resetBtn.className = 'btn-login admin';
+    } else {
+      btn.className = 'btn-login emp';
+      if(resetBtn) resetBtn.className = 'btn-login emp';
+    }
+    document.getElementById('btnText').textContent = `Sign In as ${role === 'admin' ? 'Admin' : 'Employee'}`;
+    hideError();
+  }
+
+  function togglePass() {
+    passVisible = !passVisible;
+    const inp = document.getElementById('passInput');
+    inp.type = passVisible ? 'text' : 'password';
+    document.getElementById('passToggle').textContent = passVisible ? '🙈' : '👁️';
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('errorMsg');
+    document.getElementById('errorText').textContent = msg;
+    el.classList.add('show');
+  }
+  function hideError() {
+    document.getElementById('errorMsg').classList.remove('show');
+  }
+
+  function updateAttemptDots() {
+    if (attempts > 0) {
+      document.getElementById('attemptBar').style.display = 'flex';
+    }
+    for (let i = 1; i <= 5; i++) {
+      document.getElementById('d'+i).classList.toggle('used', i <= attempts);
+    }
+  }
+
+  function blockAccount() {
+    isBlocked = true;
+    document.getElementById('loginBtn').style.display = 'none';
+    document.getElementById('blockedMsg').classList.add('show');
+    let remaining = 30;
+    document.getElementById('countdown').textContent = remaining;
+    const timer = setInterval(() => {
+      remaining--;
+      document.getElementById('countdown').textContent = remaining;
+      if (remaining <= 0) {
+        clearInterval(timer);
+        isBlocked = false;
+        attempts = 0;
+        updateAttemptDots();
+        document.getElementById('loginBtn').style.display = 'block';
+        document.getElementById('blockedMsg').classList.remove('show');
+        document.getElementById('attemptBar').style.display = 'none';
+        hideError();
+      }
+    }, 1000);
+  }
+
+  async function handleLogin() {
+        if (isBlocked) return;
+
+        // 1. Nayi IDs se data uthao
+        const email = document.getElementById('emailInput').value.trim();
+        const password = document.getElementById('passInput').value.trim();
+        hideError();
 
         if (!email || !password) {
-            messageArea.textContent = "❌ Email and Password are required";
-            messageArea.classList.add("error");
+            showError('Please fill in all fields.');
             return;
         }
 
+        const btn = document.getElementById('loginBtn');
+        const btnText = document.getElementById('btnText');
+        
+        // UI Loading state start
+        btn.classList.add('loading');
+        btnText.textContent = 'Verifying...';
+
         try {
-            const response = await fetch("/api/users/login", {
+            // 2. Backend API Call (Wahi endpoint jo purane code mein tha)
+            const response = await fetch("/api/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ email: email, password: password })
             });
 
             const data = await response.json();
 
             if (response.ok) {
-                // Store session data
+                // 3. Session data store karna
                 localStorage.setItem("token", data.token);
                 localStorage.setItem("email", data.email);
                 localStorage.setItem("role", data.role);
                 localStorage.setItem("userId", data.userId);
 
-                messageArea.textContent = "✅ Login Successful";
-                messageArea.classList.add("success");
+                // Role check logic (Backend se jo role aaye)
+                const userRole = data.role === "ADMIN" ? "admin" : "employee";
 
+                // Naye UI ka success animation dikhao
+                showSuccess(data.name || "User", userRole);
+
+                // Redirect logic
                 setTimeout(() => {
                     if (data.role === "ADMIN") {
                         window.location.href = "admin-panel.html";
                     } else {
                         window.location.href = "dashboard.html";
                     }
-                }, 1000);
+                }, 2500); // Overlay animation ke liye thoda extra time
 
             } else {
-                messageArea.textContent = data.message || "❌ Invalid credentials";
-                messageArea.classList.add("error");
+                // Error handling
+                attempts++;
+                updateAttemptDots();
+                showError(data.message || "❌ Invalid credentials");
+                if (attempts >= MAX_ATTEMPTS) blockAccount();
             }
 
         } catch (err) {
-            messageArea.textContent = "❌ Server not reachable";
-            messageArea.classList.add("error");
+            showError("❌ Server not reachable. Please try later.");
+        } finally {
+            // UI reset if not successful
+            btn.classList.remove('loading');
+            btnText.textContent = `Sign In as ${currentRole === 'admin' ? 'Admin' : 'Employee'}`;
         }
-    });
-</script>
+    }
 
+  function showSuccess(name, role) {
+    const overlay = document.getElementById('successOverlay');
+    document.getElementById('successIcon').textContent = role === 'admin' ? '🛡️' : '✅';
+    document.getElementById('successTitle').textContent = `Welcome, ${name}!`;
+    document.getElementById('successSub').textContent = `Redirecting to ${role === 'admin' ? 'Admin' : 'Employee'} Dashboard...`;
+    overlay.classList.add('show');
+    setTimeout(() => {
+      document.getElementById('redirectFill').style.width = '100%';
+    }, 50);
+  }
+
+  function showForgot(e) {
+    e.preventDefault();
+    document.getElementById('loginFormSection').style.display = 'none';
+    document.getElementById('forgotSection').style.display = 'block';
+  }
+
+  function backToLogin() {
+    document.getElementById('loginFormSection').style.display = 'block';
+    document.getElementById('forgotSection').style.display = 'none';
+  }
+
+  function sendReset() {
+    const btn = document.getElementById('resetBtn');
+    btn.classList.add('loading');
+    document.getElementById('resetBtnText').textContent = 'Sending...';
+    setTimeout(() => {
+      btn.classList.remove('loading');
+      document.getElementById('resetBtnText').textContent = '✅ Link Sent!';
+      setTimeout(backToLogin, 2000);
+    }, 1500);
+  }
+
+  // Enter key support
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      if (document.getElementById('forgotSection').style.display === 'block') sendReset();
+      else handleLogin();
+    }
+  });
+</script>
 </body>
 </html>

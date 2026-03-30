@@ -1,5 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+<script>
+    (function() {
+        const token = localStorage.getItem("token");
+        const role = localStorage.getItem("role");
+        const currentPage = window.location.pathname;
+
+        // 1. Check if logged in
+        if (!token) {
+            window.location.href = "login.html";
+            return;
+        }
+
+        // 2. Prevent Cross-Role access
+        if (currentPage.includes("admin-panel.html") && role !== "ADMIN") {
+            alert("Unauthorized! Redirecting to your dashboard.");
+            window.location.href = "dashboard.html";
+        }
+        
+        if (currentPage.includes("dashboard.html") && role !== "USER") {
+            window.location.href = "admin-panel.html";
+        }
+    })();
+</script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -2053,6 +2076,10 @@
 
 
         const TOKEN = localStorage.getItem("token");
+
+        if (!token) {
+            window.location.href = "login.html"; // Agar token nahi hai to wapis login bhej do
+        }
 
         // 🔹 helper
         function authHeaders() {
