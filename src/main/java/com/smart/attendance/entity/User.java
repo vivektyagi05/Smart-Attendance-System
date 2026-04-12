@@ -1,11 +1,13 @@
 package com.smart.attendance.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
 @Getter @Setter
-
+@Table(name = "users")
 public class User {
 
     @Id
@@ -17,6 +19,9 @@ public class User {
     private String email;
     private String password;
     private String role;
+    private String otp;
+    private LocalDateTime otpExpiry;
+
 
     // geeter and setter
 
@@ -66,6 +71,22 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
+
+    public LocalDateTime getOtpExpiry() {
+        return otpExpiry;
+    }
+
+    public void setOtpExpiry(LocalDateTime otpExpiry) {
+        this.otpExpiry = otpExpiry;
     }
 
 

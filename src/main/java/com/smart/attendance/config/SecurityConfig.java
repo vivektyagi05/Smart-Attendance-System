@@ -11,6 +11,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -27,25 +31,47 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // API based apps mein CSRF disable rakhte hain
-            .cors(cors -> cors.configure(http)) // Frontend integration ke liye
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // No cookies, only JWT
+            .csrf(csrf -> csrf.disable())
+            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Pehle bataya gaya CORS Bean add karein
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                // 1. In URLs ko koi bhi access kar sakta hai
-                .requestMatchers("/", "/login.html", "/api/auth/**", "/static/**", "/css/**", "/js/**").permitAll()
+                // 1. Pages ko permitAll() rakhein taaki UI load ho sake
+                .requestMatchers("/", "/login.html", "/dashboard.html", "/css/**", "/js/**").permitAll()
                 
-                // 2. Sirf ADMIN access kar sakega
-                .requestMatchers("/admin-panel.html").hasAuthority("ADMIN")
+                // 2. Auth APIs ko permitAll() karein
+                .requestMatchers("/api/auth/login").permitAll()
+                .requestMatchers("/api/auth/register").permitAll()
+                .requestMatchers("/api/auth/change-password").authenticated()
                 
-                // 3. Sirf USER (Employee) access kar sakega
-                .requestMatchers("/dashboard.html").hasAuthority("USER")
+                // 3. Data APIs ko protect karein (Ye APIs hi JWT mangengi)
+                .requestMatchers("/api/dashboard/**").authenticated() 
+                .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
+                .requestMatchers("/api/profile").authenticated()
+                .requestMatchers("/uploads/**").permitAll()
+                .requestMatchers("/api/documents/**").authenticated()
+                .requestMatchers("/uploads/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/attendance/**").permitAll()
                 
-                // 4. Baki saari APIs login mangengi
                 .anyRequest().authenticated()
             )
-            // Hamara Custom JWT Filter default security se pehle chalega
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+    // SecurityConfig.java ke andar add karein
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        // Apne frontend ka URL yahan allow karein (e.g., Live Server port 5500)
+        configuration.setAllowedOrigins(Arrays.asList("*"));        
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

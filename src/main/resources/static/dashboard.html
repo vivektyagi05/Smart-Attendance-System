@@ -1,18 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+    <script>
+        // dashboard.html ya admin-panel.html ke shuruat mein
+        (function checkAuth() {
+            const token = localStorage.getItem('token');
+            const role = localStorage.getItem('role');
+
+            if (!token) {
+                window.location.href = 'login.html'; // Agar token nahi hai to wapas bhejo
+            }
+
+            // Role-based protection
+            const path = window.location.pathname;
+            if (path.includes('admin-panel.html') && role !== 'ADMIN') {
+                alert("Access Denied!");
+                window.location.href = 'dashboard.html';
+            }
+        })();
+    </script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ClearIQ - Employee Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
         
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #e8eef9 0%, #f5f0ff 100%);
             min-height: 100vh;
-            color: #1f2937;
+            color: #333;
+            padding: 20px;
         }
         
         body.dark-mode {
@@ -696,7 +721,9 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.5);
+             width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -709,10 +736,14 @@
         
         .modal-content {
             background: white;
-            border-radius: 16px;
-            padding: 32px;
+            border-radius: 12px;
+            padding: 16px;
             max-width: 600px;
-            width: 90%;
+            width: 300px;
+            margin: 10% auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
             max-height: 90vh;
             overflow-y: auto;
         }
@@ -939,8 +970,8 @@
         }
         
         .profile-avatar-large {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             background: #f59e0b;
             display: flex;
@@ -949,8 +980,15 @@
             color: white;
             font-size: 48px;
             font-weight: 700;
+            overflow: hidden;
         }
-        
+
+        .profile-avatar-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+                
         .profile-info h2 {
             font-size: 28px;
             margin-bottom: 8px;
@@ -963,39 +1001,60 @@
         
         /* Documents */
         .document-list {
-            display: grid;
+            display: flex;
+            flex-direction: column;
             gap: 16px;
         }
-        
+
         .document-item {
-            background: #f9fafb;
-            padding: 16px;
-            border-radius: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 16px;
+            border-radius: 12px;
+            background: #f9fafb;
+            transition: 0.3s;
+            border: 1px solid #e5e7eb; /* Optional: adds definition */
         }
-        
-        .dark-mode .document-item {
-            background: #374151;
+
+        .document-item:hover {
+            background: #eef2ff;
         }
-        
+
         .document-info {
             display: flex;
-            gap: 16px;
+            gap: 12px;
             align-items: center;
+            flex: 1; /* This pushes the actions to the right */
         }
-        
+
         .document-icon {
-            width: 48px;
-            height: 48px;
-            background: #1a73e8;
+            width: 40px;
+            height: 40px;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: #3b82f6;
             color: white;
-            font-size: 24px;
+            font-size: 20px;
+        }
+
+        .doc-status {
+            font-size: 12px;
+            color: #6b7280;
+            margin: 0;
+        }
+
+        .doc-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .dark-mode .document-item {
+            background: #374151;
+            border-color: #4b5563;
         }
         
         /* Responsive */
@@ -1116,8 +1175,68 @@
         .dark-mode .dropdown-divider {
             background: #374151;
         }
+
+        /* Attendance Styles */
+
+                /* 🔥 Modern Card */
+        .modern-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        /* ⏰ Big Time */
+        .big-time {
+            font-size: 48px;
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        /* 🎯 Buttons */
+        .modern-buttons button {
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .modern-buttons button:hover {
+            transform: scale(1.05);
+        }
+
+        /* 📊 Stat Cards */
+        .modern-stat {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 20px;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .modern-stat:hover {
+            transform: translateY(-5px);
+        }
+
+        /* 📦 Summary */
+        .summary-box {
+            text-align: center;
+            padding: 10px;
+        }
+
+        /* 📋 Table */
+        .modern-table th {
+            background: #2563eb;
+            color: white;
+        }
+
+        .modern-table tr:hover {
+            background: #f1f5f9;
+        }
+
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
 </head>
 <body>
     <div class="container">
@@ -1220,7 +1339,7 @@
                                 <span>Toggle Dark Mode</span>
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" onclick="logout(); event.stopPropagation();" style="color: #ef4444;">
+                            <a class="dropdown-item" href="javascript:void(0);" onclick="logout(); event.stopPropagation();" style="color: #ef4444;">
                                 <span>🚪</span>
                                 <span>Logout</span>
                             </a>
@@ -1417,16 +1536,19 @@
                         <div class="table-header">
                             <h3 class="table-title">Personal Information</h3>
                             <button class="btn btn-primary" onclick="editProfile()">✏️ Edit Profile</button>
+                            <button class="btn btn-success" id="saveBtn" onclick="saveProfile()" style="display:none;">💾 Save</button>
+                            <button class="btn btn-outline" id="cancelBtn" onclick="cancelEdit()" style="display:none;">❌ Cancel</button>
                         </div>
                         
                         <div style="padding: 24px;">
                             <div class="profile-header">
-                                <div class="profile-avatar-large">J</div>
+                                <div class="profile-avatar-large" id="avatar">V</div>
+                                <input type="file" id="photoInput" accept="image/*" hidden>
                                 <div class="profile-info">
-                                    <h2>John Doe</h2>
-                                    <p style="font-size: 16px; margin-bottom: 8px;">Senior Software Developer</p>
-                                    <p style="margin-bottom: 8px;">📧 <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c1abaea9afefa5aea481a2ada4a0b3a8b0efa2aeac">[email&#160;protected]</a></p>
-                                    <p>📱 +1 234 567 8900</p>
+                                    <h2 id="profileName"> Loading...</h2>
+                                    <p style="font-size: 16px; margin-bottom: 8px;" id="profileRole"> </p>
+                                    <p style="margin-bottom: 8px;" id="profileEmail">Loading...</p>
+                                    <p>📱 <span id="profilePhone">Loading...</span></p>
                                     <button class="btn btn-outline" style="margin-top: 16px;" onclick="changePhoto()">📷 Change Photo</button>
                                 </div>
                             </div>
@@ -1434,124 +1556,143 @@
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label class="form-label">Employee ID</label>
-                                    <input type="text" class="form-input" value="EMP001" readonly>
+                                    <input type="text" class="form-input" id="employeeId" value="EMP001" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Full Name</label>
-                                    <input type="text" class="form-input" value="John Doe">
+                                    <input type="text" class="form-input" id="fullName"  readonly>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Email</label>
-                                    <input type="email" class="form-input" value="john.doe@cleariq.com">
+                                    <input type="email" class="form-input" id="email" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Phone</label>
-                                    <input type="tel" class="form-input" value="+1 234 567 8900">
+                                    <input type="tel" class="form-input" id="phone" value="+1 234 567 8900" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Department</label>
-                                    <input type="text" class="form-input" value="Engineering" readonly>
+                                    <input type="text" class="form-input" id="department" value="Engineering" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Designation</label>
-                                    <input type="text" class="form-input" value="Senior Software Developer" readonly>
+                                    <input type="text" class="form-input" id="designation" value="Senior Software Developer" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Joining Date</label>
-                                    <input type="text" class="form-input" value="January 15, 2020" readonly>
+                                    <input type="text" class="form-input" id="joiningDate" value="January 15, 2020" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Employment Status</label>
-                                    <input type="text" class="form-input" value="Active" readonly>
+                                    <input type="text" class="form-input" id="employmentStatus" value="Active" readonly>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Documents -->
                     <div class="table-container">
-                        <div class="table-header">
-                            <h3 class="table-title">Documents</h3>
-                            <button class="btn btn-primary" onclick="uploadDocument()">📤 Upload Document</button>
-                        </div>
                         <div style="padding: 24px;">
                             <div class="document-list">
-                                <div class="document-item">
+
+                                <!-- Resume -->
+                                <div class="document-item" id="resumeDoc">
                                     <div class="document-info">
                                         <div class="document-icon">📄</div>
                                         <div>
-                                            <h4 style="font-weight: 600; margin-bottom: 4px;">Resume.pdf</h4>
-                                            <p style="font-size: 12px; color: #6b7280;">Uploaded on Jan 15, 2020 • 245 KB</p>
+                                            <h4>Resume</h4>
+                                            <p class="doc-status" id="resumeStatus">Not uploaded</p>
                                         </div>
                                     </div>
-                                    <div style="display: flex; gap: 8px;">
-                                        <button class="btn btn-outline">👁️ View</button>
-                                        <button class="btn btn-outline">📥 Download</button>
-                                        <button class="btn btn-outline">🗑️ Delete</button>
+                                    <div class="doc-actions" id="resumeActions">
+                                        <button class="btn btn-primary" onclick="uploadDocument('RESUME')">📤 Upload</button>
                                     </div>
                                 </div>
-                                
-                                <div class="document-item">
+
+                                <!-- ID Proof -->
+                                <div class="document-item" id="idDoc">
                                     <div class="document-info">
-                                        <div class="document-icon" style="background: #10b981;">🪪</div>
+                                        <div class="document-icon" style="background:#10b981;">🪪</div>
                                         <div>
-                                            <h4 style="font-weight: 600; margin-bottom: 4px;">ID Proof - Passport.pdf</h4>
-                                            <p style="font-size: 12px; color: #6b7280;">Uploaded on Jan 15, 2020 • 1.2 MB</p>
+                                            <h4>ID Proof (Passport)</h4>
+                                            <p class="doc-status" id="idStatus">Not uploaded</p>
                                         </div>
                                     </div>
-                                    <div style="display: flex; gap: 8px;">
-                                        <button class="btn btn-outline">👁️ View</button>
-                                        <button class="btn btn-outline">📥 Download</button>
-                                        <button class="btn btn-outline">🗑️ Delete</button>
+                                    <div class="doc-actions" id="idActions">
+                                        <button class="btn btn-primary" onclick="uploadDocument('ID_PROOF')">📤 Upload</button>
                                     </div>
                                 </div>
-                                
-                                <div class="document-item">
+
+                                <!-- Offer Letter -->
+                                <div class="document-item" id="offerDoc">
                                     <div class="document-info">
-                                        <div class="document-icon" style="background: #f59e0b;">📜</div>
+                                        <div class="document-icon" style="background:#f59e0b;">📜</div>
                                         <div>
-                                            <h4 style="font-weight: 600; margin-bottom: 4px;">Offer Letter.pdf</h4>
-                                            <p style="font-size: 12px; color: #6b7280;">Uploaded on Jan 15, 2020 • 890 KB • Read Only</p>
+                                            <h4>Offer Letter</h4>
+                                            <p class="doc-status" id="offerStatus">Not uploaded</p>
                                         </div>
                                     </div>
-                                    <div style="display: flex; gap: 8px;">
-                                        <button class="btn btn-outline">👁️ View</button>
-                                        <button class="btn btn-outline">📥 Download</button>
+                                    <div class="doc-actions" id="offerActions">
+                                        <button class="btn btn-primary" onclick="uploadDocument('OFFER_LETTER')">📤 Upload</button>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
-                    </div>
+
+                            <input type="file" id="docInput" accept="application/pdf" hidden>
+                        </div>
                     
                     <!-- Security -->
                     <div class="table-container">
                         <div class="table-header">
-                            <h3 class="table-title">Security & Privacy</h3>
+                            <h3 class="table-title">🔐 Security & Privacy</h3>
                         </div>
+
                         <div style="padding: 24px;">
+
+                            <!-- 🔒 Password Section -->
                             <div style="margin-bottom: 24px;">
                                 <h4 style="margin-bottom: 8px; font-weight: 600;">Password</h4>
-                                <p style="color: #6b7280; margin-bottom: 16px; font-size: 14px;">Last changed: 30 days ago</p>
-                                <button class="btn btn-primary" onclick="changePassword()">🔒 Change Password</button>
+                                <p style="color: #6b7280; margin-bottom: 16px; font-size: 14px;">
+                                    Change your account password securely
+                                </p>
+
+                                <!-- 🔥 THIS BUTTON -->
+                                <button class="btn btn-primary" onclick="changePassword()">
+                                    🔒 Change Password
+                                </button>
                             </div>
-                            
+
+                            <!-- 🕒 Last Login -->
                             <div style="margin-bottom: 24px;">
                                 <h4 style="margin-bottom: 8px; font-weight: 600;">Last Login</h4>
-                                <p style="color: #6b7280; font-size: 14px;">Jan 23, 2026 at 09:15 AM from Chrome on Windows</p>
+                                <p id="lastLoginText" style="color: #6b7280; font-size: 14px;">
+                                    Loading...
+                                </p>
                             </div>
-                            
-                            <div>
+
+                            <!-- 📊 Activity Log -->
+                            <div style="margin-bottom: 24px;">
                                 <h4 style="margin-bottom: 8px; font-weight: 600;">Activity Log</h4>
-                                <button class="btn btn-outline" onclick="viewActivityLog()">📋 View Activity History</button>
+                                <button class="btn btn-outline" onclick="viewActivityLog()">
+                                    📋 View Activity History
+                                </button>
                             </div>
-                            
+
                             <div class="divider"></div>
-                            
+
+                            <!-- 🚪 Logout -->
                             <div>
                                 <h4 style="margin-bottom: 8px; font-weight: 600;">Logout</h4>
-                                <p style="color: #6b7280; font-size: 14px; margin-bottom: 16px;">End your current session securely</p>
-                                <button class="btn btn-danger" onclick="logout()">🚪 Logout from Account</button>
+                                <p style="color: #6b7280; font-size: 14px; margin-bottom: 16px;">
+                                    End your current session securely
+                                </p>
+
+                                <button class="btn btn-danger" onclick="logout()">
+                                    🚪 Logout from Account
+                                </button>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -1561,12 +1702,12 @@
                     <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 32px;">✓ My Attendance</h1>
                     
                     <!-- Check-in Card -->
-                    <div class="checkin-card">
-                        <div class="time-display" id="currentTime">13:00:45</div>
+                    <div class="checkin-card modern-card">
+                        <div class="time-display big-time" id="currentTime">13:00:45</div>
                         <p style="color: #6b7280; margin-bottom: 8px;">Current Time</p>
-                        <p style="font-size: 14px; color: #10b981; font-weight: 600;">✓ Checked In at 09:15 AM</p>
+                        <p id="checkInStatus"></p>
                         
-                        <div class="checkin-buttons">
+                        <div class="checkin-buttons modern-buttons">
                             <button class="btn btn-success btn-large" id="checkInBtn" onclick="checkIn()" disabled>
                                 ✓ Check In
                             </button>
@@ -1578,24 +1719,24 @@
                     
                     <!-- Today's Stats -->
                     <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr);">
-                        <div class="stat-card" style="text-align: center;">
+                        <div class="stat-card modern-stat">
                             <div class="stat-icon" style="background: #d1fae5; margin: 0 auto 12px;">🕐</div>
-                            <div class="stat-value">09:15 AM</div>
+                            <div class="stat-value" id="checkInTime">--:--</div>
                             <div class="stat-label">Check-in Time</div>
                         </div>
-                        <div class="stat-card" style="text-align: center;">
+                        <div class="stat-card modern-stat">
                             <div class="stat-icon" style="background: #fee2e2; margin: 0 auto 12px;">🕐</div>
-                            <div class="stat-value">--:--</div>
+                            <div class="stat-value" id="checkOutTime">--:--</div>
                             <div class="stat-label">Check-out Time</div>
                         </div>
                         <div class="stat-card" style="text-align: center;">
                             <div class="stat-icon" style="background: #dbeafe; margin: 0 auto 12px;">⏰</div>
-                            <div class="stat-value">3h 45m</div>
+                            <div class="stat-value" id="workingHours">0h 0m</div>
                             <div class="stat-label">Working Hours</div>
                         </div>
                         <div class="stat-card" style="text-align: center;">
                             <div class="stat-icon" style="background: #fef3c7; margin: 0 auto 12px;">☕</div>
-                            <div class="stat-value">0h 30m</div>
+                            <div class="stat-value" id="breakTime">0h 30m</div>
                             <div class="stat-label">Break Time</div>
                         </div>
                     </div>
@@ -1611,25 +1752,29 @@
                         </div>
                         <div style="padding: 24px;">
                             <div class="stats-grid" style="grid-template-columns: repeat(5, 1fr);">
-                                <div style="text-align: center;">
-                                    <div style="font-size: 32px; font-weight: 700; color: #10b981;">18</div>
-                                    <div style="font-size: 14px; color: #6b7280;">Present</div>
+                                <div class="summary-box">
+                                    <div id="presentCount" style="font-size: 32px; font-weight: 700; color: #10b981;">0</div>
+                                    <div>Present</div>
                                 </div>
-                                <div style="text-align: center;">
-                                    <div style="font-size: 32px; font-weight: 700; color: #ef4444;">1</div>
-                                    <div style="font-size: 14px; color: #6b7280;">Absent</div>
+
+                                <div class="summary-box">
+                                    <div id="absentCount" style="font-size: 32px; font-weight: 700; color: #ef4444;">0</div>
+                                    <div>Absent</div>
                                 </div>
-                                <div style="text-align: center;">
-                                    <div style="font-size: 32px; font-weight: 700; color: #f59e0b;">2</div>
-                                    <div style="font-size: 14px; color: #6b7280;">Leave</div>
+
+                                <div class="summary-box">
+                                    <div id="leaveCount" style="font-size: 32px; font-weight: 700; color: #f59e0b;">0</div>
+                                    <div>Leave</div>
                                 </div>
-                                <div style="text-align: center;">
-                                    <div style="font-size: 32px; font-weight: 700; color: #3b82f6;">1</div>
-                                    <div style="font-size: 14px; color: #6b7280;">Half Day</div>
+
+                                <div class="summary-box">
+                                    <div id="halfDayCount" style="font-size: 32px; font-weight: 700; color: #3b82f6;">0</div>
+                                    <div>Half Day</div>
                                 </div>
-                                <div style="text-align: center;">
-                                    <div style="font-size: 32px; font-weight: 700; color: #1a73e8;">94.5%</div>
-                                    <div style="font-size: 14px; color: #6b7280;">Attendance Rate</div>
+
+                                <div class="summary-box">
+                                    <div id="attendanceRate" style="font-size: 32px; font-weight: 700; color: #1a73e8;">0%</div>
+                                    <div>Attendance Rate</div>
                                 </div>
                             </div>
                         </div>
@@ -1639,9 +1784,10 @@
                     <div class="table-container">
                         <div class="table-header">
                             <h3 class="table-title">Attendance History</h3>
-                            <button class="btn btn-outline">🔽 Filter by Date</button>
+                            <input type="date" id="filterDate" class="btn btn-outline" onchange="filterByDate()">
+                            <button class="btn btn-outline" onclick="resetFilter()">Reset</button>
                         </div>
-                        <table>
+                        <table class="modern-table">
                             <thead>
                                 <tr>
                                     <th>Date</th>
@@ -1652,7 +1798,7 @@
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="attendanceTableBody">
                                 <tr>
                                     <td>Jan 23, 2026</td>
                                     <td>09:15 AM</td>
@@ -3128,20 +3274,725 @@
         </div>
     </div>
     
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            alert("Session expired, please login again");
+            window.location.href = "login.html";
+        } else {
+            // Aapka baaki saara code yahan aayega
+            console.log("Token mil gaya, welcome!");
+        }
+
+        //  # =====-------------======Profile Section=======--------------===== #
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            loadProfile();     // 🔥 profile data
+            loadDocuments();   // 🔥 documents section
+        });
+
+        function editProfile() {
+
+            const editableFields = ["fullName", "phone", "department", "designation"];
+
+            editableFields.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.removeAttribute("readonly");
+            });
+
+            document.getElementById("saveBtn").style.display = "inline-block";
+            document.getElementById("cancelBtn").style.display = "inline-block";
+        }
+
+        function cancelEdit() {
+            loadProfile(); // reload old data
+
+            const fields = ["fullName", "phone", "department", "designation"];
+
+            fields.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.setAttribute("readonly", true);
+            });
+
+            document.getElementById("saveBtn").style.display = "none";
+            document.getElementById("cancelBtn").style.display = "none";
+        }
+
+        function getVal(id) {
+            const el = document.getElementById(id);
+            return el ? el.value : "";
+        }
+
+        
+        function saveProfile() {
+
+            const data = {
+
+                fullName: getVal("fullName"),
+                phone: getVal("phone"),
+                department: getVal("department"),
+                designation: getVal("designation"),
+                
+            };
+
+            fetch("http://localhost:8080/api/profile", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("token")
+                },
+                body: JSON.stringify(data)
+            })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error("HTTP " + res.status);
+                }
+                return res.text();
+            })
+            .then(response => {
+
+                alert("Profile Updated Successfully ✅");
+                cancelEdit();
+                // Lock fields again
+                document.getElementById("fullName").setAttribute("readonly", true);
+                document.getElementById("phone").setAttribute("readonly", true);
+                document.getElementById("department").setAttribute("readonly", true);
+                document.getElementById("designation").setAttribute("readonly", true);
+                document.getElementById("joiningDate").setAttribute("readonly", true);
+                document.getElementById("employeeId").setAttribute("readonly", true);
+                document.getElementById("employeeStatus").setAttribute("readonly", true);
+                document.getElementById("email").setAttribute("readonly", true);
+
+
+
+                document.getElementById("saveBtn").style.display = "none";
+
+                // Reload profile
+                loadProfile();
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Update Failed ❌");
+            });
+        }
+
+        
+
+        function changePhoto() {
+            document.getElementById("photoInput").click();
+        }
+
+        document.getElementById("photoInput").addEventListener("change", function () {
+
+            const file = this.files[0];
+
+            // ❌ No file selected
+            if (!file) return;
+
+            // ❌ Only image allowed
+            if (!file.type.startsWith("image/")) {
+                alert("Only image allowed ❌");
+                return;
+            }
+
+            uploadPhoto(file);
+        });
+
+        function uploadPhoto(file) {
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            fetch("http://localhost:8080/api/profile/upload-photo", {
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("token")
+                },
+                body: formData
+            })
+            .then(res => {
+                if (!res.ok) throw new Error("Upload failed");
+                return res.json();
+            })
+            .then(data => {
+
+                const avatar = document.getElementById("avatar");
+
+
+                avatar.innerHTML =
+                `<img src="http://localhost:8080${data.imageUrl}"
+                style="width:100%; height:100%; object-fit:cover; border-radius:50%">`;
+
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Upload failed ❌");
+            });
+        }
+
+        // Document upload  
+
+        let currentDocType = null;
+
+        function uploadDocument(type) {
+            currentDocType = type;
+            document.getElementById("docInput").click();
+        }
+
+        document.getElementById("docInput").addEventListener("change", function () {
+
+            const file = this.files[0];
+
+            if (!file) return;
+
+            if (file.type !== "application/pdf") {
+                alert("Only PDF allowed ❌");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("type", currentDocType);
+
+            fetch("http://localhost:8080/api/documents/upload", {
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("token")
+                },
+                body: formData
+            })
+            .then(res => {
+                if (!res.ok) throw new Error("Upload failed");
+                return res.text();
+            })
+            .then(() => {
+                alert("Uploaded ✅");
+                loadDocuments();
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Upload failed ❌");
+            });
+
+        });
+
+        function loadDocuments() {
+
+            fetch("http://localhost:8080/api/documents", {
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("token")
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+
+                // Reset UI
+                resetUI();
+
+                data.forEach(doc => {
+
+                    let type = doc.type;
+                    let fileName = doc.fileName;
+
+                    let statusId, actionId;
+
+                    if (type === "RESUME") {
+                        statusId = "resumeStatus";
+                        actionId = "resumeActions";
+                    }
+                    if (type === "ID_PROOF") {
+                        statusId = "idStatus";
+                        actionId = "idActions";
+                    }
+                    if (type === "OFFER_LETTER") {
+                        statusId = "offerStatus";
+                        actionId = "offerActions";
+                    }
+
+                    document.getElementById(statusId).innerText = "Uploaded ✅";
+
+                    document.getElementById(actionId).innerHTML = `
+                        <a class="btn btn-outline" href="http://localhost:8080/uploads/docs/${fileName}" target="_blank">👁️ View</a>
+                        <a class="btn btn-outline" href="http://localhost:8080/uploads/docs/${fileName}" download>📥 Download</a>
+                        ${type !== "OFFER_LETTER" ? `<button class="btn btn-outline" onclick="deleteDoc('${type}')">🗑️ Delete</button>` : ""}
+                    `;
+                });
+
+            });
+        }
+
+        function deleteDoc(type) {
+
+            fetch(`http://localhost:8080/api/documents/${type}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("token")
+                }
+            })
+            .then(res => res.text())
+            .then(() => {
+                alert("Deleted ✅");
+                loadDocuments();
+            });
+        }
+
+
+
+        function resetUI() {
+
+            document.getElementById("resumeStatus").innerText = "Not uploaded";
+            document.getElementById("idStatus").innerText = "Not uploaded";
+            document.getElementById("offerStatus").innerText = "Not uploaded";
+
+            document.getElementById("resumeActions").innerHTML =
+                `<button class="btn btn-primary" onclick="uploadDocument('RESUME')">📤 Upload</button>`;
+
+            document.getElementById("idActions").innerHTML =
+                `<button class="btn btn-primary" onclick="uploadDocument('ID_PROOF')">📤 Upload</button>`;
+
+            document.getElementById("offerActions").innerHTML =
+                `<button class="btn btn-primary" onclick="uploadDocument('OFFER_LETTER')">📤 Upload</button>`;
+        }
+
+        function viewActivityLog() {
+
+            fetch("http://localhost:8080/api/logs", {
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("token")
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+
+                let output = "";
+
+                data.forEach(log => {
+                    output += `<p>🕒 ${log.time} → ${log.action}</p>`;
+                });
+
+                alert(output); // later modal bana denge
+            });
+        }
+
+
+                
+        function changePassword() {
+            document.getElementById("passwordModal").style.display = "block";
+        }
+
+        function closePasswordModal() {
+            document.getElementById("passwordModal").style.display = "none";
+        }
+
+        function submitPassword() {
+
+            const current = document.getElementById("currentPass").value;
+            const newPass = document.getElementById("newPass").value;
+            const confirm = document.getElementById("confirmPass").value;
+
+            if (!current || !newPass || !confirm) {
+                alert("Fill all fields ❌");
+                return;
+            }
+
+            if (newPass !== confirm) {
+                alert("Passwords do not match ❌");
+                return;
+            }
+
+            fetch("http://localhost:8080/api/auth/change-password", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("token")
+                },
+                body: JSON.stringify({
+                    currentPassword: current,
+                    newPassword: newPass
+                })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error("Failed");
+                return res.text();
+            })
+            .then(msg => {
+                alert(msg);
+                
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Wrong current password ❌");
+            });
+        }
+        
+
+        function loadProfile() {
+
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            fetch("http://localhost:8080/api/profile", {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            })
+            .then(res => {
+                if (!res.ok) throw new Error("HTTP " + res.status);
+                return res.json();
+            })
+            .then(data => {
+
+                console.log("Profile Data:", data);
+
+                // 🔹 Top Section
+                document.getElementById("profileName").innerText = data.fullName || "N/A";
+                document.getElementById("profileRole").innerText = data.designation || "N/A";
+                document.getElementById("profileEmail").innerText = data.email || "N/A";
+                document.getElementById("profilePhone").innerText = data.phone || "N/A";
+
+                // 🔹 Form Fields
+                document.getElementById("fullName").value = data.fullName || "";
+                document.getElementById("email").value = data.email || "";
+                document.getElementById("phone").value = data.phone || "";
+                document.getElementById("department").value = data.department || "";
+                document.getElementById("designation").value = data.designation || "";
+                document.getElementById("joiningDate").value = data.joiningDate || "";
+                document.getElementById("employeeId").value = data.employeeId || "";
+
+                // 🔹 Buttons hide
+                document.getElementById("saveBtn").style.display = "none";
+                document.getElementById("cancelBtn").style.display = "none";
+
+                // 🔹 Avatar
+                const avatar = document.getElementById("avatar");
+
+                if (data.profileImage) {
+                    avatar.innerHTML =
+                        `<img src="http://localhost:8080/uploads/profile/${data.profileImage}"
+                        style="width:100%; height:100%; object-fit:cover; border-radius:50%">`;
+                } else {
+                    avatar.innerText = (data.fullName || "U").charAt(0).toUpperCase();
+                }
+
+            })
+            .catch(err => {
+                console.error("Profile Error:", err);
+            });
+        }
+
+
+
+    
+    //  =======------------Profile Section Ends Here------------======== #
+
+
+
+
+    // For all pages logout function
+
+    
+            async function logout() {
+
+            if (!confirm("Are you sure you want to logout?")) {
+                return; // ❌ cancel
+            }
+
+            try {
+                // 🔥 Backend ko inform karo
+                await fetch("http://localhost:8080/api/logs/logout", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": "Bearer " + localStorage.getItem("token")
+                    }
+                });
+            } catch (error) {
+                console.log("Logout log failed:", error);
+            }
+
+            // 🔥 Clear data
+            localStorage.removeItem("token");
+            localStorage.removeItem("role");
+            localStorage.removeItem("userName");
+            localStorage.removeItem("userId");
+
+            alert("Logged out successfully!");
+
+            // 🔥 Redirect
+            window.location.href = "login.html";
+        }
+
+
+
+////////   ============= Attendance page =============   //////////
+
+
+
+      function formatTime(timeStr) {
+            if (!timeStr) return "--:--";
+
+            let [h, m] = timeStr.split(":");
+            let hour = parseInt(h);
+            let ampm = hour >= 12 ? "PM" : "AM";
+
+            hour = hour % 12 || 12;
+
+            return `${hour}:${m} ${ampm}`;
+        }
+
         // Update current time
-        function updateTime() {
+        function updateClock() {
             const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            const timeElement = document.getElementById('currentTime');
-            if (timeElement) {
-                timeElement.textContent = hours + ':' + minutes + ':' + seconds;
+            const time = now.toLocaleTimeString();
+            document.getElementById("currentTime").innerText = time;
+        }
+        setInterval(updateClock, 1000);
+
+
+        function updateUI(data) {
+            document.getElementById("checkInTime").innerText = formatTime(data.checkIn);
+            document.getElementById("checkOutTime").innerText = formatTime(data.checkOut);
+            document.getElementById("workingHours").innerText = data.workingHours || "0h 0m";
+            document.getElementById("breakTime").innerText = data.breakTime || "0h 30m";
+            document.getElementById("checkInStatus").innerText =
+            data.checkIn ? "✓ Checked In at " + formatTime(data.checkIn) : "";
+        }
+
+
+        function loadTable(history) {
+            const table = document.getElementById("attendanceTableBody");
+            table.innerHTML = "";
+
+            history.forEach(item => {
+                let row = `
+                    <tr>
+                        <td>${item.date}</td>
+                        <td>${formatTime(item.checkIn)}</td>
+                        <td>${formatTime(item.checkOut)}</td>
+                        <td>${item.workingHours || "0h 0m"}</td>
+                        <td><span class="badge badge-success">${item.status}</span></td>
+                        <td><button class="btn btn-outline">View</button></td>
+                    </tr>
+                `;
+                table.innerHTML += row;
+            });
+        }
+
+
+        function updateButtons(data) {
+            const checkInBtn = document.getElementById("checkInBtn");
+            const checkOutBtn = document.getElementById("checkOutBtn");
+
+            if (!data.checkIn) {
+                checkInBtn.disabled = false;
+                checkOutBtn.disabled = true;
+            } 
+            else if (data.checkIn && !data.checkOut) {
+                checkInBtn.disabled = true;
+                checkOutBtn.disabled = false;
+            } 
+            else {
+                checkInBtn.disabled = true;
+                checkOutBtn.disabled = true;
             }
         }
-        setInterval(updateTime, 1000);
-        updateTime();
+
+    
+
+       window.onload = loadData;
+
+
+        function calculateHours(checkIn, checkOut) {
+            let start = new Date(`01/01/2020 ${checkIn}`);
+            let end = new Date(`01/01/2020 ${checkOut}`);
+
+            let diff = (end - start) / 1000 / 60;
+            let h = Math.floor(diff / 60);
+            let m = diff % 60;
+
+            return `${h}h ${m}m`;
+        }
+
+
+        function loadData() {
+            fetch("http://localhost:8080/api/attendance/my", {
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("token")
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+
+                console.log("API DATA:", data);
+
+                fullData = data;
+
+                let today = getTodayRecord(data);
+
+                console.log("TODAY RECORD:", today);
+
+                updateUI({
+                    checkIn: today?.checkIn || null,
+                    checkOut: today?.checkOut || null,
+                    workingHours: today?.workingHours || "0h 0m",
+                    breakTime: "0h 30m"
+                });
+
+                loadTable(data);
+                updateButtons(today || {});
+                updateMonthlySummary(data);
+            });
+        }
+
+        function checkIn() {
+            if (!confirm("Are you sure you want to Check-In?")) return;
+
+            fetch("http://localhost:8080/api/attendance/checkin", {
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("token")
+                }
+            })
+            .then(() => loadData());
+        }
+
+        function getTodayRecord(data) {
+            const today = new Date();
+            const todayDate =
+                today.getFullYear() + "-" +
+                String(today.getMonth() + 1).padStart(2, "0") + "-" +
+                String(today.getDate()).padStart(2, "0");
+
+            return data.find(item => item.date === todayDate);
+        }
+
+
+        function checkOut() {
+            if (!confirm("Are you sure you want to Check-Out?")) return;
+
+            fetch("http://localhost:8080/api/attendance/checkout", {
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("token")
+                }
+            })
+            .then(() => loadData());
+        }
+
+
+        function updateMonthlySummary(data) {
+
+            let present = 0;
+            let absent = 0;
+            let leave = 0;
+            let halfDay = 0;
+
+            const currentMonth = new Date().getMonth();
+
+            data.forEach(item => {
+
+                let itemMonth = new Date(item.date).getMonth();
+
+                if (itemMonth !== currentMonth) return;
+
+                if (item.status === "Present") {
+                    present++;
+
+                    // Half day logic
+                    if (item.workingHours) {
+                        let hours = parseInt(item.workingHours);
+                        if (hours < 4) {
+                            
+                            status = "Half Day";
+                        }else{
+                            status = "Present";
+                        }
+                        halfDay++;
+                    }
+                }
+                else if (item.status === "Leave") {
+                    leave++;
+                }
+            });
+
+            // Assume 30 days (can improve later)
+            const today = new Date();
+            const totalDays = today.getDate();
+            absent = totalDays - present;
+
+            let attendanceRate = ((present / totalDays) * 100).toFixed(1);
+
+            // UI update
+            document.getElementById("presentCount").innerText = present;
+            document.getElementById("absentCount").innerText = absent;
+            document.getElementById("leaveCount").innerText = leave;
+            document.getElementById("halfDayCount").innerText = halfDay;
+            document.getElementById("attendanceRate").innerText = attendanceRate + "%";
+        }
+
+        let fullData = []; // global store
+
+        function filterByDate() {
+            const selectedDate = document.getElementById("filterDate").value;
+
+            if (!selectedDate) return;
+
+            const filtered = fullData.filter(item => item.date === selectedDate);
+
+            loadTable(filtered);
+        }
+
+        function resetFilter() {
+            document.getElementById("filterDate").value = "";
+            loadTable(fullData);
+        }
+
+        function downloadAttendance(type) {
+
+            if (type !== "pdf") return;
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFontSize(16);
+            doc.text("Attendance Report", 20, 20);
+
+            let y = 30;
+
+            fullData.forEach((item, index) => {
+                doc.setFontSize(10);
+
+                doc.text(
+                    `${item.date} | In: ${formatTime(item.checkIn)} | Out: ${formatTime(item.checkOut)} | Hours: ${item.workingHours || "0h 0m"} | ${item.status}`,
+                    20,
+                    y
+                );
+
+                y += 8;
+
+                if (y > 280) {
+                    doc.addPage();
+                    y = 20;
+                }
+            });
+
+            doc.save("attendance.pdf");
+        }
+
+        
+
+
+// ========== ============== Attendance page ends here ===========
+
         
         // Navigation
         document.querySelectorAll('.menu-item').forEach(item => {
@@ -3193,45 +4044,6 @@
             });
         });
         
-        // Attendance Functions
-        function checkIn() {
-            const now = new Date();
-            const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-            document.getElementById('checkInTime').textContent = time;
-            document.getElementById('checkInBtn').disabled = true;
-            document.getElementById('checkOutBtn').disabled = false;
-            alert('Checked in at ' + time);
-            // TODO: POST /api/attendance/checkin
-        }
-        
-        function checkOut() {
-            const now = new Date();
-            const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-            document.getElementById('checkOutBtn').disabled = true;
-            alert('Checked out at ' + time);
-            // TODO: POST /api/attendance/checkout
-        }
-        
-        function requestCorrection(date) {
-            openModal('correctionModal');
-            // TODO: Load date details
-        }
-        
-        function submitCorrection() {
-            const reason = document.getElementById('correctionReason').value;
-            if (!reason) {
-                alert('Please provide a reason');
-                return;
-            }
-            alert('Correction request submitted!');
-            closeModal('correctionModal');
-            // TODO: POST /api/attendance/correction-request
-        }
-        
-        function downloadAttendance(format) {
-            alert('Downloading attendance in ' + format.toUpperCase() + ' format...');
-            // TODO: GET /api/attendance/download
-        }
         
         // Task Functions
         function viewTaskDetails(taskId) {
@@ -3281,37 +4093,12 @@
             }
         }
         
-        // Profile Functions
-        function editProfile() {
-            alert('Edit profile functionality');
-            // TODO: Enable form editing
-        }
+
+
+
         
-        function changePhoto() {
-            alert('Photo upload functionality');
-            // TODO: File upload
-        }
         
-        function uploadDocument() {
-            alert('Document upload functionality');
-            // TODO: File upload
-        }
-        
-        function changePassword() {
-            alert('Change password form');
-            // TODO: Show password change modal
-        }
-        
-        function viewActivityLog() {
-            alert('Activity log');
-            // TODO: Show activity history
-        }
-        
-        // Global Search
-        document.getElementById('globalSearch').addEventListener('input', function(e) {
-            console.log('Searching:', e.target.value);
-            // TODO: Implement search
-        });
+
         
         // Mobile menu toggle
         function toggleMobile() {
@@ -3336,21 +4123,7 @@
                 dropdown.classList.remove('show');
             }
         });
-        
-        // Logout function
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                showToast('Logging out...', 'info');
-                // Clear local storage
-                localStorage.clear();
-                // Redirect to login page after 1 second
-                setTimeout(function() {
-                    // TODO: Redirect to login page
-                    // window.location.href = '/login';
-                    alert('Redirecting to login page...');
-                }, 1000);
-            }
-        }
+
         
         // Toast notification system
         function showToast(message, type = 'success') {
@@ -3387,42 +4160,6 @@
             }
         }
         
-
-        // Initialize Charts
-        function initCharts() {
-            // Attendance Trend Chart
-            const attendanceCtx = document.getElementById('attendanceChart');
-            if (attendanceCtx) {
-                new Chart(attendanceCtx, {
-                    type: 'line',
-                    data: {
-                        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-                        datasets: [{
-                            label: 'Attendance %',
-                            data: [92, 95, 94, 96],
-                            borderColor: '#1a73e8',
-                            backgroundColor: 'rgba(26, 115, 232, 0.1)',
-                            tension: 0.4,
-                            fill: true
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                max: 100
-                            }
-                        }
-                    }
-                });
-            }
             
             // Productivity Chart
             const productivityCtx = document.getElementById('productivityChart');
@@ -3491,17 +4228,11 @@
         }
         
         // Initialize charts when DOM is loaded
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initCharts);
-        } else {
-            initCharts();
-        }
 
         console.log('Employee Dashboard loaded successfully!');
         console.log('Ready for backend integration at /api/*');
         console.log('All features are functional!');
 
-    }
 
 
         // Sidebar Page Switching
@@ -3559,21 +4290,7 @@
         const isDark = document.body.classList.contains('dark-mode');
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
         document.getElementById('themeIcon').innerText = isDark ? '☀️' : '🌙';
-        
-        // Re-render charts for dark mode compatibility if needed
-        initCharts(); 
-    }
 
-    // --- Dashboard Features & Functions ---
-
-    // 1. Logout Function
-    function logout() {
-        if(confirm("Are you sure you want to logout?")) {
-            console.log("Logging out...");
-            // Backend Connectivity:
-            // window.location.href = "/api/auth/logout"; 
-            alert("Logged out successfully!");
-        }
     }
 
     // 2. Global Search
@@ -3594,73 +4311,11 @@
         return Array.from({length: count}, () => Math.floor(Math.random() * max));
     }
 
-    function initCharts() {
-        const isDark = document.body.classList.contains('dark-mode');
-        const textColor = isDark ? '#f3f4f6' : '#1f2937';
 
-        // Attendance Chart
-        const ctxAttendance = document.getElementById('attendanceChart').getContext('2d');
-        new Chart(ctxAttendance, {
-            type: 'line',
-            data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-                datasets: [{
-                    label: 'Login Time (Hours)',
-                    data: [8.5, 9.2, 8.8, 9.5, 9.0, 4.5],
-                    borderColor: '#1a73e8',
-                    backgroundColor: 'rgba(26, 115, 232, 0.1)',
-                    fill: true,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { labels: { color: textColor } } }
-            }
-        });
-
-        // Productivity Chart (Bar)
-        const ctxProd = document.getElementById('productivityChart').getContext('2d');
-        new Chart(ctxProd, {
-            type: 'bar',
-            data: {
-                labels: ['Task A', 'Task B', 'Task C', 'Task D'],
-                datasets: [{
-                    label: 'Completion %',
-                    data: generateRandomData(4, 100),
-                    backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444']
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } }
-            }
-        });
-    }
-
-    // --- Action Buttons (Profile & Tasks) ---
-
-    function editProfile() {
-        alert("Opening Profile Editor...");
-        // Open a modal or enable input fields
-    }
-
-    function uploadDocument() {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.onchange = e => {
-            const file = e.target.files[0];
-            alert("Uploading: " + file.name);
-            // Backend: Use FormData() and fetch('/api/upload')
-        };
-        input.click();
-    }
 
     // Initialize everything on load
     document.addEventListener('DOMContentLoaded', () => {
-        initCharts();
+
         
         // Check saved theme
         if(localStorage.getItem('theme') === 'dark') {
@@ -3670,5 +4325,25 @@
         console.log("Dashboard Fully Loaded and Interactive!");
     });
     </script>
+    <!-- 🔐 Change Password Modal -->
+    <div id="passwordModal" class="modal">
+
+        <div class="modal-content">
+
+            <h3>🔒 Change Password</h3>
+
+            <input type="password" id="currentPass" placeholder="Current Password" class="form-input">
+            <input type="password" id="newPass" placeholder="New Password" class="form-input">
+            <input type="password" id="confirmPass" placeholder="Confirm Password" class="form-input">
+
+            <div style="margin-top:15px; display:flex; gap:10px;">
+                <button class="btn btn-primary" onclick="submitPassword()">Update</button>
+                <button class="btn btn-outline" onclick="closePasswordModal()">Cancel</button>
+            </div>
+
+        </div>
+
+    </div>
+
 </body>
 </html>

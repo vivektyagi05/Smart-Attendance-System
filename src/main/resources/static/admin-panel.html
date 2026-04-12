@@ -1,25 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <script>
-    (function() {
-        const token = localStorage.getItem("token");
-        const role = localStorage.getItem("role");
-        const currentPage = window.location.pathname;
+    // dashboard.html ya admin-panel.html ke shuruat mein
+    (function checkAuth() {
+        const token = localStorage.getItem('token');
+        const role = localStorage.getItem('role');
 
-        // 1. Check if logged in
         if (!token) {
-            window.location.href = "login.html";
-            return;
+            window.location.href = 'login.html'; // Agar token nahi hai to wapas bhejo
         }
 
-        // 2. Prevent Cross-Role access
-        if (currentPage.includes("admin-panel.html") && role !== "ADMIN") {
-            alert("Unauthorized! Redirecting to your dashboard.");
-            window.location.href = "dashboard.html";
-        }
-        
-        if (currentPage.includes("dashboard.html") && role !== "USER") {
-            window.location.href = "admin-panel.html";
+        // Role-based protection
+        const path = window.location.pathname;
+        if (path.includes('admin-panel') && role !== 'ADMIN') {
+            alert("Access Denied!");
+            window.location.href = 'dashboard.html';
         }
     })();
 </script>
@@ -27,7 +22,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ClearIQ - HR Management System</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -2045,6 +2039,7 @@
     </div>
     <script>
 
+        
 
 
         // Navigation

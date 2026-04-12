@@ -6,11 +6,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
+import java.util.List;
 import java.io.IOException;
 
 @Component
@@ -22,6 +23,14 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+            
+        String path = request.getRequestURI();
+
+        // ✅ PUBLIC ROUTES (IMPORTANT)
+        if (path.startsWith("/api/auth") || path.startsWith("/uploads")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         final String authHeader = request.getHeader("Authorization");
 
@@ -33,16 +42,29 @@ public class JwtFilter extends OncePerRequestFilter {
                     String email = jwtUtil.extractEmail(token);
                     String role = jwtUtil.extractRole(token);
 
-                    // Spring Security ko batana ki user authenticated hai aur uske paas ye Roles hain
+                    // Authorities (Roles) ko correct format mein nikalna
+                    List<GrantedAuthority> authorities = jwtUtil.getAuthorities(role);
+
+
+                    // Null ki jagah email aur authorities pass karein
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            email, null, jwtUtil.getAuthorities(role));
+                            email, null, authorities);
+                    
 
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    
+                    // Sabse important: Security Context set karna
                     SecurityContextHolder.getContext().setAuthentication(authToken);
+                } else {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.getWriter().write("Token Expired");
+                    return;
                 }
             } catch (Exception e) {
                 // Token invalid ya expire ho gaya
-                System.out.println("JWT Error: " + e.getMessage());
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Invalid or Expired Token");
+                return;
             }
         }
         filterChain.doFilter(request, response);
