@@ -52,6 +52,9 @@ public class DashboardService {
         Performance p = performanceRepo.findByUserId(userId);
         res.setPerformanceScore(p.getScore());
 
+        res.setCreatedAt(user.getCreatedAt().toString());
+
         return res;
     }
+
 }

@@ -16,6 +16,7 @@ public class DashboardResponse {
     private double salary;
     private double bonus;
     private String nextPayment;
+    private String createdAt;
 
     // Getters and Setters (Lombok @Data se generate ho jayenge)
 
@@ -81,6 +82,15 @@ public class DashboardResponse {
 
     public void setNextPayment(String nextPayment) {
         this.nextPayment = nextPayment;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }   
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+
     }
 
     

@@ -3736,8 +3736,9 @@
 ////////   ============= Attendance page =============   //////////
 
 
+        let fullData = []; // global store
 
-      function formatTime(timeStr) {
+        function formatTime(timeStr) {
             if (!timeStr) return "--:--";
 
             let [h, m] = timeStr.split(":");
@@ -3808,7 +3809,9 @@
 
     
 
-       window.onload = loadData;
+       window.onload = () => {
+            loadData();      // then
+        };
 
 
         function calculateHours(checkIn, checkOut) {
@@ -3838,18 +3841,27 @@
 
                 let today = getTodayRecord(data);
 
-                console.log("TODAY RECORD:", today);
+                console.log("TODAY FINAL:", today);
+                console.log("TODAY STRING:", new Date().toISOString().split("T")[0]);
+console.log("DATA DATES:", data.map(d => d.date));
+
+                const workingHours = today && today.workingHours
+                    ? today.workingHours
+                    : "0h 0m";
 
                 updateUI({
                     checkIn: today?.checkIn || null,
                     checkOut: today?.checkOut || null,
-                    workingHours: today?.workingHours || "0h 0m",
+                    workingHours: workingHours,
                     breakTime: "0h 30m"
                 });
 
                 loadTable(data);
                 updateButtons(today || {});
                 updateMonthlySummary(data);
+                if (today && today.checkIn && !today.checkOut) {
+                    startWorkingTimer(today.checkIn);
+                }
             });
         }
 
@@ -3862,18 +3874,59 @@
                     "Authorization": "Bearer " + localStorage.getItem("token")
                 }
             })
-            .then(() => loadData());
+            .then(res => res.json())
+            .then(data => {
+
+                updateUI({
+                    checkIn: data.checkIn,
+                    checkOut: null,
+                    workingHours: "0h 0m",
+                    breakTime: "0h 30m"
+                });
+
+                updateButtons(data);
+
+                startWorkingTimer(data.checkIn); // 🔥 ADD THIS
+
+                loadData();
+            });
+        }
+
+        let timer = null;
+
+        function startWorkingTimer(checkInTime) {
+
+            if (!checkInTime) return;
+
+            if (timer) clearInterval(timer); // 🔥 important
+
+            timer = setInterval(() => {
+
+                const now = new Date();
+                const start = new Date(`1970-01-01T${checkInTime}`);
+
+                const diff = (now - start) / 1000 / 60;
+
+                const h = Math.floor(diff / 60);
+                const m = Math.floor(diff % 60);
+
+                document.getElementById("workingHours").innerText = `${h}h ${m}m`;
+
+            }, 60000);
         }
 
         function getTodayRecord(data) {
-            const today = new Date();
-            const todayDate =
-                today.getFullYear() + "-" +
-                String(today.getMonth() + 1).padStart(2, "0") + "-" +
-                String(today.getDate()).padStart(2, "0");
 
-            return data.find(item => item.date === todayDate);
-        }
+    if (!data || data.length === 0) return null;
+
+    const today = new Date();
+    const todayStr =
+        today.getFullYear() + "-" +
+        String(today.getMonth() + 1).padStart(2, "0") + "-" +
+        String(today.getDate()).padStart(2, "0");
+
+    return data.find(item => item.date === todayStr) || null;
+}
 
 
         function checkOut() {
@@ -3888,48 +3941,75 @@
             .then(() => loadData());
         }
 
+        function generateAllDates(startDate) {
+            const dates = [];
+
+            const start = new Date(startDate);
+            const today = new Date();
+
+            while (start <= today) {
+                const d = start.toISOString().split("T")[0];
+                dates.push(d);
+                start.setDate(start.getDate() + 1);
+            }
+
+            return dates;
+        }
+
 
         function updateMonthlySummary(data) {
 
+            if (!data || data.length === 0) return;
+
+            // 🔥 earliest attendance date
+            const sorted = [...data].sort((a, b) => new Date(a.date) - new Date(b.date));
+            const startDate = sorted[0].date;
+
+            const allDates = generateAllDates(startDate);
+
             let present = 0;
-            let absent = 0;
             let leave = 0;
             let halfDay = 0;
 
-            const currentMonth = new Date().getMonth();
-
+            // Map for quick lookup
+            const map = {};
             data.forEach(item => {
+                map[item.date] = item;
+            });
 
-                let itemMonth = new Date(item.date).getMonth();
+            allDates.forEach(date => {
 
-                if (itemMonth !== currentMonth) return;
+                const record = map[date];
 
-                if (item.status === "Present") {
+                if (!record) {
+                    // ❌ no record → absent
+                    return;
+                }
+
+                if (record.status === "Leave") {
+                    leave++;
+                    return;
+                }
+
+                if (record.checkIn) {
                     present++;
 
-                    // Half day logic
-                    if (item.workingHours) {
-                        let hours = parseInt(item.workingHours);
-                        if (hours < 4) {
-                            
-                            status = "Half Day";
-                        }else{
-                            status = "Present";
+                    if (record.workingHours) {
+                        let h = parseInt(record.workingHours.split("h")[0]);
+                        if (h < 4) {
+                            halfDay++;
                         }
-                        halfDay++;
                     }
-                }
-                else if (item.status === "Leave") {
-                    leave++;
                 }
             });
 
-            // Assume 30 days (can improve later)
-            const today = new Date();
-            const totalDays = today.getDate();
-            absent = totalDays - present;
+            const totalDays = allDates.length;
+            const absent = totalDays - present - leave;
+            const effectiveDays = totalDays - leave;
 
-            let attendanceRate = ((present / totalDays) * 100).toFixed(1);
+            const attendanceRate = effectiveDays > 0
+                ? ((present / effectiveDays) * 100).toFixed(1)
+                : 0;
 
             // UI update
             document.getElementById("presentCount").innerText = present;
@@ -3939,7 +4019,7 @@
             document.getElementById("attendanceRate").innerText = attendanceRate + "%";
         }
 
-        let fullData = []; // global store
+
 
         function filterByDate() {
             const selectedDate = document.getElementById("filterDate").value;

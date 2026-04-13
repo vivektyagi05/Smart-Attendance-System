@@ -1,5 +1,6 @@
 package com.smart.attendance.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
@@ -89,5 +90,12 @@ public class User {
         this.otpExpiry = otpExpiry;
     }
 
+    @Column(name = "created_at")
+    private LocalDate createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDate.now();
+    }
 
 }

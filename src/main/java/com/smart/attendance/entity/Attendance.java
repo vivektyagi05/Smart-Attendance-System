@@ -26,6 +26,7 @@ public class Attendance {
 
     private LocalTime checkOut;
 
+    @Column(name = "working_hours")
     private String workingHours;
 
     private String status;
@@ -100,6 +101,9 @@ public class Attendance {
         this.user = user;
     
     }
+
+
+
 
     
 }
