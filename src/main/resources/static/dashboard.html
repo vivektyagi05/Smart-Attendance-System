@@ -787,6 +787,9 @@
         }
         
         .calendar-day {
+            min-height: 60px;
+            height: 60px;
+            font-size: 14px;
             aspect-ratio: 1;
             display: flex;
             align-items: center;
@@ -1056,6 +1059,26 @@
             background: #374151;
             border-color: #4b5563;
         }
+
+        .btn {
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline:hover {
+            background: #1a73e8;
+            color: white;
+            box-shadow: 0 0 10px rgba(26,115,232,0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            box-shadow: 0 0 10px rgba(26,115,232,0.4);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(26,115,232,0.7);
+        }
         
         /* Responsive */
         @media (max-width: 1024px) {
@@ -1187,6 +1210,92 @@
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
+
+       .calendar-grid{
+    display:grid;
+    grid-template-columns: repeat(7,1fr);
+    gap:10px;
+}
+
+.calendar-day{
+    padding:10px;
+    text-align:center;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.calendar-day.header{
+    font-weight:600;
+}
+
+.calendar-day.sunday{
+    color:#ef4444;
+}
+
+.calendar-day.event{
+    background:#d1fae5;
+}
+
+.calendar-day.holiday{
+    background:#fee2e2;
+}
+
+.calendar-day.today{
+    background:#1a73e8;
+    color:white;
+}
+
+/* Buttons Glow */
+.btn-outline:hover {
+    background: #1a73e8;
+    color: white;
+    box-shadow: 0 0 10px rgba(26,115,232,0.5);
+    transform: translateY(-2px);
+}
+
+.btn-primary {
+    box-shadow: 0 0 12px rgba(26,115,232,0.6);
+}
+
+/* Calendar cards */
+.week-card {
+    background: #f9fafb;
+    border-radius: 10px;
+    padding: 10px;
+    transition: 0.3s;
+}
+
+.week-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.day-card {
+    background: #f9fafb;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.day-card:hover {
+    box-shadow: 0 0 15px rgba(0,0,0,0.15);
+}
+
+/* Text fix */
+.day-name {
+    font-weight: bold;
+}
+
+.day-date {
+    font-size: 20px;
+    margin: 5px 0;
+}
+
+.event-text {
+    font-size: 12px;
+    color: #6b7280;
+}
 
         /* ⏰ Big Time */
         .big-time {
@@ -1829,77 +1938,7 @@
                 </div>
                 
                 <!-- My Tasks Page -->
-                <div id="tasks-page" class="page-content">
-                    <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 24px;">📋 My Tasks</h1>
-                    
-                    <div style="margin-bottom: 24px; display: flex; gap: 12px;">
-                        <button class="btn btn-outline">🔽 Filter by Status</button>
-                        <button class="btn btn-outline">📅 Filter by Date</button>
-                        <button class="btn btn-outline">📁 Filter by Project</button>
-                    </div>
-                    
-                    <div class="kanban-board">
-                        <div class="kanban-column">
-                            <div class="column-header">
-                                <h3 class="column-title">To Do</h3>
-                                <span class="task-count">5</span>
-                            </div>
-                            
-                            <div class="task-card low" onclick="viewTaskDetails('task1')">
-                                <div class="task-title">Update landing page design</div>
-                                <p class="task-project">E-Commerce Platform</p>
-                                <div class="task-meta">
-                                    <span class="badge badge-danger">High</span>
-                                    <span>Due: Today</span>
-                                </div>
-                            </div>
-                            
-                            <div class="task-card medium" onclick="viewTaskDetails('task2')">
-                                <div class="task-title">Code review for payment module</div>
-                                <p class="task-project">Payment Gateway</p>
-                                <div class="task-meta">
-                                    <span class="badge badge-warning">Medium</span>
-                                    <span>Due: Today</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="kanban-column">
-                            <div class="column-header">
-                                <h3 class="column-title">In Progress</h3>
-                                <span class="task-count">3</span>
-                            </div>
-                            
-                            <div class="task-card high" onclick="viewTaskDetails('task3')">
-                                <div class="task-title">Fix login authentication bug</div>
-                                <p class="task-project">E-Commerce Platform</p>
-                                <div class="task-meta">
-                                    <span class="badge badge-danger">High</span>
-                                    <span>Due: Today</span>
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 65%;"></div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="kanban-column">
-                            <div class="column-header">
-                                <h3 class="column-title">Completed</h3>
-                                <span class="task-count">12</span>
-                            </div>
-                            
-                            <div class="task-card" onclick="viewTaskDetails('task4')">
-                                <div class="task-title">Database optimization</div>
-                                <p class="task-project">E-Commerce Platform</p>
-                                <div class="task-meta">
-                                    <span class="badge badge-success">Completed</span>
-                                    <span>Jan 22</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
 
                 <!-- Remaining pages placeholders for brevity - Projects, Calendar, Leave, Performance, Salary, Chat, Notifications -->
                 <div id="projects-page" class="page-content">
@@ -2173,149 +2212,73 @@
                         </div>
                     </div>
                 </div>
+
                 
                 <div id="calendar-page" class="page-content">
+
                     <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 32px;">📅 Events & Calendar</h1>
-                    
-                    <!-- Calendar Views Toggle -->
+
+                    <!-- Buttons -->
                     <div style="margin-bottom: 24px; display: flex; gap: 12px;">
-                        <button class="btn btn-primary" onclick="changeCalendarView('month')">📅 Monthly View</button>
-                        <button class="btn btn-outline" onclick="changeCalendarView('week')">📆 Weekly View</button>
-                        <button class="btn btn-outline" onclick="changeCalendarView('day')">📋 Daily View</button>
+                        <button class="btn btn-primary" onclick="changeCalendarView('month', this)">📅 Monthly View</button>
+                        <button class="btn btn-outline" onclick="changeCalendarView('week', this)">📆 Weekly View</button>
+                        <button class="btn btn-outline" onclick="changeCalendarView('day', this)">📋 Daily View</button>
                     </div>
-                    
+
                     <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+
                         <!-- Calendar -->
-                        <div class="table-container" style="margin: 0;">
+                        <div class="table-container">
+
                             <div class="table-header">
-                                <h3 class="table-title">January 2026</h3>
+                                <h3 class="table-title" id="calendar-title"></h3>
                                 <div>
                                     <button class="btn btn-outline" onclick="previousMonth()">◀ Prev</button>
                                     <button class="btn btn-outline" onclick="currentMonth()">Today</button>
                                     <button class="btn btn-outline" onclick="nextMonth()">Next ▶</button>
                                 </div>
                             </div>
+
                             <div style="padding: 24px;">
-                                <div class="calendar-grid">
-                                    <div class="calendar-day" style="font-weight: 600; pointer-events: none;">Sun</div>
-                                    <div class="calendar-day" style="font-weight: 600; pointer-events: none;">Mon</div>
-                                    <div class="calendar-day" style="font-weight: 600; pointer-events: none;">Tue</div>
-                                    <div class="calendar-day" style="font-weight: 600; pointer-events: none;">Wed</div>
-                                    <div class="calendar-day" style="font-weight: 600; pointer-events: none;">Thu</div>
-                                    <div class="calendar-day" style="font-weight: 600; pointer-events: none;">Fri</div>
-                                    <div class="calendar-day" style="font-weight: 600; pointer-events: none;">Sat</div>
-                                    
-                                    <!-- Calendar Days -->
-                                    <div class="calendar-day" style="opacity: 0.3;">29</div>
-                                    <div class="calendar-day" style="opacity: 0.3;">30</div>
-                                    <div class="calendar-day" style="opacity: 0.3;">31</div>
-                                    <div class="calendar-day">1</div>
-                                    <div class="calendar-day">2</div>
-                                    <div class="calendar-day">3</div>
-                                    <div class="calendar-day">4</div>
-                                    <div class="calendar-day">5</div>
-                                    <div class="calendar-day event" title="Team Meeting">6</div>
-                                    <div class="calendar-day">7</div>
-                                    <div class="calendar-day">8</div>
-                                    <div class="calendar-day">9</div>
-                                    <div class="calendar-day">10</div>
-                                    <div class="calendar-day">11</div>
-                                    <div class="calendar-day">12</div>
-                                    <div class="calendar-day">13</div>
-                                    <div class="calendar-day">14</div>
-                                    <div class="calendar-day event" title="Client Meeting">15</div>
-                                    <div class="calendar-day">16</div>
-                                    <div class="calendar-day">17</div>
-                                    <div class="calendar-day">18</div>
-                                    <div class="calendar-day">19</div>
-                                    <div class="calendar-day">20</div>
-                                    <div class="calendar-day">21</div>
-                                    <div class="calendar-day">22</div>
-                                    <div class="calendar-day today">23</div>
-                                    <div class="calendar-day">24</div>
-                                    <div class="calendar-day">25</div>
-                                    <div class="calendar-day holiday" title="Republic Day">26</div>
-                                    <div class="calendar-day">27</div>
-                                    <div class="calendar-day event" title="Sprint Planning">28</div>
-                                    <div class="calendar-day">29</div>
-                                    <div class="calendar-day">30</div>
-                                    <div class="calendar-day">31</div>
-                                    <div class="calendar-day" style="opacity: 0.3;">1</div>
+                                <div class="calendar-grid" id="calendar-grid"></div>
+                            </div>
+
+                            <!-- Legend -->
+                            <div style="display: flex; gap: 20px; justify-content: center; margin-bottom: 10px;">
+                                <div style="display:flex;align-items:center;gap:6px;">
+                                    <div style="width:15px;height:15px;background:#1a73e8;"></div> Today
                                 </div>
-                                
-                                <!-- Legend -->
-                                <div style="display: flex; gap: 20px; margin-top: 20px; justify-content: center;">
-                                    <div style="display: flex; align-items: center; gap: 8px;">
-                                        <div style="width: 20px; height: 20px; background: #1a73e8; border-radius: 4px;"></div>
-                                        <span style="font-size: 12px;">Today</span>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 8px;">
-                                        <div style="width: 20px; height: 20px; background: #d1fae5; border-radius: 4px;"></div>
-                                        <span style="font-size: 12px;">Event</span>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 8px;">
-                                        <div style="width: 20px; height: 20px; background: #fee2e2; border-radius: 4px;"></div>
-                                        <span style="font-size: 12px;">Holiday</span>
-                                    </div>
+                                <div style="display:flex;align-items:center;gap:6px;">
+                                    <div style="width:15px;height:15px;background:#d1fae5;"></div> Event
+                                </div>
+                                <div style="display:flex;align-items:center;gap:6px;">
+                                    <div style="width:15px;height:15px;background:#fee2e2;"></div> Holiday
                                 </div>
                             </div>
+
                         </div>
-                        
-                        <!-- Upcoming Events -->
-                        <div class="table-container" style="margin: 0;">
+
+                        <!-- Today Events -->
+                        <div class="table-container">
+
                             <div class="table-header">
-                                <h3 class="table-title">Upcoming Events</h3>
+                                <h3 class="table-title">Today Events</h3>
                             </div>
-                            <div style="padding: 16px; max-height: 600px; overflow-y: auto;">
-                                <div style="padding: 12px; border-left: 4px solid #ef4444; background: #fef2f2; margin-bottom: 12px; border-radius: 4px;">
-                                    <div style="font-weight: 600; margin-bottom: 4px;">🏖️ Republic Day</div>
-                                    <div style="font-size: 12px; color: #6b7280; margin-bottom: 4px;">Jan 26, 2026</div>
-                                    <div style="font-size: 12px;"><span class="badge badge-danger">Holiday</span></div>
-                                </div>
-                                
-                                <div style="padding: 12px; border-left: 4px solid #3b82f6; background: #eff6ff; margin-bottom: 12px; border-radius: 4px;">
-                                    <div style="font-weight: 600; margin-bottom: 4px;">💼 Sprint Planning Meeting</div>
-                                    <div style="font-size: 12px; color: #6b7280; margin-bottom: 4px;">Jan 28, 2026 at 10:00 AM</div>
-                                    <div style="font-size: 12px;"><span class="badge badge-info">Meeting</span></div>
-                                    <div style="font-size: 12px; margin-top: 8px; color: #6b7280;">Location: Conference Room A</div>
-                                </div>
-                                
-                                <div style="padding: 12px; border-left: 4px solid #8b5cf6; background: #f5f3ff; margin-bottom: 12px; border-radius: 4px;">
-                                    <div style="font-weight: 600; margin-bottom: 4px;">🎂 Sarah's Birthday</div>
-                                    <div style="font-size: 12px; color: #6b7280; margin-bottom: 4px;">Feb 05, 2026</div>
-                                    <div style="font-size: 12px;"><span class="badge badge-info">Birthday</span></div>
-                                </div>
-                                
-                                <div style="padding: 12px; border-left: 4px solid #10b981; background: #f0fdf4; margin-bottom: 12px; border-radius: 4px;">
-                                    <div style="font-weight: 600; margin-bottom: 4px;">📋 Code Review Session</div>
-                                    <div style="font-size: 12px; color: #6b7280; margin-bottom: 4px;">Jan 24, 2026 at 2:00 PM</div>
-                                    <div style="font-size: 12px;"><span class="badge badge-success">Task Deadline</span></div>
-                                    <div style="font-size: 12px; margin-top: 8px; color: #6b7280;">Project: E-Commerce Platform</div>
-                                </div>
-                                
-                                <div style="padding: 12px; border-left: 4px solid #f59e0b; background: #fffbeb; margin-bottom: 12px; border-radius: 4px;">
-                                    <div style="font-weight: 600; margin-bottom: 4px;">👥 Client Presentation</div>
-                                    <div style="font-size: 12px; color: #6b7280; margin-bottom: 4px;">Jan 30, 2026 at 3:00 PM</div>
-                                    <div style="font-size: 12px;"><span class="badge badge-warning">Important</span></div>
-                                    <div style="font-size: 12px; margin-top: 8px; color: #6b7280;">Client: ABC Corporation</div>
-                                </div>
-                                
-                                <div style="padding: 12px; border-left: 4px solid #3b82f6; background: #eff6ff; margin-bottom: 12px; border-radius: 4px;">
-                                    <div style="font-weight: 600; margin-bottom: 4px;">🎓 Training Session: Cloud Architecture</div>
-                                    <div style="font-size: 12px; color: #6b7280; margin-bottom: 4px;">Feb 01, 2026 at 11:00 AM</div>
-                                    <div style="font-size: 12px;"><span class="badge badge-info">Training</span></div>
-                                    <div style="font-size: 12px; margin-top: 8px; color: #6b7280;">Duration: 2 hours</div>
-                                </div>
+
+                            <div style="padding:16px; max-height:600px; overflow-y:auto;">
+                                <div id="today-events"></div>
                             </div>
+
                         </div>
+
                     </div>
-                    
-                    <!-- All Events List -->
+
+                    <!-- Table -->
                     <div class="table-container" style="margin-top: 24px;">
                         <div class="table-header">
                             <h3 class="table-title">All Events This Month</h3>
-                            <button class="btn btn-outline">🔽 Filter</button>
                         </div>
+
                         <table>
                             <thead>
                                 <tr>
@@ -2326,53 +2289,14 @@
                                     <th>Location</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Jan 06, 2026</td>
-                                    <td>Team Meeting - Weekly Sync</td>
-                                    <td>9:00 AM</td>
-                                    <td><span class="badge badge-info">Meeting</span></td>
-                                    <td>Zoom</td>
-                                </tr>
-                                <tr>
-                                    <td>Jan 15, 2026</td>
-                                    <td>Client Meeting - Requirements</td>
-                                    <td>2:00 PM</td>
-                                    <td><span class="badge badge-info">Meeting</span></td>
-                                    <td>Conference Room B</td>
-                                </tr>
-                                <tr>
-                                    <td>Jan 24, 2026</td>
-                                    <td>Code Review Session</td>
-                                    <td>2:00 PM</td>
-                                    <td><span class="badge badge-success">Task</span></td>
-                                    <td>Online</td>
-                                </tr>
-                                <tr>
-                                    <td>Jan 26, 2026</td>
-                                    <td>Republic Day</td>
-                                    <td>All Day</td>
-                                    <td><span class="badge badge-danger">Holiday</span></td>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
-                                    <td>Jan 28, 2026</td>
-                                    <td>Sprint Planning Meeting</td>
-                                    <td>10:00 AM</td>
-                                    <td><span class="badge badge-info">Meeting</span></td>
-                                    <td>Conference Room A</td>
-                                </tr>
-                                <tr>
-                                    <td>Jan 30, 2026</td>
-                                    <td>Client Presentation</td>
-                                    <td>3:00 PM</td>
-                                    <td><span class="badge badge-warning">Presentation</span></td>
-                                    <td>Client Office</td>
-                                </tr>
-                            </tbody>
+
+                            <tbody id="event-table-body"></tbody>
                         </table>
                     </div>
+
                 </div>
+              <!--   // payment System  -->
+
                 
                 <div id="leave-page" class="page-content">
                     <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 32px;">📝 Leave Management</h1>
@@ -4074,6 +3998,262 @@ console.log("DATA DATES:", data.map(d => d.date));
 // ========== ============== Attendance page ends here ===========
 
         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ==================================  task Page End here  =======================
+
+
+
+// ================================ Events % Calendar =======================
+
+
+
+        let currentView = "month"; // month | week | day
+
+        let currentDate = new Date();
+
+        // 👉 TEMP DATA (later backend replace karega)
+        let events = [
+            { date: "2026-02-10", title: "Team Meeting", type: "event" },
+            { date: "2026-02-14", title: "Valentine Leave", type: "holiday" },
+            { date: "2026-02-18", title: "Project Deadline", type: "event" }
+        ];
+
+        function changeCalendarView(view, btn){
+
+            currentView = view;
+
+            // 🔥 reset all buttons
+            document.querySelectorAll(".btn").forEach(b => {
+                b.classList.remove("btn-primary");
+                b.classList.add("btn-outline");
+            });
+
+            // 🔥 active button highlight
+            btn.classList.remove("btn-outline");
+            btn.classList.add("btn-primary");
+
+            renderCalendar();
+        }
+
+        // MAIN
+        function renderCalendar(){
+
+            const grid = document.getElementById("calendar-grid");
+            const title = document.getElementById("calendar-title");
+
+            if(!grid || !title) return;
+
+            grid.innerHTML = "";
+
+            let year = currentDate.getFullYear();
+            let month = currentDate.getMonth();
+            
+
+            const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+            if(currentView === "month"){
+                title.innerText = `${months[month]} ${year}`;
+                renderMonthView(grid, year, month);
+            }
+            else if(currentView === "week"){
+                title.innerText = "Weekly View";
+                renderWeekView(grid);
+            }
+            else if(currentView === "day"){
+                title.innerText = "Daily View";
+                renderDayView(grid);
+            }
+
+            renderTodayEvents();
+            renderTable();
+        }
+
+        // Today events
+        function renderTodayEvents(){
+            const container = document.getElementById("today-events");
+            if(!container) return;
+
+            container.innerHTML = "";
+
+            let today = new Date().toISOString().split("T")[0];
+            let todayEvents = events.filter(e => e.date === today);
+
+            if(todayEvents.length === 0){
+                container.innerHTML = "<p style='text-align:center;'>No events today</p>";
+                return;
+            }
+
+            todayEvents.forEach(e => {
+                container.innerHTML += `
+                <div style="padding:10px;margin-bottom:10px;background:#eff6ff;border-left:4px solid #3b82f6;">
+                    ${e.title}
+                </div>`;
+            });
+        }
+
+        // Table
+        function renderTable(){
+            const tbody = document.getElementById("event-table-body");
+            if(!tbody) return;
+
+            tbody.innerHTML = "";
+
+            events.forEach(e => {
+                tbody.innerHTML += `
+                <tr>
+                    <td>${new Date(e.date).toDateString()}</td>
+                    <td>${e.title}</td>
+                    <td>-</td>
+                    <td>${e.type}</td>
+                    <td>-</td>
+                </tr>`;
+            });
+        }
+
+        // Navigation
+        function previousMonth(){
+            if(currentView === "month") currentDate.setMonth(currentDate.getMonth()-1);
+            else if(currentView === "week") currentDate.setDate(currentDate.getDate()-7);
+            else currentDate.setDate(currentDate.getDate()-1);
+
+            renderCalendar();
+        }
+
+        function nextMonth(){
+            if(currentView === "month") currentDate.setMonth(currentDate.getMonth()+1);
+            else if(currentView === "week") currentDate.setDate(currentDate.getDate()+7);
+            else currentDate.setDate(currentDate.getDate()+1);
+
+            renderCalendar();
+        }
+
+        function currentMonth(){
+            currentDate = new Date();
+            renderCalendar();
+        }
+
+        // Helpers
+        function formatDate(y,m,d){
+            return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+        }
+
+        // INIT
+        document.addEventListener("DOMContentLoaded", renderCalendar);
+
+
+        function changeCalendarView(view){
+            currentView = view;
+            renderCalendar();
+        }
+
+
+        function renderMonthView(grid, year, month){
+
+            const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+            days.forEach(d => {
+                grid.innerHTML += `<div class="calendar-day header">${d}</div>`;
+            });
+
+            let firstDay = new Date(year, month, 1).getDay();
+            let totalDays = new Date(year, month + 1, 0).getDate();
+
+            for(let i=0;i<firstDay;i++){
+                grid.innerHTML += `<div class="calendar-day empty"></div>`;
+            }
+
+            for(let d=1; d<=totalDays; d++){
+
+                let fullDate = formatDate(year, month+1, d);
+                let dayEvents = events.filter(e => e.date === fullDate);
+
+                let today = new Date();
+                let isToday = (d === today.getDate() && month === today.getMonth());
+
+                let cls = "calendar-day";
+
+                if(isToday) cls += " today";
+                if(new Date(year, month, d).getDay() === 0) cls += " sunday";
+                if(dayEvents.length > 0) cls += " event";
+
+                grid.innerHTML += `<div class="${cls}">${d}</div>`;
+            }
+        }
+
+        function renderWeekView(grid){
+
+            grid.style.display = "grid";
+            grid.style.gridTemplateColumns = "repeat(7, 1fr)";
+            grid.style.gap = "10px";
+
+            let start = new Date(currentDate);
+            start.setDate(start.getDate() - start.getDay());
+
+            for(let i=0;i<7;i++){
+
+                let d = new Date(start);
+                d.setDate(start.getDate() + i);
+
+                let dateStr = formatDate(d.getFullYear(), d.getMonth()+1, d.getDate());
+                let dayEvents = events.filter(e => e.date === dateStr);
+
+                grid.innerHTML += `
+                <div class="calendar-day week-card">
+                    <div class="day-name">${d.toLocaleDateString('en-US',{weekday:'short'})}</div>
+                    <div class="day-date">${d.getDate()}</div>
+                    <div class="event-text">
+                        ${dayEvents.length ? dayEvents.map(e => e.title).join("<br>") : "No events"}
+                    </div>
+                </div>`;
+            }
+        }
+
+        function renderDayView(grid){
+
+            grid.style.display = "grid";
+            grid.style.gridTemplateColumns = "1fr";
+
+            let d = new Date(currentDate);
+            let dateStr = formatDate(d.getFullYear(), d.getMonth()+1, d.getDate());
+
+            let dayEvents = events.filter(e => e.date === dateStr);
+
+            grid.innerHTML = `
+                <div class="calendar-day day-card">
+                    <h2>${d.toDateString()}</h2>
+                    <div class="event-text">
+                        ${dayEvents.length ? dayEvents.map(e => e.title).join("<br>") : "No events"}
+                    </div>
+                </div>
+            `;
+        }
+
+
+
+
+
+// ================================   event & calendar end her =============================
         // Navigation
         document.querySelectorAll('.menu-item').forEach(item => {
             item.addEventListener('click', function() {
