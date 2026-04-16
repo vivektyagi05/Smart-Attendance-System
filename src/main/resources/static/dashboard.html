@@ -333,7 +333,7 @@
             border-radius: 12px;
             padding: 24px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
+            transition: all 0.3s ease;
         }
         
         .dark-mode .stat-card {
@@ -341,8 +341,8 @@
         }
         
         .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
         
         .stat-header {
@@ -385,6 +385,21 @@
             font-size: 12px;
             font-weight: 500;
             margin-top: 8px;
+        }
+
+        .stat-card.active {
+            border: 2px solid #1a73e8;
+            background: #eef4ff;
+        }
+
+        /* animation */
+        .fade-in {
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px);}
+            to { opacity: 1; transform: translateY(0);}
         }
         
         .stat-change.positive { background: #d1fae5; color: #065f46; }
@@ -646,21 +661,40 @@
             font-size: 12px;
             color: #6b7280;
         }
-        
+
+        .project-row {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+                
         .progress-bar {
-            width: 100%;
-            height: 6px;
+            height: 8px;
             background: #e5e7eb;
-            border-radius: 3px;
+            border-radius: 10px;
             overflow: hidden;
-            margin-top: 12px;
+        }
+
+        .project-row:hover {
+            background: #f1f5ff;
+            transform: scale(1.01);
         }
         
         .progress-fill {
             height: 100%;
-            background: #10b981;
-            transition: width 0.3s;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #1a73e8, #10b981);
+            transition: width 0.5s ease;
         }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .badge-active { background: #e0f2fe; color: #0369a1; }
+        .badge-completed { background: #dcfce7; color: #166534; }
+        .badge-pending { background: #fef3c7; color: #92400e; }
         
         /* Forms */
         .form-grid {
@@ -711,6 +745,71 @@
         .form-textarea {
             min-height: 100px;
             resize: vertical;
+        }
+
+        /* Task row hover */
+        .task-row:hover {
+            background: #f1f5ff;
+            transition: 0.3s;
+        }
+
+        /* Status badges */
+        .badge-high { background: #fee2e2; color: #991b1b; }
+        .badge-medium { background: #fef3c7; color: #92400e; }
+        .badge-low { background: #dcfce7; color: #166534; }
+
+        /* clickable */
+        .task-action {
+            cursor: pointer;
+            font-size: 12px;
+            color: #1a73e8;
+        }
+
+
+        /* team */
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .team-card {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .team-card:hover {
+            transform: translateY(-5px);
+            background: #eef4ff;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .team-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            margin: 0 auto 12px;
+        }
+
+        .team-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .team-role {
+            font-size: 12px;
+            color: #6b7280;
         }
         
         /* Modal */
@@ -1938,38 +2037,46 @@
                 </div>
                 
                 <!-- My Tasks Page -->
+
+
+
+
+
+
+
+                <!-- Projects And  Team -->
                 
 
-                <!-- Remaining pages placeholders for brevity - Projects, Calendar, Leave, Performance, Salary, Chat, Notifications -->
+                
                 <div id="projects-page" class="page-content">
                     <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 32px;">📁 My Projects</h1>
                     
                     <!-- Project Stats -->
                     <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr);">
-                        <div class="stat-card" style="text-align: center;">
+                        <div class="stat-card" data-type="active" style="text-align: center; cursor: pointer;">
                             <div class="stat-value">3</div>
                             <div class="stat-label">Active Projects</div>
                         </div>
-                        <div class="stat-card" style="text-align: center;">
+                        <div class="stat-card" data-type="tasks" style="text-align: center; cursor: pointer;">
                             <div class="stat-value">12</div>
                             <div class="stat-label">Tasks Assigned</div>
                         </div>
-                        <div class="stat-card" style="text-align: center;">
+                        <div class="stat-card" data-type="progress" style="text-align: center; cursor: pointer;">
                             <div class="stat-value">68%</div>
                             <div class="stat-label">Avg Progress</div>
                         </div>
-                        <div class="stat-card" style="text-align: center;">
+                        <div class="stat-card" data-type="completed" style="text-align: center; cursor: pointer;">
                             <div class="stat-value">5</div>
                             <div class="stat-label">Completed Projects</div>
                         </div>
                     </div>
                     
-                    <!-- Active Projects -->
-                    <div class="table-container">
+                   <div class="table-container">
                         <div class="table-header">
                             <h3 class="table-title">My Active Projects</h3>
                         </div>
-                        <table>
+
+                        <table id="projectTable">
                             <thead>
                                 <tr>
                                     <th>Project Name</th>
@@ -1982,92 +2089,13 @@
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>E-Commerce Platform</strong></td>
-                                    <td>ABC Corp</td>
-                                    <td>Senior Developer</td>
-                                    <td>12 members</td>
-                                    <td>Jan 01 - Mar 31, 2026</td>
-                                    <td>
-                                        <div>65%</div>
-                                        <div class="progress-bar">
-                                            <div class="progress-fill" style="width: 65%;"></div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge badge-info">In Progress</span></td>
-                                    <td>
-                                        <button class="btn btn-outline" onclick="viewProjectDetails('proj1')">👁️ View</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Mobile App Development</strong></td>
-                                    <td>XYZ Ltd</td>
-                                    <td>Lead Developer</td>
-                                    <td>8 members</td>
-                                    <td>Dec 15 - Feb 28, 2026</td>
-                                    <td>
-                                        <div>80%</div>
-                                        <div class="progress-bar">
-                                            <div class="progress-fill" style="width: 80%;"></div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge badge-info">In Progress</span></td>
-                                    <td>
-                                        <button class="btn btn-outline" onclick="viewProjectDetails('proj2')">👁️ View</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong>API Development</strong></td>
-                                    <td>PQR Inc</td>
-                                    <td>Backend Developer</td>
-                                    <td>5 members</td>
-                                    <td>Jan 10 - Feb 15, 2026</td>
-                                    <td>
-                                        <div>45%</div>
-                                        <div class="progress-bar">
-                                            <div class="progress-fill" style="width: 45%;"></div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge badge-info">In Progress</span></td>
-                                    <td>
-                                        <button class="btn btn-outline" onclick="viewProjectDetails('proj3')">👁️ View</button>
-                                    </td>
-                                </tr>
+
+                        <tbody id="projectTableBody">
+                                <!-- JS will inject projects -->
                             </tbody>
                         </table>
-                    </div>
+                     </div>
                     
-                    <!-- Project Details: E-Commerce Platform -->
-                    <div class="table-container">
-                        <div class="table-header">
-                            <h3 class="table-title">E-Commerce Platform - Project Details</h3>
-                        </div>
-                        <div style="padding: 24px;">
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label class="form-label">Client Name</label>
-                                    <input type="text" class="form-input" value="ABC Corporation" readonly>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Project Manager</label>
-                                    <input type="text" class="form-input" value="Sarah Johnson" readonly>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Start Date</label>
-                                    <input type="text" class="form-input" value="January 01, 2026" readonly>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">End Date</label>
-                                    <input type="text" class="form-input" value="March 31, 2026" readonly>
-                                </div>
-                                <div class="form-group" style="grid-column: 1 / -1;">
-                                    <label class="form-label">Project Description</label>
-                                    <textarea class="form-textarea" readonly>Develop a full-featured e-commerce platform with payment gateway integration, inventory management, and customer analytics. The platform should support multiple vendors and provide real-time order tracking.</textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     
                     <!-- Team Members -->
                     <div class="table-container">
@@ -2075,32 +2103,8 @@
                             <h3 class="table-title">Team Members (E-Commerce Platform)</h3>
                         </div>
                         <div style="padding: 24px;">
-                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px;">
-                                <div style="padding: 16px; background: #f9fafb; border-radius: 8px; text-align: center;">
-                                    <div style="width: 60px; height: 60px; border-radius: 50%; background: #1a73e8; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: 700;">S</div>
-                                    <div style="font-weight: 600; margin-bottom: 4px;">Sarah Johnson</div>
-                                    <div style="font-size: 12px; color: #6b7280;">Project Manager</div>
-                                </div>
-                                <div style="padding: 16px; background: #f9fafb; border-radius: 8px; text-align: center;">
-                                    <div style="width: 60px; height: 60px; border-radius: 50%; background: #10b981; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: 700;">J</div>
-                                    <div style="font-weight: 600; margin-bottom: 4px;">John Doe (You)</div>
-                                    <div style="font-size: 12px; color: #6b7280;">Senior Developer</div>
-                                </div>
-                                <div style="padding: 16px; background: #f9fafb; border-radius: 8px; text-align: center;">
-                                    <div style="width: 60px; height: 60px; border-radius: 50%; background: #f59e0b; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: 700;">M</div>
-                                    <div style="font-weight: 600; margin-bottom: 4px;">Mike Anderson</div>
-                                    <div style="font-size: 12px; color: #6b7280;">Frontend Developer</div>
-                                </div>
-                                <div style="padding: 16px; background: #f9fafb; border-radius: 8px; text-align: center;">
-                                    <div style="width: 60px; height: 60px; border-radius: 50%; background: #8b5cf6; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: 700;">E</div>
-                                    <div style="font-weight: 600; margin-bottom: 4px;">Emily Chen</div>
-                                    <div style="font-size: 12px; color: #6b7280;">UI/UX Designer</div>
-                                </div>
-                                <div style="padding: 16px; background: #f9fafb; border-radius: 8px; text-align: center;">
-                                    <div style="width: 60px; height: 60px; border-radius: 50%; background: #ef4444; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: 700;">D</div>
-                                    <div style="font-weight: 600; margin-bottom: 4px;">David Lee</div>
-                                    <div style="font-size: 12px; color: #6b7280;">QA Engineer</div>
-                                </div>
+                            <div id="teamContainer" class="team-grid">
+                                <!-- JS will render team -->
                             </div>
                         </div>
                     </div>
@@ -2120,41 +2124,7 @@
                                     <th>Progress</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Fix login authentication bug</td>
-                                    <td><span class="badge badge-danger">High</span></td>
-                                    <td>Today, 5:00 PM</td>
-                                    <td><span class="badge badge-info">In Progress</span></td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-fill" style="width: 65%;"></div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Update landing page design</td>
-                                    <td><span class="badge badge-danger">High</span></td>
-                                    <td>Today, 6:00 PM</td>
-                                    <td><span class="badge badge-secondary">To Do</span></td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-fill" style="width: 0%;"></div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Database optimization</td>
-                                    <td><span class="badge badge-warning">Medium</span></td>
-                                    <td>Jan 22, 2026</td>
-                                    <td><span class="badge badge-success">Completed</span></td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-fill" style="width: 100%;"></div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <tbody id="taskTableBody">
                         </table>
                     </div>
                     
@@ -2164,54 +2134,15 @@
                             <h3 class="table-title">Project Files & Documents</h3>
                         </div>
                         <div style="padding: 24px;">
-                            <div class="document-list">
-                                <div class="document-item">
-                                    <div class="document-info">
-                                        <div class="document-icon">📄</div>
-                                        <div>
-                                            <h4 style="font-weight: 600; margin-bottom: 4px;">Project Requirements.pdf</h4>
-                                            <p style="font-size: 12px; color: #6b7280;">E-Commerce Platform • 2.4 MB</p>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-outline" onclick="downloadProjectFile('req.pdf')">📥 Download</button>
-                                </div>
-                                
-                                <div class="document-item">
-                                    <div class="document-info">
-                                        <div class="document-icon" style="background: #10b981;">🎨</div>
-                                        <div>
-                                            <h4 style="font-weight: 600; margin-bottom: 4px;">Design Mockups.fig</h4>
-                                            <p style="font-size: 12px; color: #6b7280;">E-Commerce Platform • 15.8 MB</p>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-outline" onclick="downloadProjectFile('design.fig')">📥 Download</button>
-                                </div>
-                                
-                                <div class="document-item">
-                                    <div class="document-info">
-                                        <div class="document-icon" style="background: #f59e0b;">📊</div>
-                                        <div>
-                                            <h4 style="font-weight: 600; margin-bottom: 4px;">Technical Specifications.docx</h4>
-                                            <p style="font-size: 12px; color: #6b7280;">E-Commerce Platform • 890 KB</p>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-outline" onclick="downloadProjectFile('specs.docx')">📥 Download</button>
-                                </div>
-                                
-                                <div class="document-item">
-                                    <div class="document-info">
-                                        <div class="document-icon" style="background: #8b5cf6;">📋</div>
-                                        <div>
-                                            <h4 style="font-weight: 600; margin-bottom: 4px;">API Documentation.pdf</h4>
-                                            <p style="font-size: 12px; color: #6b7280;">E-Commerce Platform • 3.2 MB</p>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-outline" onclick="downloadProjectFile('api-docs.pdf')">📥 Download</button>
-                                </div>
+                            <div id="documentContainer" class="document-list">
+                                <!-- JS will render documents -->
                             </div>
                         </div>
                     </div>
                 </div>
+
+
+                <!-- Events and Calendar Page -->
 
                 
                 <div id="calendar-page" class="page-content">
@@ -4254,7 +4185,426 @@ console.log("DATA DATES:", data.map(d => d.date));
 
 
 // ================================   event & calendar end her =============================
-        // Navigation
+ 
+
+// =============================== Projects And Team Page ==========================================
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const cards = document.querySelectorAll(".stat-card");
+    const rows = document.querySelectorAll("#projectTable tbody tr");
+
+    cards.forEach(card => {
+        card.addEventListener("click", function () {
+
+            // remove active class
+            cards.forEach(c => c.classList.remove("active"));
+            this.classList.add("active");
+
+            const type = this.getAttribute("data-type");
+
+            rows.forEach(row => {
+                row.classList.remove("fade-in");
+
+                if (type === "active") {
+                    row.style.display = "table-row";
+                }
+
+                else if (type === "completed") {
+                    if (row.getAttribute("data-status") === "completed") {
+                        row.style.display = "table-row";
+                        row.classList.add("fade-in");
+                    } else {
+                        row.style.display = "none";
+                    }
+                }
+
+                else if (type === "tasks") {
+                    row.style.display = "table-row"; // future logic
+                }
+
+                else if (type === "progress") {
+                    row.style.display = "table-row"; // future logic
+                }
+            });
+
+        });
+    });
+
+});
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const cards = document.querySelectorAll(".stat-card");
+    const tableBody = document.getElementById("projectTableBody");
+
+    if (!tableBody) {
+        console.error("❌ projectTableBody not found");
+        return;
+    }
+
+    // Dummy Data
+    const projects = [
+        {
+            id: "proj1",
+            name: "E-Commerce Platform",
+            client: "ABC Corp",
+            role: "Senior Developer",
+            team: 12,
+            timeline: "Jan 01 - Mar 31, 2026",
+            progress: 65,
+            status: "active"
+        },
+        {
+            id: "proj2",
+            name: "Mobile App Development",
+            client: "XYZ Ltd",
+            role: "Lead Developer",
+            team: 8,
+            timeline: "Dec 15 - Feb 28, 2026",
+            progress: 80,
+            status: "active"
+        },
+        {
+            id: "proj3",
+            name: "API Development",
+            client: "PQR Inc",
+            role: "Backend Developer",
+            team: 5,
+            timeline: "Jan 10 - Feb 15, 2026",
+            progress: 100,
+            status: "completed"
+        }
+    ];
+
+    function renderProjects(filter = "all") {
+        tableBody.innerHTML = "";
+
+        let filtered = projects;
+
+        if (filter === "active") {
+            filtered = projects.filter(p => p.status === "active");
+        } else if (filter === "completed") {
+            filtered = projects.filter(p => p.status === "completed");
+        }
+
+        filtered.forEach(project => {
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td><strong>${project.name}</strong></td>
+                <td>${project.client}</td>
+                <td>${project.role}</td>
+                <td>${project.team} members</td>
+                <td>${project.timeline}</td>
+                <td>
+                    <div>${project.progress}%</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${project.progress}%"></div>
+                    </div>
+                </td>
+                <td>
+                    <span class="badge ${project.status === "completed" ? "badge-completed" : "badge-active"}">
+                        ${project.status === "completed" ? "Completed" : "In Progress"}
+                    </span>
+                </td>
+                <td>
+                    <button class="btn btn-outline">👁️ View</button>
+                </td>
+            `;
+
+            tableBody.appendChild(row);
+        });
+    }
+
+    // Initial render
+    renderProjects();
+
+    // Card click
+    cards.forEach(card => {
+        card.addEventListener("click", function () {
+            const type = this.getAttribute("data-type");
+
+            cards.forEach(c => c.classList.remove("active"));
+            this.classList.add("active");
+
+            if (type === "active") renderProjects("active");
+            else if (type === "completed") renderProjects("completed");
+            else renderProjects();
+        });
+    });
+
+});
+
+
+
+
+
+// 🔥 TEAM DATA (future API replace karega)
+const teamMembers = [
+    { name: "Sarah Johnson", role: "Project Manager" },
+    { name: "John Doe", role: "Senior Developer", you: true },
+    { name: "Mike Anderson", role: "Frontend Developer" },
+    { name: "Emily Chen", role: "UI/UX Designer" },
+    { name: "David Lee", role: "QA Engineer" }
+];
+
+const colors = ["#1a73e8", "#10b981", "#f59e0b", "#8b5cf6", "#ef4444"];
+
+function getInitials(name) {
+    return name.split(" ").map(n => n[0]).join("").toUpperCase();
+}
+
+function renderTeam() {
+    const container = document.getElementById("teamContainer");
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    teamMembers.forEach((member, index) => {
+
+        const div = document.createElement("div");
+        div.classList.add("team-card");
+
+        const initials = getInitials(member.name);
+        const color = colors[index % colors.length];
+
+        div.innerHTML = `
+            <div class="team-avatar" style="background:${color}">
+                ${initials}
+            </div>
+            <div class="team-name">
+                ${member.name} ${member.you ? "(You)" : ""}
+            </div>
+            <div class="team-role">${member.role}</div>
+        `;
+
+        container.appendChild(div);
+    });
+}
+
+// call after DOM load
+renderTeam();
+
+
+
+// 🔥 TASK DATA (future API replace karega)
+let tasks = [
+    {
+        id: 1,
+        name: "Fix login authentication bug",
+        priority: "high",
+        due: "Today, 5:00 PM",
+        status: "inprogress",
+        progress: 65
+    },
+    {
+        id: 2,
+        name: "Update landing page design",
+        priority: "high",
+        due: "Today, 6:00 PM",
+        status: "todo",
+        progress: 0
+    },
+    {
+        id: 3,
+        name: "Database optimization",
+        priority: "medium",
+        due: "Jan 22, 2026",
+        status: "completed",
+        progress: 100
+    }
+];
+
+function getPriorityClass(p) {
+    if (p === "high") return "badge-high";
+    if (p === "medium") return "badge-medium";
+    return "badge-low";
+}
+
+function getStatusText(s) {
+    if (s === "todo") return "To Do";
+    if (s === "inprogress") return "In Progress";
+    return "Completed";
+}
+
+function getStatusClass(s) {
+    if (s === "completed") return "badge-success";
+    if (s === "inprogress") return "badge-info";
+    return "badge-secondary";
+}
+
+function renderTasks() {
+    const tbody = document.getElementById("taskTableBody");
+    if (!tbody) return;
+
+    tbody.innerHTML = "";
+
+    tasks.forEach(task => {
+        const tr = document.createElement("tr");
+        tr.classList.add("task-row");
+
+        tr.innerHTML = `
+            <td>${task.name}</td>
+            <td><span class="badge ${getPriorityClass(task.priority)}">${task.priority}</span></td>
+            <td>${task.due}</td>
+            <td>
+                <span class="badge ${getStatusClass(task.status)}">
+                    ${getStatusText(task.status)}
+                </span>
+                <div class="task-action" onclick="toggleTask(${task.id})">Change</div>
+            </td>
+            <td>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width:${task.progress}%"></div>
+                </div>
+            </td>
+        `;
+
+        tbody.appendChild(tr);
+    });
+}
+
+// 🔥 Toggle Status (UI level only)
+function toggleTask(id) {
+    tasks = tasks.map(task => {
+        if (task.id === id) {
+
+            if (task.status === "todo") {
+                task.status = "inprogress";
+                task.progress = 50;
+            } else if (task.status === "inprogress") {
+                task.status = "completed";
+                task.progress = 100;
+            }
+
+        }
+        return task;
+    });
+
+    renderTasks();
+}
+
+// initial load
+renderTasks();
+
+
+
+// 🔥 DOCUMENT DATA (future API se aayega)
+let documents = [
+    {
+        id: 1,
+        name: "Project Requirements.pdf",
+        size: "2.4 MB",
+        project: "E-Commerce Platform",
+        type: "pdf",
+        url: "#"
+    },
+    {
+        id: 2,
+        name: "Design Mockups.fig",
+        size: "15.8 MB",
+        project: "E-Commerce Platform",
+        type: "fig",
+        url: "#"
+    },
+    {
+        id: 3,
+        name: "Technical Specifications.docx",
+        size: "890 KB",
+        project: "E-Commerce Platform",
+        type: "doc",
+        url: "#"
+    },
+    {
+        id: 4,
+        name: "API Documentation.pdf",
+        size: "3.2 MB",
+        project: "E-Commerce Platform",
+        type: "pdf",
+        url: "#"
+    }
+];
+
+function getFileIcon(type) {
+    switch(type) {
+        case "pdf": return { icon: "📄", color: "#ef4444" };
+        case "doc": return { icon: "📄", color: "#1a73e8" };
+        case "fig": return { icon: "🎨", color: "#10b981" };
+        default: return { icon: "📁", color: "#6b7280" };
+    }
+}
+
+function renderDocuments() {
+    const container = document.getElementById("documentContainer");
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    documents.forEach(doc => {
+
+        const file = getFileIcon(doc.type);
+
+        const div = document.createElement("div");
+        div.classList.add("document-item");
+
+        div.innerHTML = `
+            <div class="document-info">
+                <div class="document-icon" style="background:${file.color}">
+                    ${file.icon}
+                </div>
+                <div>
+                    <h4 style="font-weight: 600;">${doc.name}</h4>
+                    <p style="font-size: 12px; color: #6b7280;">
+                        ${doc.project} • ${doc.size}
+                    </p>
+                </div>
+            </div>
+
+            <button class="btn btn-outline" onclick="downloadFile('${doc.url}')">
+                📥 Download
+            </button>
+        `;
+
+        container.appendChild(div);
+    });
+}
+
+// download (UI only)
+function downloadFile(url) {
+    alert("Downloading file...");
+}
+
+// initial load
+renderDocuments();
+
+
+
+
+
+
+
+
+
+
+// =============================== Projects And Team Page End Here ==========================================
+
+
+
+
+
+
+
+
+
+
+
+// Navigation
         document.querySelectorAll('.menu-item').forEach(item => {
             item.addEventListener('click', function() {
                 const page = this.getAttribute('data-page');
