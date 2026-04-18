@@ -1396,6 +1396,27 @@
     color: #6b7280;
 }
 
+.policy-card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: 0.3s;
+}
+
+.policy-card:hover {
+    transform: translateY(-5px);
+}
+
+.policy-card h4 {
+    margin-bottom: 10px;
+}
+
+.policy-card ul {
+    padding-left: 18px;
+    color: #6b7280;
+}
+
         /* ⏰ Big Time */
         .big-time {
             font-size: 48px;
@@ -2226,7 +2247,9 @@
                     </div>
 
                 </div>
-              <!--   // payment System  -->
+
+
+              <!-- Leave Page  -->
 
                 
                 <div id="leave-page" class="page-content">
@@ -2235,20 +2258,19 @@
                     <!-- Leave Balance -->
                     <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr);">
                         <div class="stat-card" style="text-align: center;">
-                            <div class="stat-value" style="color: #10b981;">12</div>
+                            <div class="stat-value" id="totalLeave" style="color: #10b981;">12</div>
                             <div class="stat-label">Total Leave Balance</div>
                         </div>
                         <div class="stat-card" style="text-align: center;">
-                            <div class="stat-value" style="color: #3b82f6;">8</div>
+                            <div class="stat-value" id="casualLeave" style="color: #3b82f6;">8</div>
                             <div class="stat-label">Casual Leave</div>
                         </div>
                         <div class="stat-card" style="text-align: center;">
-                            <div class="stat-value" style="color: #f59e0b;">4</div>
+                            <div class="stat-value" id="sickLeave" style="color: #f59e0b;">4</div>
                             <div class="stat-label">Sick Leave</div>
                         </div>
                         <div class="stat-card" style="text-align: center;">
-                            <div class="stat-value" style="color: #6b7280;">6</div>
-                            <div class="stat-label">Used This Year</div>
+                        <div class="stat-value" id="usedLeave" style="color: #6b7280;">6</div>                            <div class="stat-label">Used This Year</div>
                         </div>
                     </div>
                     
@@ -2285,10 +2307,15 @@
                                     <label class="form-label">Reason *</label>
                                     <textarea class="form-textarea" id="leaveReason" placeholder="Please provide reason for leave..."></textarea>
                                 </div>
+                                <div class="form-group" style="grid-column: 1 / -1;">
+                                    <label class="form-label">Upload Document (Optional)</label>
+                                    <input type="file" class="form-input" id="leaveFile" accept=".pdf,image/*">
+                                </div>
                             </div>
                             <div style="margin-top: 24px; display: flex; gap: 12px;">
-                                <button class="btn btn-primary" onclick="applyLeave()">✓ Submit Leave Request</button>
+                                <button class="btn btn-primary" onclick="submitLeave()">✓ Submit Leave Request</button>
                                 <button class="btn btn-outline" onclick="resetLeaveForm()">↺ Reset</button>
+
                             </div>
                         </div>
                     </div>
@@ -2297,7 +2324,12 @@
                     <div class="table-container">
                         <div class="table-header">
                             <h3 class="table-title">My Leave History</h3>
-                            <button class="btn btn-outline">🔽 Filter</button>
+                            <select class="form-select" id="filterStatus" onchange="filterLeaves()" style="width:150px;">
+                                <option value="ALL">All</option>
+                                <option value="PENDING">Pending</option>
+                                <option value="APPROVED">Approved</option>
+                                <option value="REJECTED">Rejected</option>
+                            </select>
                         </div>
                         <table>
                             <thead>
@@ -2311,43 +2343,9 @@
                                     <th>Applied On</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Sick Leave</td>
-                                    <td>Jan 20, 2026</td>
-                                    <td>Jan 20, 2026</td>
-                                    <td>1</td>
-                                    <td>Medical checkup</td>
-                                    <td><span class="badge badge-success">Approved</span></td>
-                                    <td>Jan 19, 2026</td>
-                                </tr>
-                                <tr>
-                                    <td>Casual Leave</td>
-                                    <td>Jan 15, 2026</td>
-                                    <td>Jan 16, 2026</td>
-                                    <td>2</td>
-                                    <td>Personal work</td>
-                                    <td><span class="badge badge-success">Approved</span></td>
-                                    <td>Jan 12, 2026</td>
-                                </tr>
-                                <tr>
-                                    <td>Casual Leave</td>
-                                    <td>Dec 25, 2025</td>
-                                    <td>Dec 27, 2025</td>
-                                    <td>3</td>
-                                    <td>Family vacation</td>
-                                    <td><span class="badge badge-success">Approved</span></td>
-                                    <td>Dec 20, 2025</td>
-                                </tr>
-                                <tr>
-                                    <td>Emergency Leave</td>
-                                    <td>Dec 10, 2025</td>
-                                    <td>Dec 10, 2025</td>
-                                    <td>1</td>
-                                    <td>Family emergency</td>
-                                    <td><span class="badge badge-danger">Rejected</span></td>
-                                    <td>Dec 09, 2025</td>
-                                </tr>
+                            <th>Action</th>
+                            <tbody id="leaveTableBody">
+                                <!-- JS Fill  -->
                             </tbody>
                         </table>
                     </div>
@@ -2375,6 +2373,8 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- My Performance -->
                 
                 <div id="performance-page" class="page-content">
                     <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 32px;">📈 My Performance</h1>
@@ -2607,6 +2607,8 @@
                         </div>
                     </div>
                 </div>
+
+                <!--   // payment System  -->
                 
                 <div id="salary-page" class="page-content">
                     <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 32px;">💳 Salary & Payslip</h1>
@@ -2616,7 +2618,7 @@
                         <div class="stat-card">
                             <div class="stat-header">
                                 <div>
-                                    <div class="stat-value">$5,400</div>
+                                    <div class="stat-value" id="netSalary">--</div>
                                     <div class="stat-label">Net Salary (Jan 2026)</div>
                                 </div>
                                 <div class="stat-icon" style="background: #d1fae5; color: #065f46;">💰</div>
@@ -2627,7 +2629,7 @@
                         <div class="stat-card">
                             <div class="stat-header">
                                 <div>
-                                    <div class="stat-value">$5,000</div>
+                                    <div class="stat-value" id="basicSalary">--</div>
                                     <div class="stat-label">Basic Salary</div>
                                 </div>
                                 <div class="stat-icon" style="background: #dbeafe; color: #1e40af;">💵</div>
@@ -2637,7 +2639,7 @@
                         <div class="stat-card">
                             <div class="stat-header">
                                 <div>
-                                    <div class="stat-value">$1,200</div>
+                                    <div class="stat-value" id="totalAllowances">--</div>
                                     <div class="stat-label">Total Allowances</div>
                                 </div>
                                 <div class="stat-icon" style="background: #d1fae5; color: #065f46;">➕</div>
@@ -2647,7 +2649,7 @@
                         <div class="stat-card">
                             <div class="stat-header">
                                 <div>
-                                    <div class="stat-value">$800</div>
+                                    <div class="stat-value" id="totalDeductions">--</div>
                                     <div class="stat-label">Total Deductions</div>
                                 </div>
                                 <div class="stat-icon" style="background: #fee2e2; color: #991b1b;">➖</div>
@@ -2667,23 +2669,23 @@
                                     <h4 style="color: #10b981; margin-bottom: 16px; font-size: 16px;">Earnings</h4>
                                     <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
                                         <span>Basic Salary</span>
-                                        <span style="font-weight: 600;">$5,000.00</span>
+                                        <span style="font-weight: 600;" id="basic" >--</span>
                                     </div>
                                     <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
                                         <span>House Rent Allowance</span>
-                                        <span style="font-weight: 600;">$800.00</span>
+                                        <span style="font-weight: 600;" id="hra">--</span>
                                     </div>
                                     <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
                                         <span>Transport Allowance</span>
-                                        <span style="font-weight: 600;">$200.00</span>
+                                        <span style="font-weight: 600;" id="transport">$00</span>
                                     </div>
                                     <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
                                         <span>Special Allowance</span>
-                                        <span style="font-weight: 600;">$200.00</span>
+                                        <span style="font-weight: 600;"  id="special" >$00</span>
                                     </div>
                                     <div style="display: flex; justify-content: space-between; padding: 16px 0; margin-top: 8px; background: #d1fae5; padding: 12px; border-radius: 8px;">
                                         <span style="font-weight: 600; color: #065f46;">Total Earnings</span>
-                                        <span style="font-weight: 700; color: #065f46;">$6,200.00</span>
+                                        <span style="font-weight: 700; color: #065f46;"id="totalEarnings">$6,200.00</span>
                                     </div>
                                 </div>
                                 
@@ -2691,30 +2693,30 @@
                                     <h4 style="color: #ef4444; margin-bottom: 16px; font-size: 16px;">Deductions</h4>
                                     <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
                                         <span>Tax Deducted at Source</span>
-                                        <span style="font-weight: 600;">$500.00</span>
+                                        <span style="font-weight: 600;" id="tds" >$00</span>
                                     </div>
                                     <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
                                         <span>Provident Fund</span>
-                                        <span style="font-weight: 600;">$200.00</span>
+                                        <span style="font-weight: 600;" id="pf">$200.00</span>
                                     </div>
                                     <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
                                         <span>Professional Tax</span>
-                                        <span style="font-weight: 600;">$100.00</span>
+                                        <span style="font-weight: 600;"id="tax">$100.00</span>
                                     </div>
                                     <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
                                         <span>Other Deductions</span>
-                                        <span style="font-weight: 600;">$0.00</span>
+                                        <span style="font-weight: 600;"id="others" >$0.00</span>
                                     </div>
                                     <div style="display: flex; justify-content: space-between; padding: 16px 0; margin-top: 8px; background: #fee2e2; padding: 12px; border-radius: 8px;">
                                         <span style="font-weight: 600; color: #991b1b;">Total Deductions</span>
-                                        <span style="font-weight: 700; color: #991b1b;">$800.00</span>
+                                        <span style="font-weight: 700; color: #991b1b;" id="totalDeduction">$800.00</span>
                                     </div>
                                 </div>
                             </div>
                             
                             <div style="margin-top: 32px; padding: 20px; background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%); color: white; border-radius: 12px; text-align: center;">
                                 <div style="font-size: 14px; margin-bottom: 8px;">Net Salary (Take Home)</div>
-                                <div style="font-size: 36px; font-weight: 700;">$5,400.00</div>
+                                <div style="font-size: 36px; font-weight: 700;" id="finalNetSalary">$5,400.00</div>
                             </div>
                         </div>
                     </div>
@@ -2834,27 +2836,27 @@
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label class="form-label">Bank Name</label>
-                                    <input type="text" class="form-input" value="Chase Bank" readonly>
+                                    <input type="text" class="form-input" value="Chase Bank " id="bankName" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Account Number</label>
-                                    <input type="text" class="form-input" value="****  ****  ****  1234" readonly>
+                                    <input type="text" class="form-input" value="****  ****  ****  1234" id="accountNumber" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Account Type</label>
-                                    <input type="text" class="form-input" value="Savings" readonly>
+                                    <input type="text" class="form-input" value="Savings" id="accountType" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">IFSC Code</label>
-                                    <input type="text" class="form-input" value="CHAS0001234" readonly>
+                                    <input type="text" class="form-input" value="CHAS0001234" id="ifsc" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Account Holder Name</label>
-                                    <input type="text" class="form-input" value="John Doe" readonly>
+                                    <input type="text" class="form-input" value="John Doe" id="holderName" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Branch</label>
-                                    <input type="text" class="form-input" value="New York Main Branch" readonly>
+                                    <input type="text" class="form-input" value="New York Main Branch" id="branch" readonly>
                                 </div>
                             </div>
                         </div>
@@ -2883,6 +2885,8 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Chat System -->
                 
                 <div id="chat-page" class="page-content">
                     <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 32px;">💬 Chat & Communication</h1>
@@ -3038,6 +3042,8 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Notification System  -->
                 
                 <div id="notifications-page" class="page-content">
                     <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 32px;">🔔 Notifications</h1>
@@ -4596,10 +4602,355 @@ renderDocuments();
 
 
 
+// ============================ Leave Management  ===============================================
+
+// 🔥 Common function (reuse for all APIs)
+function getAuthHeaders() {
+    return {
+        "Authorization": "Bearer " + localStorage.getItem("token")
+    };
+}
+
+
+
+async function loadLeaveStats() {
+    try {
+        const response = await fetch("http://localhost:8080/api/leave/summary", {
+            headers: getAuthHeaders()
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch data");
+        }
+
+        const data = await response.json();
+
+        document.getElementById("totalLeave").innerText = data.totalBalance;
+        document.getElementById("casualLeave").innerText = data.casualLeave;
+        document.getElementById("sickLeave").innerText = data.sickLeave;
+        document.getElementById("usedLeave").innerText = data.usedThisYear;
+
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+
+
+
+async function submitLeave() {
+
+    const leaveType = document.getElementById("leaveType").value;
+    const fromDate = document.getElementById("leaveFromDate").value;
+    const toDate = document.getElementById("leaveToDate").value;
+    const reason = document.getElementById("leaveReason").value;
+    const days = document.getElementById("leaveDays").value;
+    const file = document.getElementById("leaveFile").files[0];
+
+    // ✅ Validation
+    if (!leaveType || !fromDate || !toDate || !reason) {
+        alert("Please fill all required fields");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("leaveType", leaveType);
+    formData.append("fromDate", fromDate);
+    formData.append("toDate", toDate);
+    formData.append("reason", reason);
+    formData.append("days", days);
+
+    if (file) {
+        formData.append("file", file);
+    }
+
+    try {
+        const response = await fetch("http://localhost:8080/api/leave/apply", {
+            method: "POST",
+            headers: getAuthHeaders(),
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to apply leave");
+        }
+
+        alert("Leave Applied Successfully ✅");
+
+        // reload stats
+        loadLeaveStats();
+        loadLeaveHistory();   // ✅ ADD THIS
+        resetLeaveForm();     // ✅ also reset
+
+    } catch (error) {
+        console.error(error);
+        alert("Error submitting leave");
+    }
+}
 
 
 
 
+
+function calculateDays() {
+    const from = new Date(document.getElementById("leaveFromDate").value);
+    const to = new Date(document.getElementById("leaveToDate").value);
+
+    if (from && to && to >= from) {
+        const diff = (to - from) / (1000 * 60 * 60 * 24) + 1;
+        document.getElementById("leaveDays").value = diff;
+    }
+}
+
+
+
+// For recents List Of leaves
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadLeaveStats();
+    loadLeaveHistory();
+    resetLeaveForm(); 
+
+    document.getElementById("leaveFromDate").addEventListener("change", calculateDays);
+    document.getElementById("leaveToDate").addEventListener("change", calculateDays);
+});
+
+async function loadLeaveHistory() {
+    try {
+        const response = await fetch("http://localhost:8080/api/leave/history", {
+            headers: getAuthHeaders()
+        })
+        const data = await response.json();
+
+        renderLeaveTable(data);
+
+    } catch (error) {
+        console.error("Error loading history:", error);
+    }
+}
+
+
+
+
+
+
+async function filterLeaves() {
+
+    const status = document.getElementById("filterStatus").value;
+
+    let url = "http://localhost:8080/api/leave/history";
+
+    if (status !== "ALL") {
+        url += "?status=" + status;
+    }
+
+    try {
+        const response = await fetch(url,{
+            headers: getAuthHeaders() // ✅ FIX ADDED
+        });
+
+        const data = await response.json();
+
+        renderLeaveTable(data);
+
+    } catch (error) {
+        console.error("Filter error:", error);
+    }
+}
+
+
+
+
+function renderLeaveTable(data) {
+    if (!data || !Array.isArray(data)) {
+        console.error("Invalid Leave Data:", data);
+        return;
+    }
+    const table = document.getElementById("leaveTableBody");
+    table.innerHTML = "";
+
+    data.forEach(leave => {
+
+        let statusClass = "badge badge-success";
+
+        if (leave.status === "PENDING") {
+            statusClass = "badge badge-warning";
+        } else if (leave.status === "REJECTED") {
+            statusClass = "badge badge-danger";
+        }
+
+        let fileButton = "";
+
+        if (leave.fileName) {
+            fileButton = `
+                <button class="btn btn-outline" onclick="viewFile('${leave.fileName}')">👁</button>
+                <button class="btn btn-outline" onclick="downloadFile('${leave.fileName}')">⬇</button>
+            `;
+        } else {
+            fileButton = "-";
+        }
+
+        const row = `
+            <tr>
+                <td>${leave.leaveType}</td>
+                <td>${leave.fromDate}</td>
+                <td>${leave.toDate}</td>
+                <td>${leave.days}</td>
+                <td>${leave.reason}</td>
+                <td><span class="${statusClass}">${leave.status}</span></td>
+                <td>${leave.appliedDate}</td>
+                <td>${fileButton}</td>
+            </tr>
+        `;
+
+        table.innerHTML += row;
+    });
+}
+
+
+
+function viewFile(fileName) {
+    const token = localStorage.getItem("token");
+
+    fetch(`http://localhost:8080/api/leave/file/${fileName}`, {
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+    })
+    .then(res => res.blob())
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        window.open(url);
+    });
+}
+
+function downloadFile(fileName) {
+    const token = localStorage.getItem("token");
+
+    fetch(`http://localhost:8080/api/leave/download/${fileName}`, {
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+    })
+    .then(res => res.blob())
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = fileName;
+        a.click();
+    });
+}
+
+
+
+
+function resetLeaveForm() {
+    document.getElementById("leaveType").value = "";
+    document.getElementById("leaveFromDate").value = "";
+    document.getElementById("leaveToDate").value = "";
+    document.getElementById("leaveDays").value = "1";
+    document.getElementById("leaveReason").value = "";
+    document.getElementById("leaveFile").value = "";
+}
+
+
+// problem-not working views files 
+
+
+
+
+
+
+// ================================ Leave Maanagement End Here   ========================================
+
+
+
+//  =============================  PayMent System  ============================================
+
+
+async function loadSalary() {
+    try {
+        const res = await fetch("/api/salary");
+        const data = await res.json();
+
+        document.getElementById("netSalary").innerText = "$" + data.netSalary;
+        document.getElementById("basicSalary").innerText = "$" + data.basic;
+
+        document.getElementById("totalAllowances").innerText = "$" + data.allowances;
+        document.getElementById("totalDeductions").innerText = "$" + data.deductions;
+
+        // Earnings
+        document.getElementById("basic").innerText = "$" + data.basic;
+        document.getElementById("hra").innerText = "$" + data.hra;
+        document.getElementById("transport").innerText = "$" + data.transport;
+        document.getElementById("special").innerText = "$" + data.special;
+        document.getElementById("totalEarnings").innerText = "$" + data.totalEarnings;
+
+        // Deductions
+        document.getElementById("tds").innerText = "$" + data.tds;
+        document.getElementById("pf").innerText = "$" + data.pf;
+        document.getElementById("tax").innerText = "$" + data.tax;
+        document.getElementById("others").innerText = "$" + data.others;
+        document.getElementById("totalDeduction").innerText = "$" + data.totalDeductions;
+
+        document.getElementById("finalNetSalary").innerText = "$" + data.netSalary;
+
+    } catch (err) {
+        console.error("Salary load error:", err);
+    }
+}
+
+
+async function loadBankDetails() {
+    try {
+        const res = await fetch("/api/bank-details");
+        const data = await res.json();
+
+        document.getElementById("bankName").value = data.bankName;
+        document.getElementById("accountNumber").value = "****" + data.accountNumber.slice(-4);
+        document.getElementById("accountType").value = data.accountType;
+        document.getElementById("ifsc").value = data.ifsc;
+        document.getElementById("holderName").value = data.holderName;
+        document.getElementById("branch").value = data.branch;
+
+    } catch (err) {
+        console.error("Bank load error:", err);
+    }
+}
+
+
+function requestBankDetailsChange() {
+    alert("OTP verification required before updating bank details");
+    
+    // Future: open modal
+}
+
+
+function downloadPayslip(month) {
+    window.open(`/api/payslip/download/${month}`, "_blank");
+}
+
+
+window.onload = function () {
+    loadSalary();
+    loadBankDetails();
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// =====================================  Payment End Here  =========================================
 
 
 
