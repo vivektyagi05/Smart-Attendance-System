@@ -1465,6 +1465,45 @@
             background: #f1f5f9;
         }
 
+        .otp-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.otp-box {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 320px;
+    text-align: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.otp-box input {
+    width: 100%;
+    padding: 12px;
+    margin: 15px 0;
+    font-size: 18px;
+    text-align: center;
+}
+
+.otp-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+@keyframes fadeIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
     </style>
 </head>
 <body>
@@ -1601,7 +1640,7 @@
                         <div class="stat-card">
                             <div class="stat-header">
                                 <div>
-                                    <div class="stat-value" id="checkInTime">09:15 AM</div>
+                                    <div class="stat-value" id="checkInTime">--:--</div>
                                     <div class="stat-label">Check-in Time</div>
                                 </div>
                                 <div class="stat-icon" style="background: #d1fae5; color: #065f46;">🕐</div>
@@ -1937,7 +1976,7 @@
                         <p id="checkInStatus"></p>
                         
                         <div class="checkin-buttons modern-buttons">
-                            <button class="btn btn-success btn-large" id="checkInBtn" onclick="checkIn()" disabled>
+                            <button class="btn btn-success btn-large" id="checkInBtn" onclick="checkIn()">
                                 ✓ Check In
                             </button>
                             <button class="btn btn-danger btn-large" id="checkOutBtn" onclick="checkOut()">
@@ -2028,30 +2067,7 @@
                                 </tr>
                             </thead>
                             <tbody id="attendanceTableBody">
-                                <tr>
-                                    <td>Jan 23, 2026</td>
-                                    <td>09:15 AM</td>
-                                    <td>--:--</td>
-                                    <td>3h 45m</td>
-                                    <td><span class="badge badge-success">Present</span></td>
-                                    <td><button class="btn btn-outline" disabled>In Progress</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Jan 22, 2026</td>
-                                    <td>09:05 AM</td>
-                                    <td>06:30 PM</td>
-                                    <td>8h 55m</td>
-                                    <td><span class="badge badge-success">Present</span></td>
-                                    <td><button class="btn btn-outline" onclick="requestCorrection('2026-01-22')">🔄 Request Correction</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Jan 21, 2026</td>
-                                    <td>09:00 AM</td>
-                                    <td>06:15 PM</td>
-                                    <td>8h 45m</td>
-                                    <td><span class="badge badge-success">Present</span></td>
-                                    <td><button class="btn btn-outline" onclick="requestCorrection('2026-01-21')">🔄 Request Correction</button></td>
-                                </tr>
+                                <!-- fill by js -->
                             </tbody>
                         </table>
                     </div>
@@ -2737,27 +2753,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Performance Bonus</td>
-                                    <td>$500.00</td>
-                                    <td>Q4 2025</td>
-                                    <td><span class="badge badge-success">Paid</span></td>
-                                    <td>Jan 1, 2026</td>
-                                </tr>
-                                <tr>
-                                    <td>Project Completion Bonus</td>
-                                    <td>$300.00</td>
-                                    <td>Dec 2025</td>
-                                    <td><span class="badge badge-success">Paid</span></td>
-                                    <td>Dec 28, 2025</td>
-                                </tr>
-                                <tr>
-                                    <td>Annual Bonus</td>
-                                    <td>$1,000.00</td>
-                                    <td>Dec 2025</td>
-                                    <td><span class="badge badge-success">Paid</span></td>
-                                    <td>Dec 25, 2025</td>
-                                </tr>
+                                <!-- js  -->
                             </tbody>
                         </table>
                     </div>
@@ -2824,7 +2820,7 @@
                     <div class="table-container">
                         <div class="table-header">
                             <h3 class="table-title">Bank Account Details</h3>
-                            <button class="btn btn-outline" onclick="requestBankDetailsChange()">✏️ Request Change</button>
+                            <button onclick="requestBankDetailsChange()">✏️ Request Change</button>
                         </div>
                         <div style="padding: 24px;">
                             <div class="alert alert-info">
@@ -2858,9 +2854,14 @@
                                     <label class="form-label">Branch</label>
                                     <input type="text" class="form-input" value="New York Main Branch" id="branch" readonly>
                                 </div>
+                                <button type="button" class="btn btn-primary" id="saveBankBtn" style="display:none;">
+                                    💾 Save Details
+                                </button>
                             </div>
                         </div>
                     </div>
+
+                    
                     
                     <!-- Tax Information -->
                     <div class="table-container">
@@ -3592,7 +3593,7 @@
             window.location.href = "login.html";
         }
 
-
+        
 
 ////////   ============= Attendance page =============   //////////
 
@@ -3670,8 +3671,10 @@
 
     
 
-       window.onload = () => {
+        window.onload = () => {
             loadData();      // then
+            
+
         };
 
 
@@ -3704,7 +3707,7 @@
 
                 console.log("TODAY FINAL:", today);
                 console.log("TODAY STRING:", new Date().toISOString().split("T")[0]);
-console.log("DATA DATES:", data.map(d => d.date));
+                console.log("DATA DATES:", data.map(d => d.date));
 
                 const workingHours = today && today.workingHours
                     ? today.workingHours
@@ -3724,6 +3727,11 @@ console.log("DATA DATES:", data.map(d => d.date));
                     startWorkingTimer(today.checkIn);
                 }
             });
+        }
+
+        function openAttendancePage() {
+            document.getElementById("attendance-page").style.display = "block";
+            loadData(); // 🔥 यही missing था
         }
 
         function checkIn() {
@@ -3778,16 +3786,16 @@ console.log("DATA DATES:", data.map(d => d.date));
 
         function getTodayRecord(data) {
 
-    if (!data || data.length === 0) return null;
+            if (!data || data.length === 0) return null;
 
-    const today = new Date();
-    const todayStr =
-        today.getFullYear() + "-" +
-        String(today.getMonth() + 1).padStart(2, "0") + "-" +
-        String(today.getDate()).padStart(2, "0");
+            const today = new Date();
+            const todayStr =
+                today.getFullYear() + "-" +
+                String(today.getMonth() + 1).padStart(2, "0") + "-" +
+                String(today.getDate()).padStart(2, "0");
 
-    return data.find(item => item.date === todayStr) || null;
-}
+            return data.find(item => item.date === todayStr) || null;
+        }
 
 
         function checkOut() {
@@ -3937,7 +3945,7 @@ console.log("DATA DATES:", data.map(d => d.date));
         
 
 
-
+// ============================   task  page  =======================
 
 
 
@@ -4810,7 +4818,10 @@ function renderLeaveTable(data) {
 
 function viewFile(fileName) {
     const token = localStorage.getItem("token");
-
+    if (!token) {
+        alert("Session expired. Please login again.");
+        window.location.href = "/login.html";
+    }
     fetch(`http://localhost:8080/api/leave/file/${fileName}`, {
         headers: {
             "Authorization": "Bearer " + token
@@ -4825,7 +4836,10 @@ function viewFile(fileName) {
 
 function downloadFile(fileName) {
     const token = localStorage.getItem("token");
-
+    if (!token) {
+        alert("Session expired. Please login again.");
+        window.location.href = "/login.html";
+    }
     fetch(`http://localhost:8080/api/leave/download/${fileName}`, {
         headers: {
             "Authorization": "Bearer " + token
@@ -4854,7 +4868,7 @@ function resetLeaveForm() {
 }
 
 
-// problem-not working views files 
+// ////////////////problem-not working views files 
 
 
 
@@ -4869,31 +4883,44 @@ function resetLeaveForm() {
 
 
 async function loadSalary() {
+    const token = localStorage.getItem("token");
+        if (!token) {
+        alert("Session expired. Please login again.");
+        window.location.href = "/login.html";
+    }
     try {
-        const res = await fetch("/api/salary");
+        const res = await fetch("/api/salary", {
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        });
+
+        if(!res.ok){
+        console.error("Salary API error:", res.status);
+        return;
+        }
         const data = await res.json();
 
-        document.getElementById("netSalary").innerText = "$" + data.netSalary;
-        document.getElementById("basicSalary").innerText = "$" + data.basic;
+        document.getElementById("netSalary").innerText = "$" + (data.netSalary ?? 0);
+        document.getElementById("basicSalary").innerText = "$" + (data.basic ?? 0);
 
-        document.getElementById("totalAllowances").innerText = "$" + data.allowances;
-        document.getElementById("totalDeductions").innerText = "$" + data.deductions;
+        document.getElementById("totalAllowances").innerText = "$" + (data.allowances ?? 0);
+        document.getElementById("totalDeductions").innerText = "$" + (data.deductions ?? 0);
 
-        // Earnings
-        document.getElementById("basic").innerText = "$" + data.basic;
-        document.getElementById("hra").innerText = "$" + data.hra;
-        document.getElementById("transport").innerText = "$" + data.transport;
-        document.getElementById("special").innerText = "$" + data.special;
-        document.getElementById("totalEarnings").innerText = "$" + data.totalEarnings;
+        document.getElementById("basic").innerText = "$" + (data.basic ?? 0);
+        document.getElementById("hra").innerText = "$" + (data.hra ?? 0);
+        document.getElementById("transport").innerText = "$" + (data.transport ?? 0);
+        document.getElementById("special").innerText = "$" + (data.special ?? 0);
 
-        // Deductions
-        document.getElementById("tds").innerText = "$" + data.tds;
-        document.getElementById("pf").innerText = "$" + data.pf;
-        document.getElementById("tax").innerText = "$" + data.tax;
-        document.getElementById("others").innerText = "$" + data.others;
-        document.getElementById("totalDeduction").innerText = "$" + data.totalDeductions;
+        document.getElementById("tds").innerText = "$" + (data.tds ?? 0);
+        document.getElementById("pf").innerText = "$" + (data.pf ?? 0);
+        document.getElementById("tax").innerText = "$" + (data.tax ?? 0);
+        document.getElementById("others").innerText = "$" + (data.others ?? 0);
 
-        document.getElementById("finalNetSalary").innerText = "$" + data.netSalary;
+        document.getElementById("totalEarnings").innerText = "$" + (data.totalEarnings ?? 0);
+        document.getElementById("totalDeduction").innerText = "$" + (data.totalDeductions ?? 0);
+
+        document.getElementById("finalNetSalary").innerText = "$" + (data.netSalary ?? 0);
 
     } catch (err) {
         console.error("Salary load error:", err);
@@ -4901,33 +4928,120 @@ async function loadSalary() {
 }
 
 
-async function loadBankDetails() {
-    try {
-        const res = await fetch("/api/bank-details");
-        const data = await res.json();
-
-        document.getElementById("bankName").value = data.bankName;
-        document.getElementById("accountNumber").value = "****" + data.accountNumber.slice(-4);
-        document.getElementById("accountType").value = data.accountType;
-        document.getElementById("ifsc").value = data.ifsc;
-        document.getElementById("holderName").value = data.holderName;
-        document.getElementById("branch").value = data.branch;
-
-    } catch (err) {
-        console.error("Bank load error:", err);
-    }
-}
+let otpVerified = false;
 
 
 function requestBankDetailsChange() {
-    alert("OTP verification required before updating bank details");
+
+    const fields = ["bankName","accountNumber","accountType","ifsc","holderName","branch"];
+
+    fields.forEach(id => {
+        document.getElementById(id).removeAttribute("readonly");
+    });
+
+    document.getElementById("saveBankBtn").style.display = "block";
+}
+
+document.getElementById("saveBankBtn").addEventListener("click", async () => {
+
+
+    const data = {
+        bankName: document.getElementById("bankName").value,
+        accountNumber: document.getElementById("accountNumber").value,
+        accountType: document.getElementById("accountType").value,
+        ifsc: document.getElementById("ifsc").value,
+        holderName: document.getElementById("holderName").value,
+        branch: document.getElementById("branch").value
+    };
+
+    try {
+        const res = await fetch("/api/bank-details", {
+            method: isExisting ? "PUT" : "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify(data)
+        });
+
+        if(res.ok){
+            alert("Bank details saved successfully ✅");
+            location.reload();
+        } else {
+            alert("Error saving bank details ❌");
+        }
+
+    } catch (err) {
+        console.error(err);
+    }
+});
+
+let isExisting = false;
+
+async function loadBankDetails() {
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+        alert("Session expired. Please login again.");
+        window.location.href = "/login.html";
+    }
+
+    const res = await fetch("/api/bank-details", {
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+    });
     
-    // Future: open modal
+    if(res.status === 404){
+        isExisting = false;
+        return;
+    }
+
+    const data = await res.json();
+    isExisting = true;
+
+    document.getElementById("bankName").value = data.bankName;
+    document.getElementById("accountNumber").value = data.accountNumber;
+    document.getElementById("accountType").value = data.accountType;
+    document.getElementById("ifsc").value = data.ifsc;
+    document.getElementById("holderName").value = data.holderName;
+    document.getElementById("branch").value = data.branch;
 }
 
 
-function downloadPayslip(month) {
-    window.open(`/api/payslip/download/${month}`, "_blank");
+
+function downloadPayslip() {
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+        alert("Session expired. Please login again.");
+        window.location.href = "/login.html";
+    }
+
+    fetch("http://localhost:8080/api/payslip/download", {
+        method: "GET",
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+    })
+    .then(res => {
+        if(!res.ok){
+            throw new Error("API error: " + res.status);
+        }
+        return res.blob();
+    })
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+
+        a.href = url;
+        a.download = "payslip.pdf";
+        a.click();
+    })
+    .catch(err => {
+        console.error("Download error:", err);
+        alert("PDF download failed ❌");
+    });
 }
 
 
@@ -4937,16 +5051,144 @@ window.onload = function () {
 };
 
 
+async function requestBankDetailsChange() {
+
+    if(otpVerified){
+        enableBankForm();
+        return;
+    }
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+    alert("Session expired. Please login again.");
+    window.location.href = "/login.html";
+}
+
+    await fetch("/api/otp/send", {
+        method: "POST",
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+    });
+
+    document.getElementById("otpModal").style.display = "flex";
+}
+
+async function verifyOtp() {
+
+    const otp = document.getElementById("otpInput").value;
+    const token = localStorage.getItem("token");
+    if (!token) {
+    alert("Session expired. Please login again.");
+    window.location.href = "/login.html";
+}
+
+    const res = await fetch("/api/otp/verify", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({ otp })
+    });
+
+    if(res.ok){
+
+        otpVerified = true; // ✅ STORE STATE
+
+        document.getElementById("otpMsg").innerText = "✅ Verified";
+
+        enableBankForm();
+
+        // ✅ CLOSE MODAL PROPERLY
+        setTimeout(() => {
+            document.getElementById("otpModal").style.display = "none";
+        }, 800);
+
+    } else {
+        document.getElementById("otpMsg").innerText = "❌ Invalid OTP";
+    }
+}
 
 
+function enableBankForm() {
 
+    const fields = ["bankName","accountNumber","accountType","ifsc","holderName","branch"];
 
+    fields.forEach(id => {
+        document.getElementById(id).removeAttribute("readonly");
+    });
 
+    document.getElementById("saveBankBtn").style.display = "block";
+}
 
+async function resendOtp(){
 
+    const token = localStorage.getItem("token");
+    if (!token) {
+    alert("Session expired. Please login again.");
+    window.location.href = "/login.html";
+}
 
+    await fetch("/api/otp/send", {
+        method: "POST",
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+    });
 
+    document.getElementById("otpMsg").innerText = "OTP resent ✅";
+}
 
+window.onclick = function(event) {
+    const modal = document.getElementById("otpModal");
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+}
+
+let time = 60;
+setInterval(()=>{
+   if(time>0){
+      document.getElementById("otpMsg").innerText = "Resend in " + time;
+      time--;
+   }
+},1000);
+
+async function loadSalaryHistory() {
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+    alert("Session expired. Please login again.");
+    window.location.href = "/login.html";
+}
+
+    const res = await fetch("http://localhost:8080/api/salary-history", {
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+    });
+
+    const data = await res.json();
+
+    const tbody = document.querySelector("#historyTable");
+
+    tbody.innerHTML = "";
+
+    data.forEach((item, index) => {
+
+        tbody.innerHTML += `
+            <tr>
+                <td>Month ${index+1}</td>
+                <td>$${item.basic}</td>
+                <td>$${item.totalEarnings}</td>
+                <td>$${item.totalDeductions}</td>
+                <td>$${item.netSalary}</td>
+                <td><button onclick="downloadPayslip()">📥</button></td>
+            </tr>
+        `;
+    });
+}
 
 
 
@@ -5006,23 +5248,7 @@ window.onload = function () {
         });
         
         
-        // Task Functions
-        function viewTaskDetails(taskId) {
-            openModal('taskModal');
-            // TODO: Load task details
-        }
-        
-        function updateTask() {
-            const status = document.getElementById('taskStatus').value;
-            const comment = document.getElementById('taskComment').value;
-            alert('Task updated! Status: ' + status);
-            closeModal('taskModal');
-            // TODO: PATCH /api/tasks/:id/status
-        }
-        
-        function goToTasks() {
-            document.querySelector('[data-page="tasks"]').click();
-        }
+
         
         // Notification Functions
         function goToNotifications() {
@@ -5053,12 +5279,7 @@ window.onload = function () {
                 // TODO: DELETE /api/notifications/clear-all
             }
         }
-        
-
-
-
-        
-        
+    
 
         
         // Mobile menu toggle
@@ -5204,27 +5425,7 @@ window.onload = function () {
         });
     });
 
-    function goToPage(pageId) {
-        // Update Sidebar Active State
-        document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
-        const activeItem = document.querySelector(`.menu-item[data-page="${pageId}"]`);
-        if(activeItem) activeItem.classList.add('active');
 
-        // Show/Hide Pages
-        document.querySelectorAll('.page-content').forEach(page => {
-            page.classList.remove('active');
-            page.style.display = 'none';
-        });
-        
-        const targetPage = document.getElementById(`${pageId}-page`);
-        if (targetPage) {
-            targetPage.classList.add('active');
-            targetPage.style.display = 'block';
-        }
-        
-        // Auto-close mobile menu if open
-        document.getElementById('sidebar').classList.remove('open');
-    }
 
     // Mobile menu toggle (COMPLETED)
     function toggleMobile() {
@@ -5307,4 +5508,20 @@ window.onload = function () {
     </div>
 
 </body>
+<!-- OTP Modal -->
+<div id="otpModal" class="otp-modal">
+    <div class="otp-box">
+        <h2>🔐 OTP Verification</h2>
+        <p>Enter the OTP sent to your email</p>
+
+        <input type="text" id="otpInput" maxlength="6" placeholder="Enter OTP">
+
+        <div class="otp-actions">
+            <button onclick="verifyOtp()" class="btn btn-primary">Verify</button>
+            <button onclick="resendOtp()" class="btn btn-outline">Resend</button>
+        </div>
+
+        <p id="otpMsg"></p>
+    </div>
+</div>
 </html>

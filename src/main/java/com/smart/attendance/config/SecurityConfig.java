@@ -35,6 +35,54 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Pehle bataya gaya CORS Bean add karein
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
+
+            // PUBLIC UI
+            .requestMatchers("/", "/login.html", "/dashboard.html", "/css/**", "/js/**").permitAll()
+
+            // AUTH APIs
+            .requestMatchers("/api/auth/**").permitAll()
+
+            // FILES
+            .requestMatchers("/uploads/**").permitAll()
+
+            // ADMIN
+            .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
+
+            // PROTECTED APIs
+            .requestMatchers("/api/otp/**").authenticated()
+            .requestMatchers("/api/dashboard/**").authenticated()
+            .requestMatchers("/api/profile").authenticated()
+            .requestMatchers("/api/documents/**").authenticated()
+            .requestMatchers("/api/**").authenticated()
+            .requestMatchers("/api/payslip/**").authenticated()
+
+            // 👇 ONLY ONE ANY REQUEST (LAST LINE)
+            .anyRequest().permitAll()
+        )
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        // Apne frontend ka URL yahan allow karein (e.g., Live Server port 5500)
+        configuration.setAllowedOrigins(Arrays.asList("*"));        
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+}
+
+/*
+
+.authorizeHttpRequests(auth -> auth
                 // 1. Pages ko permitAll() rakhein taaki UI load ho sake
                 .requestMatchers("/", "/login.html", "/dashboard.html", "/css/**", "/js/**").permitAll()
                 
@@ -52,26 +100,11 @@ public class SecurityConfig {
                 .requestMatchers("/uploads/**").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/attendance/**").permitAll()
+                .requestMatchers("/api/otp/**").authenticated()
+                .requestMatchers("/api/**").authenticated()
+                .requestMatchers("/api/payslip/**").authenticated()
                 
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
             )
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
-    }
-    // SecurityConfig.java ke andar add karein
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        // Apne frontend ka URL yahan allow karein (e.g., Live Server port 5500)
-        configuration.setAllowedOrigins(Arrays.asList("*"));        
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
-}
+*/

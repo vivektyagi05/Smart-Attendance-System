@@ -88,11 +88,17 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-mail</artifactId>
 	</dependency>
-	<dependency>
-		<groupId>com.itextpdf</groupId>
-		<artifactId>itextpdf</artifactId>
-		<version>5.5.13.3</version>
-	</dependency>
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>kernel</artifactId>
+			<version>7.1.17</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>layout</artifactId>
+			<version>7.1.17</version>
+		</dependency>
 
 	<dependency>
 		<groupId>org.projectlombok</groupId>
@@ -100,11 +106,12 @@
 		<optional>true</optional>
 	</dependency>
 
-  <dependency>
-    <groupId>com.h2database</groupId>
-    <artifactId>h2</artifactId>
-    <version>2.2.224</version>
-  </dependency>
+	<dependency>
+		<groupId>com.h2database</groupId>
+		<artifactId>h2</artifactId>
+		<version>2.2.224</version>
+	</dependency>
+	
 </dependencies>	
 
    <build>

@@ -1,17 +1,7 @@
-package com.smart.attendance.entity;
+package com.smart.attendance.dto;
 
-import jakarta.persistence.*;
-import java.time.LocalDate;
 
-@Entity
-@Table(name = "salary")
-public class Salary {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private Long userId;
+public class SalaryResponse {
 
     private double basic;
     private double hra;
@@ -23,44 +13,15 @@ public class Salary {
     private double tax;
     private double others;
 
-    private LocalDate createdAt;
+    private double totalEarnings;
+    private double totalDeductions;
 
-    // 🔹 Default Constructor
-    public Salary() {}
+    private double allowances;
+    private double deductions;
 
-    // 🔹 Parameterized Constructor
-    public Salary(Long id, Long userId, double basic, double hra, double transport, double special,
-                  double tds, double pf, double tax, double others, LocalDate createdAt) {
-        this.id = id;
-        this.userId = userId;
-        this.basic = basic;
-        this.hra = hra;
-        this.transport = transport;
-        this.special = special;
-        this.tds = tds;
-        this.pf = pf;
-        this.tax = tax;
-        this.others = others;
-        this.createdAt = createdAt;
-    }
+    private double netSalary;
 
     // 🔹 Getters & Setters
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 
     public double getBasic() {
         return basic;
@@ -126,11 +87,43 @@ public class Salary {
         this.others = others;
     }
 
-    public LocalDate getCreatedAt() {
-        return createdAt;
+    public double getTotalEarnings() {
+        return totalEarnings;
     }
 
-    public void setCreatedAt(LocalDate createdAt) {
-        this.createdAt = createdAt;
+    public void setTotalEarnings(double totalEarnings) {
+        this.totalEarnings = totalEarnings;
+    }
+
+    public double getTotalDeductions() {
+        return totalDeductions;
+    }
+
+    public void setTotalDeductions(double totalDeductions) {
+        this.totalDeductions = totalDeductions;
+    }
+
+    public double getAllowances() {
+        return allowances;
+    }
+
+    public void setAllowances(double allowances) {
+        this.allowances = allowances;
+    }
+
+    public double getDeductions() {
+        return deductions;
+    }
+
+    public void setDeductions(double deductions) {
+        this.deductions = deductions;
+    }
+
+    public double getNetSalary() {
+        return netSalary;
+    }
+
+    public void setNetSalary(double netSalary) {
+        this.netSalary = netSalary;
     }
 }
