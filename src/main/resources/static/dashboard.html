@@ -1504,6 +1504,9 @@
     to { transform: scale(1); opacity: 1; }
 }
 
+
+
+
     </style>
 </head>
 <body>
@@ -1557,10 +1560,6 @@
             
             <nav class="menu-section">
                 <div class="menu-label">COMMUNICATION</div>
-                <div class="menu-item" data-page="chat">
-                    <span class="menu-icon">💬</span>
-                    <span>Chat</span>
-                </div>
                 <div class="menu-item" data-page="notifications">
                     <span class="menu-icon">🔔</span>
                     <span>Notifications</span>
@@ -2889,161 +2888,7 @@
 
                 <!-- Chat System -->
                 
-                <div id="chat-page" class="page-content">
-                    <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 32px;">💬 Chat & Communication</h1>
-                    
-                    <div class="chat-container">
-                        <!-- Chat List -->
-                        <div class="chat-list">
-                            <div style="margin-bottom: 16px;">
-                                <input type="text" class="form-input" placeholder="Search conversations..." style="margin-bottom: 0;">
-                            </div>
-                            
-                            <div class="chat-item active" onclick="selectChat('sarah')">
-                                <div style="display: flex; align-items: center; gap: 12px;">
-                                    <div style="position: relative;">
-                                        <div class="user-avatar" style="width: 40px; height: 40px; background: #1a73e8;">S</div>
-                                        <div style="position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; background: #10b981; border: 2px solid white; border-radius: 50%;"></div>
-                                    </div>
-                                    <div style="flex: 1; min-width: 0;">
-                                        <div style="font-weight: 600; margin-bottom: 2px;">Sarah Johnson</div>
-                                        <div style="font-size: 12px; color: #6b7280; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Can we schedule a meeting?</div>
-                                    </div>
-                                </div>
-                                <div style="font-size: 10px; color: #6b7280; margin-top: 4px; text-align: right;">2 min ago</div>
-                            </div>
-                            
-                            <div class="chat-item" onclick="selectChat('team')">
-                                <div style="display: flex; align-items: center; gap: 12px;">
-                                    <div style="position: relative;">
-                                        <div class="user-avatar" style="width: 40px; height: 40px; background: #3b82f6;">E</div>
-                                        <div style="position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; background: #10b981; border: 2px solid white; border-radius: 50%;"></div>
-                                    </div>
-                                    <div style="flex: 1; min-width: 0;">
-                                        <div style="font-weight: 600; margin-bottom: 2px;">Engineering Team</div>
-                                        <div style="font-size: 12px; color: #6b7280; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Sprint planning at 3 PM</div>
-                                    </div>
-                                </div>
-                                <div style="font-size: 10px; color: #6b7280; margin-top: 4px; text-align: right;">1 hour ago</div>
-                            </div>
-                            
-                            <div class="chat-item" onclick="selectChat('mike')">
-                                <div style="display: flex; align-items: center; gap: 12px;">
-                                    <div style="position: relative;">
-                                        <div class="user-avatar" style="width: 40px; height: 40px; background: #8b5cf6;">M</div>
-                                        <div style="position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; background: #6b7280; border: 2px solid white; border-radius: 50%;"></div>
-                                    </div>
-                                    <div style="flex: 1; min-width: 0;">
-                                        <div style="font-weight: 600; margin-bottom: 2px;">Mike Anderson</div>
-                                        <div style="font-size: 12px; color: #6b7280; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Thanks for the code review!</div>
-                                    </div>
-                                </div>
-                                <div style="font-size: 10px; color: #6b7280; margin-top: 4px; text-align: right;">Yesterday</div>
-                            </div>
-                            
-                            <div class="chat-item" onclick="selectChat('hr')">
-                                <div style="display: flex; align-items: center; gap: 12px;">
-                                    <div style="position: relative;">
-                                        <div class="user-avatar" style="width: 40px; height: 40px; background: #f59e0b;">H</div>
-                                        <div style="position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; background: #10b981; border: 2px solid white; border-radius: 50%;"></div>
-                                    </div>
-                                    <div style="flex: 1; min-width: 0;">
-                                        <div style="font-weight: 600; margin-bottom: 2px;">HR Department</div>
-                                        <div style="font-size: 12px; color: #6b7280; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Your leave has been approved</div>
-                                    </div>
-                                </div>
-                                <div style="font-size: 10px; color: #6b7280; margin-top: 4px; text-align: right;">2 days ago</div>
-                            </div>
-                            
-                            <div class="chat-item" onclick="selectChat('emily')">
-                                <div style="display: flex; align-items: center; gap: 12px;">
-                                    <div style="position: relative;">
-                                        <div class="user-avatar" style="width: 40px; height: 40px; background: #ec4899;">E</div>
-                                        <div style="position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; background: #6b7280; border: 2px solid white; border-radius: 50%;"></div>
-                                    </div>
-                                    <div style="flex: 1; min-width: 0;">
-                                        <div style="font-weight: 600; margin-bottom: 2px;">Emily Chen</div>
-                                        <div style="font-size: 12px; color: #6b7280; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Design files ready for review</div>
-                                    </div>
-                                </div>
-                                <div style="font-size: 10px; color: #6b7280; margin-top: 4px; text-align: right;">3 days ago</div>
-                            </div>
-                        </div>
-                        
-                        <!-- Chat Window -->
-                        <div class="chat-window">
-                            <div class="chat-header">
-                                <div style="display: flex; align-items: center; gap: 12px;">
-                                    <div style="position: relative;">
-                                        <div class="user-avatar" style="width: 40px; height: 40px; background: #1a73e8;">S</div>
-                                        <div style="position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; background: #10b981; border: 2px solid white; border-radius: 50%;"></div>
-                                    </div>
-                                    <div>
-                                        <div style="font-weight: 600; color: #1f2937;">Sarah Johnson</div>
-                                        <div style="font-size: 12px; color: #10b981;">● Online</div>
-                                    </div>
-                                </div>
-                                <div style="display: flex; gap: 8px;">
-                                    <button class="icon-btn" title="Voice Call">📞</button>
-                                    <button class="icon-btn" title="Video Call">📹</button>
-                                    <button class="icon-btn" title="More Options">⋮</button>
-                                </div>
-                            </div>
-                            
-                            <div class="chat-messages" id="chatMessages">
-                                <div class="message message-received">
-                                    <div class="message-bubble">
-                                        <div>Hey John! Can we schedule a meeting to discuss the new project requirements?</div>
-                                        <div style="font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 4px;">10:30 AM</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="message message-sent">
-                                    <div class="message-bubble">
-                                        <div>Sure! I'm available this afternoon after 2 PM. Does that work for you?</div>
-                                        <div style="font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 4px; text-align: right;">10:32 AM</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="message message-received">
-                                    <div class="message-bubble">
-                                        <div>Perfect! Let's meet at 2:30 PM in the conference room.</div>
-                                        <div style="font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 4px;">10:35 AM</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="message message-sent">
-                                    <div class="message-bubble">
-                                        <div>Great! See you then. Should I prepare anything specific?</div>
-                                        <div style="font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 4px; text-align: right;">10:36 AM</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="message message-received">
-                                    <div class="message-bubble">
-                                        <div>Yes, please bring the latest design mockups and technical specifications.</div>
-                                        <div style="font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 4px;">10:38 AM</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="message message-sent">
-                                    <div class="message-bubble">
-                                        <div>Will do! 👍</div>
-                                        <div style="font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 4px; text-align: right;">10:39 AM</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="chat-input-container">
-                                <button class="icon-btn" title="Attach File">📎</button>
-                                <button class="icon-btn" title="Emoji">😊</button>
-                                <input type="text" class="form-input" id="chatInput" placeholder="Type a message..." style="flex: 1; margin: 0;">
-                                <button class="btn btn-primary" onclick="sendMessage()">📤 Send</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                
                 <!-- Notification System  -->
                 
                 <div id="notifications-page" class="page-content">
@@ -3149,6 +2994,43 @@
             // Aapka baaki saara code yahan aayega
             console.log("Token mil gaya, welcome!");
         }
+
+
+
+
+        // ========== ============== Dashboard page starts here ===========
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // ========== ============== Dashboard page ends here ===========
+
+
+
+
+
+
+
+
+
 
         //  # =====-------------======Profile Section=======--------------===== #
 
@@ -3671,11 +3553,10 @@
 
     
 
-        window.onload = () => {
-            loadData();      // then
-            
-
-        };
+        function openAttendancePage() {
+            document.getElementById("attendance-page").style.display = "block";
+            loadData(); // 🔥 सही direction
+        }
 
 
         function calculateHours(checkIn, checkOut) {
@@ -5197,21 +5078,44 @@ async function loadSalaryHistory() {
 
 
 
-// Navigation
-        document.querySelectorAll('.menu-item').forEach(item => {
-            item.addEventListener('click', function() {
-                const page = this.getAttribute('data-page');
-                
-                document.querySelectorAll('.menu-item').forEach(mi => mi.classList.remove('active'));
-                this.classList.add('active');
-                
-                document.querySelectorAll('.page-content').forEach(pc => pc.classList.remove('active'));
-                const pageElement = document.getElementById(page + '-page');
-                if (pageElement) {
-                    pageElement.classList.add('active');
-                }
-            });
-        });
+
+
+
+// =====================================  Chat System  =========================================    
+
+
+
+
+
+
+
+// =====================================  Chat System End Here  =========================================   
+
+
+// Sidebar Navigation (FINAL FIXED)
+document.querySelectorAll('.menu-item').forEach(item => {
+    item.addEventListener('click', function () {
+
+        const page = this.getAttribute('data-page');
+
+        // Active menu highlight
+        document.querySelectorAll('.menu-item').forEach(mi => mi.classList.remove('active'));
+        this.classList.add('active');
+
+        // Page switch
+        document.querySelectorAll('.page-content').forEach(pc => pc.classList.remove('active'));
+
+        const pageElement = document.getElementById(page + '-page');
+        if (pageElement) {
+            pageElement.classList.add('active');
+        }
+
+        // 🔥 SPECIAL: Attendance page load fix
+        if (page === "attendance") {
+            loadData();   // ✅ AUTO LOAD DATA
+        }
+    });
+});
         
         // Dark Mode
         let isDarkMode = false;
@@ -5334,13 +5238,7 @@ async function loadSalaryHistory() {
             }, 3000);
         }
         
-        // Go to specific page
-        function goToPage(pageName) {
-            const menuItem = document.querySelector(`[data-page="${pageName}"]`);
-            if (menuItem) {
-                menuItem.click();
-            }
-        }
+
         
             
             // Productivity Chart
@@ -5409,21 +5307,11 @@ async function loadSalaryHistory() {
             }
         }
         
-        // Initialize charts when DOM is loaded
-
-        console.log('Employee Dashboard loaded successfully!');
-        console.log('Ready for backend integration at /api/*');
-        console.log('All features are functional!');
 
 
 
-        // Sidebar Page Switching
-    document.querySelectorAll('.menu-item').forEach(item => {
-        item.addEventListener('click', () => {
-            const pageId = item.getAttribute('data-page');
-            goToPage(pageId);
-        });
-    });
+
+
 
 
 
@@ -5524,4 +5412,6 @@ async function loadSalaryHistory() {
         <p id="otpMsg"></p>
     </div>
 </div>
+
+
 </html>
