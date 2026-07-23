@@ -112,61 +112,65 @@ pom.xml
 
 ---
 
+---
+
 # 📸 Application Screenshots
 
-The following screenshots showcase the application's interface, user workflows, and dashboard.
+The following screenshots demonstrate the core modules and user interfaces of the Human Resource Management System (HRMS).
 
 <table align="center">
 
 <tr>
 <td align="center">
-<b>🏠 Home Page</b><br><br>
-<img src="https://github.com/user-attachments/assets/0a82ac74-c810-4d6a-9746-b5d91f82fb1d" width="450"/>
+<b>💰 Employee Payroll & Payslip</b><br><br>
+<img src="YOUR_IMAGE_1" width="460"/>
 </td>
 
 <td align="center">
-<b>🔐 Login</b><br><br>
-<img src="https://github.com/user-attachments/assets/7857daad-1d26-4cea-b481-fe81018ddf69" width="450"/>
-</td>
-</tr>
-
-<tr>
-<td align="center">
-<b>📝 Registration</b><br><br>
-<img src="https://github.com/user-attachments/assets/f8e91730-5344-4f5b-9586-81b2e168aae5" width="450"/>
-</td>
-
-<td align="center">
-<b>📊 Dashboard</b><br><br>
-<img src="https://github.com/user-attachments/assets/c9d7fa43-35d8-4011-88c9-07158d37cfff" width="450"/>
+<b>🏠 Employee Dashboard</b><br><br>
+<img src="YOUR_IMAGE_2" width="460"/>
 </td>
 </tr>
 
 <tr>
 <td align="center">
-<b>👤 User Management</b><br><br>
-<img src="https://github.com/user-attachments/assets/c21a4692-8e4f-4780-b067-18a2f0b5bc99" width="450"/>
+<b>👤 Employee Profile Management</b><br><br>
+<img src="YOUR_IMAGE_3" width="460"/>
 </td>
 
 <td align="center">
-<b>📋 Records</b><br><br>
-<img src="https://github.com/user-attachments/assets/264241c6-4d3a-443e-9150-87e0bc4942a0" width="450"/>
+<b>🕒 Employee Attendance</b><br><br>
+<img src="YOUR_IMAGE_4" width="460"/>
 </td>
 </tr>
 
 <tr>
 <td align="center">
-<b>⚙️ Administration</b><br><br>
-<img src="https://github.com/user-attachments/assets/9d967191-7f97-4e0d-8607-9608bc989702" width="450"/>
+<b>📊 HR Admin Dashboard</b><br><br>
+<img src="YOUR_IMAGE_5" width="460"/>
 </td>
 
 <td align="center">
-<b>📈 Analytics Dashboard</b><br><br>
-<img src="https://github.com/user-attachments/assets/3397556a-f523-4d48-b770-f53bc7455d1c" width="450"/>
+<b>👥 Employee Management</b><br><br>
+<img src="YOUR_IMAGE_6" width="460"/>
+</td>
+</tr>
+
+<tr>
+<td align="center">
+<b>📝 Leave Management System</b><br><br>
+<img src="YOUR_IMAGE_7" width="460"/>
+</td>
+
+<td align="center">
+<b>🔔 Notification Center</b><br><br>
+<img src="YOUR_IMAGE_8" width="460"/>
 </td>
 </tr>
 
 </table>
+
+---
 
 ---
 
