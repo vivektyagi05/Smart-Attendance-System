@@ -1,203 +1,192 @@
-                  # 🚀 Smart Attendance System – AI-Driven Workforce & Productivity Platform
+<div align="center">
 
-**Smart Attendance System** is a full-stack **Spring Boot-based workforce management platform** designed to manage employees, track attendance, analyze productivity, and provide real-time insights for both **Admin and Employee roles**.
+# 🚀 Smart Attendance System
 
----
+### Spring Boot Workforce Management Prototype
 
-## 🚀 Key Highlights
+A Spring Boot-based attendance management system prototype built to explore enterprise backend development, authentication, attendance workflows, employee management, and workforce productivity concepts.
 
-          * 🔐 JWT-based secure authentication
-          * 👨‍💼 Role-based system (Admin / Employee)
-          * 📊 Real-time dashboard analytics
-          * 📅 Attendance & leave tracking
-          * 📈 Productivity & performance monitoring
-          * 💼 Task & project management
-          * 📄 Reports & smart insights
+<p>
 
----
+<img src="https://img.shields.io/badge/Java-17-red?style=for-the-badge&logo=openjdk"/>
 
-## 👥 User Roles & Features
+<img src="https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=springboot"/>
 
----
+<img src="https://img.shields.io/badge/Spring%20Security-6DB33F?style=for-the-badge&logo=springsecurity"/>
 
-          ## 🧑‍💼 Admin Panel Features
-          
-          ### 📊 Dashboard Overview
-          * View organization-wide summary
-          * Total employees, attendance stats
-          * Leave usage insights
-          * Productivity analytics
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql"/>
 
----
+<img src="https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apachemaven"/>
 
-### 👨‍👩‍👧 Employee Management
-          * Add / update / delete employees
-          * Manage employee details
-          * Assign roles and access levels
+</p>
+
+<p>
+
+<img src="https://img.shields.io/badge/Status-Prototype-orange"/>
+
+<img src="https://img.shields.io/badge/License-MIT-blue"/>
+
+</p>
+
+</div>
 
 ---
 
-### 📅 Attendance Control
-          * Monitor employee attendance records
-          * View monthly attendance reports
-          * Auto-attendance tracking via scheduler
+# 📖 Overview
+
+Smart Attendance System is a learning-focused Spring Boot project created to understand how enterprise attendance and workforce management systems are structured.
+
+The project explores secure authentication, role-based authorization, employee management, attendance workflows, and backend architecture using Java and Spring Boot.
+
+Rather than being a finished commercial product, this repository serves as a practical implementation for learning enterprise application development.
 
 ---
 
-### 📈 Productivity Monitoring
-          * Track employee productivity scores
-          * Analyze work performance trends
-          * Monthly productivity reports
+# 🎯 Project Goals
+
+- Learn Spring Boot development
+- Understand layered backend architecture
+- Practice Spring Security
+- Implement authentication and authorization
+- Explore workforce management workflows
+- Build reusable backend components
 
 ---
 
-### 💼 Task & Project Management
-          * Assign tasks to employees
-          * Track task progress (TODO / DONE)
-          * Manage projects and workflows
+# ✨ Current Features
+
+## Authentication
+
+- User Login
+- Role-based access
+- Spring Security
+- JWT authentication (planned/in progress if applicable)
+
+## Employee Management
+
+- Employee information
+- Employee records
+- Basic CRUD operations
+
+## Attendance
+
+- Attendance records
+- Attendance management workflow
+
+## Dashboard
+
+- Basic dashboard
+- Attendance overview
 
 ---
 
-### 💰 Payroll Management
-          * Track salary status (Paid / Pending)
-          * View monthly payroll records
-          * Analyze salary-related insights
+# 🛠 Technology Stack
+
+| Layer | Technologies |
+|--------|--------------|
+| Language | Java |
+| Framework | Spring Boot |
+| Security | Spring Security |
+| Database | MySQL |
+| Build Tool | Maven |
+| Frontend | HTML, CSS, JavaScript |
 
 ---
 
-### 📄 Reports & Notifications
-          * Generate PDF reports
-          * Send notifications to employees
-          * Smart analysis insights
+# 📂 Project Structure
+
+```text
+src/
+ ├── controller/
+ ├── service/
+ ├── repository/
+ ├── model/
+ ├── security/
+ ├── util/
+ └── resources/
+
+pom.xml
+```
 
 ---
 
-## 👨‍💻 Employee Panel Features
+# 📸 Screenshots
 
-### 📊 Personal Dashboard
-          * View personal summary:
-            * Salary status
-            * Leave usage
-            * Pending tasks
-          * Real-time activity overview
+The repository includes screenshots demonstrating the current user interface and dashboard.
 
 ---
 
-### ⏱️ Attendance System
-          * Check-in / Check-out functionality
-          * View attendance history
-          * Track monthly attendance
-          
-          ---
+# ⚙️ Getting Started
 
-### 📅 Leave Management
-          * Apply for leave
-          * Track leave status (Approved / Pending)
-          * View leave history
-          
-          ---
+Clone the repository
 
-### 📈 Productivity Tracking
-          * View daily work performance
-          * Check productivity score
-          * Analyze monthly performance
-          
-          ---
-
-### 💼 Task Management
-          * View assigned tasks
-          * Update task status
-          * Track deadlines and progress
-          
-          ---
-
-### 🔔 Notifications
-        * Receive system alerts
-        * Get updates on tasks, leaves, and reports
-        
-        ---
-
-## 🛠️ Tech Stack
-
-### 🔹 Backend
-        * Java
-        * Spring Boot
-        * Spring Security (JWT)
-        * Spring Data JPA (Hibernate)
-
-### 🔹 Database
-        * MySQL
-
-### 🔹 Frontend
-      * HTML5
-      * CSS3
-      * JavaScript
-
----
-
-                          ## 📂 Project Structure
-
-```id="attendance_structure"
-attendance/
-│
-├── src/main/java/com/smart/attendance/
-│   ├── controller/
-│   ├── service/
-│   ├── repository/
-│   ├── model/
-│   ├── security/
-│   ├── scheduler/
-│   └── util/
-│
-├── src/main/resources/
-│   ├── static/
-│   └── application.properties
-│
-├── pom.xml
-└── .gitignore
-
-
-⚙️ Installation & Setup
-1️⃣ Clone Repository
+```bash
 git clone https://github.com/vivektyagi05/Smart-Attendance-System.git
-cd Smart-Attendance-System
-2️⃣ Configure Database
+```
+
+Configure database
+
+```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/attendance_db
 spring.datasource.username=your_username
 spring.datasource.password=your_password
-3️⃣ Run Application
+```
+
+Run the application
+
+```bash
 mvn spring-boot:run
-4️⃣ Access Application
+```
+
+Open
+
+```
 http://localhost:8080
+```
 
-            📊 System Workflow
+---
 
-User logs in via secure JWT authentication
-Role-based access determines features (Admin / Employee)
-Backend processes requests using services & repositories
-Data is stored and retrieved from MySQL database
-Dashboard displays real-time analytics and insights
-📈 Future Enhancements
-AI-based performance prediction
-Email notification system
-REST API documentation (Swagger)
-Cloud deployment (AWS / Render)
-Advanced analytics dashboard
+# 📚 Learning Outcomes
 
+This project helped in understanding:
 
+- Spring Boot project structure
+- MVC architecture
+- Repository-Service-Controller pattern
+- Database integration
+- Authentication concepts
+- Backend development workflow
 
-## 👨‍💻 Author
+---
 
-Vivek Tyagi
-B.Tech Computer Science Engineering
-Backend Developer (Spring Boot | Security | System Design)
+# 🚀 Future Improvements
 
-⭐ Support
+- Complete JWT implementation
+- Attendance reports
+- Leave management
+- REST API documentation
+- Dashboard improvements
+- Email notifications
+- Docker support
 
-If you like this project:
+---
 
-⭐ Star this repository
-🔗 Connect on LinkedIn
-🚀 Share with developers
+# 📌 Project Status
 
+🟡 Prototype / Learning Project
 
+This repository represents a backend learning project and serves as a foundation for understanding enterprise application development with Spring Boot.
+
+---
+
+# 👨‍💻 Developer
+
+**Vivek Tyagi**
+
+Backend Developer | Java & Spring Boot Learner
+
+---
+
+# 📄 License
+
+Licensed under the MIT License.
