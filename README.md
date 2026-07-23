@@ -123,48 +123,56 @@ The following screenshots demonstrate the core modules and user interfaces of th
 <tr>
 <td align="center">
 <b>💰 Employee Payroll & Payslip</b><br><br>
-<img src="YOUR_IMAGE_1" width="460"/>
+<img width="1904" height="1008" alt="Screenshot 2026-06-01 093841" src="https://github.com/user-attachments/assets/0cc46415-95d1-4201-bb73-786bda331493" />
+
 </td>
 
 <td align="center">
 <b>🏠 Employee Dashboard</b><br><br>
-<img src="YOUR_IMAGE_2" width="460"/>
+<img width="1912" height="1007" alt="Screenshot 2026-06-01 093920" src="https://github.com/user-attachments/assets/f8ff4583-e6b4-49b4-94e7-bca16b203643" />
+
 </td>
 </tr>
 
 <tr>
 <td align="center">
 <b>👤 Employee Profile Management</b><br><br>
-<img src="YOUR_IMAGE_3" width="460"/>
+<img width="1885" height="1008" alt="Screenshot 2026-06-01 093939" src="https://github.com/user-attachments/assets/1d9ede4a-d4f0-4bc1-92f3-541b5b59fd1c" />
+
 </td>
 
 <td align="center">
 <b>🕒 Employee Attendance</b><br><br>
-<img src="YOUR_IMAGE_4" width="460"/>
+<img width="1907" height="1022" alt="Screenshot 2026-06-01 093956" src="https://github.com/user-attachments/assets/949d2e44-fc2c-4cb3-a3db-2cf8f4b70276" />
+
 </td>
 </tr>
 
 <tr>
 <td align="center">
 <b>📊 HR Admin Dashboard</b><br><br>
-<img src="YOUR_IMAGE_5" width="460"/>
+<img width="1916" height="1024" alt="Screenshot 2026-06-01 095718" src="https://github.com/user-attachments/assets/82a4f9ff-a20a-4b11-b44b-fc85ca067547" />
+
 </td>
 
 <td align="center">
 <b>👥 Employee Management</b><br><br>
-<img src="YOUR_IMAGE_6" width="460"/>
+<img width="1914" height="1026" alt="Screenshot 2026-06-01 095735" src="https://github.com/user-attachments/assets/1a51a792-e8fe-4b6e-93ce-454cdb4db4cc" />
+
 </td>
 </tr>
 
 <tr>
 <td align="center">
 <b>📝 Leave Management System</b><br><br>
-<img src="YOUR_IMAGE_7" width="460"/>
+<img width="1919" height="1016" alt="Screenshot 2026-06-01 095839" src="https://github.com/user-attachments/assets/79573c69-f700-4e29-8141-9924a8b872ed" />
+
 </td>
 
 <td align="center">
 <b>🔔 Notification Center</b><br><br>
-<img src="YOUR_IMAGE_8" width="460"/>
+<img width="1919" height="1020" alt="Screenshot 2026-06-01 095940" src="https://github.com/user-attachments/assets/48e4a15a-616b-42d1-b9ad-c8572746ddc4" />
+
 </td>
 </tr>
 
